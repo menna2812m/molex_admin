@@ -1,0 +1,446 @@
+/**********************Light Header Start********************************/
+@media (min-width: 992px) {
+    .header-light.main-body .side-header {
+        border-bottom-color: $border;
+        box-shadow: -7.829px 11.607px 20px 0px $black-2;
+    }
+}
+
+@media (min-width: 992px) {
+    .header-light.horizontalmenu .main-header .main-header-left .main-logo {
+        .desktop-logo {
+            display: block;
+        }
+
+        .desktop-logo-dark {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .header-light {
+
+        &.main-body .mobile-logo-dark,
+        &.horizontalmenu .mobile-logo-dark {
+            display: none;
+        }
+
+        &.main-body .mobile-logo,
+        &.horizontalmenu .mobile-logo {
+            display: block;
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .header-light {
+        .main-header.side-header {
+            border-bottom-color: $border;
+        }
+
+        .responsive-navbar.navbar .navbar-collapse {
+            background: $white;
+            border-bottom-color: $border;
+            border-top-color: $border;
+        }
+    }
+}
+
+.header-light {
+    .main-header-right .dropdown-menu .select2-container--default .select2-selection--single {
+        background-color: $white;
+        border-color: $border;
+    }
+
+    .main-header {
+        background-color: $white;
+        border-bottom-color: $border;
+
+        .form-control {
+            color: $black;
+            background-color: $white !important;
+            border-color: $border !important;
+        }
+
+        .select2-container--default .select2-selection--single {
+            background-color: $white;
+            border-color: $border !important;
+        }
+
+        .responsive-navbar.navbar .navbar-collapse {
+            box-shadow: none;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #a8afc7;
+        }
+
+        .navbar-toggler {
+            color: #4a4d51;
+        }
+    }
+
+    .navbar-toggler .header-icons:hover,
+    .option-dots:hover {
+        background-color: $background;
+    }
+
+    .main-form-search .form-control:focus {
+        background-color: $white;
+        border-color: $border;
+    }
+
+    .main-header-menu-icon span {
+        background-color: #2f395f;
+
+        &::before,
+        &::after {
+            background-color: #2f395f;
+        }
+    }
+
+    .main-header-right .nav-link.icon {
+        color: #4a4d51;
+
+        &:hover {
+            background: $background;
+        }
+    }
+
+    .main-header-center .form-control {
+        border-color: $border;
+
+        &:focus {
+            border-color: $border !important;
+        }
+    }
+}
+
+/**********************Light Header End********************************/
+
+/**********************Dark Header Start********************************/
+@media (min-width: 992px) {
+    .header-dark {
+        &.main-body .side-header {
+            border-bottom-color: $dark-border;
+            box-shadow: -7.829px 11.607px 20px 0px $black-2;
+        }  
+
+        .main-header {
+    
+            .form-control {
+                color: $dark-color;
+                background-color: $dark-theme;
+                border-color: $dark-border;
+            }
+    
+            .select2-container--default .select2-selection--single {
+                background-color: $dark-theme;
+                border-color: $dark-border !important;
+            }
+    
+            .select2-container--default .select2-selection--single .select2-selection__placeholder,
+            .navbar-toggler {
+                color: $dark-color;
+            }
+    
+            .multiselect {
+                border-color: $white-2 !important;
+            }
+        
+            .multiselect-placeholder {
+                color: $white-8;
+            }
+        
+            .multiselect-clear-icon,
+            .multiselect-caret {
+                background-color: $white !important;
+            }
+        
+            .multiselect-option {
+                color: $black;
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    .header-dark.horizontalmenu .main-header .main-header-left .main-logo {
+        .desktop-logo {
+            display: none;
+        }
+
+        .desktop-logo-dark {
+            display: block;
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .header-dark {
+
+        &.main-body .mobile-logo-dark,
+        &.horizontalmenu .mobile-logo-dark {
+            display: block;
+        }
+
+        &.main-body .mobile-logo,
+        &.horizontalmenu .mobile-logo {
+            display: none;
+        }
+        .main-header {
+            .navresponsive-toggler {
+                color: $dark-color;
+            }
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .header-dark {
+        .main-header.side-header {
+            border-bottom-color: $dark-border;
+        }
+
+        .responsive-navbar.navbar .navbar-collapse {
+            background: $dark-theme;
+            border-bottom-color: $dark-border;
+            border-top-color: $dark-border;
+        }
+    }
+}
+
+.header-dark {
+    .main-header-right .dropdown-menu .select2-container--default .select2-selection--single {
+        background-color: $dark-theme;
+        border-color: $dark-border !important;
+    }
+
+    .main-header {
+        background-color: $dark-theme;
+        border-bottom-color: $dark-border;
+
+        .responsive-navbar.navbar .navbar-collapse {
+            box-shadow: none;
+        }
+    }
+
+    .navbar-toggler .header-icons:hover,
+    .main-header .option-dots:hover {
+        background-color: $dark-body;
+    }
+
+    .main-form-search .form-control:focus {
+        background-color: $dark-theme;
+        border-color: $dark-border;
+    }
+
+    .main-header-menu-icon span {
+        background-color: $dark-color;
+
+        &::before,
+        &::after {
+            background-color: $dark-color;
+        }
+    }
+
+    .main-header-right .nav-link.icon {
+        color: $dark-color;
+
+        &:hover {
+            background: $dark-body;
+        }
+    }
+
+    .main-header-center .form-control {
+        border-color: $dark-border;
+
+        &:focus {
+            border-color: $dark-border !important;
+        }
+    }
+}
+
+/**********************Dark Header End********************************/
+/**********************Color Header Start********************************/
+@media (min-width: 992px) {
+    .color-header.main-body .side-header {
+        border-bottom-color: $white-2;
+        box-shadow: -7.829px 11.607px 20px 0px $black-2;
+    }
+}
+
+@media (min-width: 992px) {
+    .color-header.horizontalmenu .main-header .main-header-left .main-logo {
+        .desktop-logo {
+            display: none;
+        }
+
+        .desktop-logo-dark {
+            display: block;
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .color-header {
+
+        &.main-body .mobile-logo-dark,
+        &.horizontalmenu .mobile-logo-dark {
+            display: block;
+        }
+
+        &.main-body .mobile-logo,
+        &.horizontalmenu .mobile-logo {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .color-header {
+        .main-header.side-header {
+            border-bottom-color: $white-2;
+        }
+
+        .responsive-navbar.navbar .navbar-collapse {
+            background: $primary;
+            border-bottom-color: $white-2;
+            border-top-color: $white-2;
+        }
+    }
+}
+
+.color-header {
+    .main-header-right .dropdown-menu .select2-container--default .select2-selection--single {
+        background-color: $primary;
+        border-color: $white-2 !important;
+    }
+
+    .main-header {
+        background-color: $primary;
+        border-bottom-color: $white-2;
+
+        .form-control {
+            color: $white;
+            background-color: $primary;
+            border-color: $white-2;
+        }
+
+        .select2-container--default .select2-selection--single {
+            background-color: $primary;
+            border-color: $white-2 !important;
+        }
+
+        .responsive-navbar.navbar .navbar-collapse {
+            box-shadow: none;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__placeholder,
+        .navbar-toggler,
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: $white;
+        }
+
+        .form-control::placeholder {
+            color: $white-8;
+        }
+
+        .main-form-search {
+
+            .btn,
+            .sp-container button {
+                background-color: $background;
+                color: $primary;
+            }
+        }
+
+        .multiselect {
+            border-color: $white-2 !important;
+            background-color: $primary !important;
+        }
+    
+        .multiselect-placeholder {
+            color: $white-8;
+        }
+    
+        .multiselect-clear-icon,
+        .multiselect-caret {
+            background-color: $white !important;
+        }
+    
+        .multiselect-option {
+            color: $black;
+        }
+        .multiselect-option.is-pointed {
+            color: $color !important;
+            &.is-selected {
+                color: $white !important;
+            }
+        }
+    }
+
+    .main-header-center .form-control:focus+.btn {
+        color: $primary;
+    }
+
+    .navbar-toggler .header-icons:hover,
+    .option-dots:hover {
+        background-color: $black-2;
+    }
+
+    .main-form-search .form-control:focus {
+        background-color: $primary;
+        border-color: $white-2;
+    }
+
+    .main-header-menu-icon span {
+        background-color: $white;
+
+        &::before,
+        &::after {
+            background-color: $white;
+        }
+    }
+
+    .main-header-right .nav-link.icon {
+        color: $white;
+
+        &:hover {
+            background: $black-2;
+        }
+    }
+
+    .main-header-center {
+        .form-control {
+            border-color: $white-2;
+
+            &:focus {
+                border-color: $white-2 !important;
+            }
+        }
+
+        .search-btn {
+            background-color: $white;
+            color: $primary;
+        }
+    }
+
+    .ng-select .ng-select-container .ng-value-container .ng-placeholder {
+        color: $white;
+    }
+
+    &.dark-theme {
+        .main-header {
+            .multiselect-option {
+                color: $dark-color;
+            }
+            .multiselect-option.is-pointed {
+                color: $dark-color !important;
+            }
+        }
+    }
+}
+
+/**********************Color Header End********************************/
