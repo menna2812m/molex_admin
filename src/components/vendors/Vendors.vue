@@ -369,6 +369,7 @@ export default {
       this.formDataupdate.store_id = data.store.id;
     },
     async update() {
+      const toast = useToast(); 
       let res = await crudDataService.create(
         `vendors/${this.id}?_method=put`,
         this.formDataupdate
@@ -380,14 +381,32 @@ export default {
      position: "top-center",
      timeout: 5000,
    }) 
-      }).catch((error) => {
-        this.ShowModeledit = false;          
-        const toast = useToast(); 
-   toast.error(error.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   });
-        });
+      }) .catch((error) => {
+          this.ShowModeledit = false;          
+
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      })
+  
+       
    
     },
     async stores() {
@@ -416,13 +435,18 @@ export default {
       this.$swal
         .fire({
           title: `؟"${name}" هل تريد حذف البائع `,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+           showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.$swal.fire("Deleted successfully!", "", "success");
+               this.$swal.fire({
+            title: "تم الحذف بنجاح!",
+            icon: "success",
+            confirmButtonText: "تم", // ✅ Custom OK button text
+          });
             crudDataService.delete("vendors", `${data}`).then(() => {
               this.myList.splice(index, 1);
             });
@@ -430,6 +454,7 @@ export default {
         });
     },
     async add() {
+      const toast = useToast();
       let res = await crudDataService
         .create(`vendors`, this.formData)
         .then((response) => {
@@ -451,18 +476,31 @@ export default {
      timeout: 5000,
    })
         })
-        .catch((error) => {
-          this.ShowModel = false;
+        .catch ((error) => {
+        this.ShowModel = false;
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
 
-          this.errormessage = error.message;
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
           
-        const toast = useToast(); 
-   toast.error(error.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   });
-        });
-    },
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      })
+    }
+  
   },
   mounted() {
     this.vendors();

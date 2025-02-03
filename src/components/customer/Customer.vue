@@ -100,7 +100,7 @@
               <td>
                 <button
                   class="btn me-2"
-                  @click="del(item.id, index, item.fname)"
+                  @click="del(item.id, index, item.name)"
       v-if="perminlocal.includes('users-destroy')"
                 
                 >
@@ -454,13 +454,18 @@ this.loading = false; // End loading regardless of success or failure
       this.$swal
         .fire({
           title: `؟"${name}" هل تريد حذف العميل `,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+           showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.$swal.fire("Deleted successfully!", "", "success");
+               this.$swal.fire({
+            title: "تم الحذف بنجاح!",
+            icon: "success",
+            confirmButtonText: "تم", // ✅ Custom OK button text
+          });
             crudDataService.delete("users", `${data}`).then(() => {
               this.myList.splice(index, 1);
             });

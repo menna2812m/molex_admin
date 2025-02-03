@@ -6,7 +6,7 @@
           <div
             class="card-header pb-2 d-flex align-items-center justify-content-between"
           >
-            <img :src="item.image" alt="" />
+            <img :src="item.image" alt="" width="100"/>
             <h4 class="mb-0">
               {{ item.name?item.name.ar:'' }}
             </h4>
@@ -22,7 +22,7 @@
               </button>
 
               <div class="text-start dropend mt-1" v-if="isDropdownOpen">
-                <a class="dropdown-item" @click="edit()">تعديل المجموعة </a>
+                <a class="dropdown-item" @click="edit(item)">تعديل المجموعة </a>
               </div>
             </div>
           </div>
@@ -52,14 +52,25 @@
           <h6 style="color: #febcd5" class="text-center">تعديل المجموعة</h6>
           <form @submit.prevent="update">
             <div class="row">
-              <div class="col-12 mb-3">
-                <label>الاسم</label>
+              <div class="col-6 mb-3">
+                <label>الاسم عربي</label>
                 <input
                   type="text"
                   name=""
                   id=""
                   class="form-control"
                   v-model="formData.name.ar"
+                />
+              </div>
+              <div class="col-6 mb-3">
+                <label>
+                  الاسم انجليزي</label>
+                <input
+                  type="text"
+                  name=""
+                  id=""
+                  class="form-control"
+                  v-model="formData.name.en"
                 />
               </div>
               <div
@@ -122,6 +133,7 @@
 </template>
 <script>
 import crudDataService from "../../Services/crudDataService.js";
+import { useToast } from "vue-toastification";
 
 export default {
   data() {
@@ -134,6 +146,7 @@ export default {
       formData: {
         name: {
           ar: "",
+          en:""
         },
         image: "",
         condition: [],
@@ -147,25 +160,39 @@ export default {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
+ 
     onFileSelected(event) {
-      this.formData.image = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageUrl = reader.result;
-      };
-      reader.readAsDataURL(this.formData.image);
-    },
+      console.log(event);
+      if (event.target) {
+        this.changeedit = false;
 
+        this.formData.image = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imageUrl = reader.result;
+        };
+        reader.readAsDataURL(this.formData.image);
+      } else {
+        this.changeedit = true;
+
+        this.formData.image = event;
+      }
+    },
     async condition() {
       let res = await crudDataService.getAll("groups-conditions");
       this.conditions = res.data.data;
       console.log(this.conditions);
     },
-    edit() {
+    async edit(data) {
       this.ShowModel = true;
-      this.formData.name.ar = this.item.name.ar;
-      this.formData.image = this.item;
-      this.formData.condition = this.item.conditions;
+      console.log(data);
+      
+      this.formData.name.ar = data.name.ar;
+      this.formData.name.en = data.name.en;
+      this.formData.condition = data.conditions;
+      this.formData.image = data.image;   
+      (this.formData.image = this.onFileSelected(data.image));
+
     },
     async getPage() {
       const res = await crudDataService.get(
@@ -177,6 +204,7 @@ export default {
     },
     async update() {
       console.log(this.formData);
+      const toast = useToast(); 
 
       let res = await crudDataService.create(
         `groups/${this.$route.params.id}?_method=put`,
@@ -187,9 +215,39 @@ export default {
           },
           
         }
-      );
-      this.getPage();
-      this.ShowModel = false;
+      ).then((res)=>{
+        this.getPage();
+        this.ShowModel = false;
+        const toast = useToast(); 
+   toast.success(res.data.message, {
+     position: "top-center",
+     timeout: 5000,
+   }) 
+      }) .catch((error) => {
+          this.ShowModel = false;          
+
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      })
+      
     },
   },
   mounted() {

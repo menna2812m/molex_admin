@@ -290,6 +290,7 @@ export default {
       this.formData.total_cart = data.total_cart;
     },
     async updates() {
+      const toast = useToast(); 
       console.log(this.id);
       let res = await crudDataService.create(
         `cart_reminders/${this.id}?_method=put`,
@@ -302,12 +303,28 @@ export default {
             });
         }).catch((error)=>{
           this.ShowModelEdit=false;
-          const toast = useToast();
-          toast.error(error.data.message, {
+         
+          const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-        })
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      })
+  
     },
     async getcarts() {
       this.loading = true; // Start loading
@@ -341,8 +358,9 @@ this.loading = false; // End loading regardless of success or failure
       this.$swal
         .fire({
           title: ` ؟"${name}" هل تريد حذف التذكير`,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+           showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
@@ -351,7 +369,11 @@ this.loading = false; // End loading regardless of success or failure
             crudDataService.delete("cart_reminders", `${data}`)
             .then(() => {
               this.items.splice(index, 1);
-            this.$swal.fire("Deleted successfully!", "", "success");
+               this.$swal.fire({
+            title: "تم الحذف بنجاح!",
+            icon: "success",
+            confirmButtonText: "تم", // ✅ Custom OK button text
+          });
             }).catch(()=>{
                 
             })

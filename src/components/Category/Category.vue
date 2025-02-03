@@ -149,13 +149,13 @@
                     accept=".pdf, image/jpeg, image/png"
                     class="form-control"
                   />
-                  <p
+                  <!-- <p
                     class="pos-absolute mb-0 bg-white overflow-y-auto w-75"
                     v-if="changeedit"
                     style="top: 5px; left: 15px; height: 30px"
                   >
-                    {{ textimage }}
-                  </p>
+                     {{ textimage }} 
+                  </p> -->
                 </div>
                 <img
                   :src="imageUrl"
@@ -165,7 +165,7 @@
                 />
               </div>
 
-              <button class="btn btn-primary m-auto d-block">Edit</button>
+              <button class="btn btn-primary m-auto d-block">تعديل</button>
             </form>
           </div>
         </div>
@@ -298,6 +298,7 @@ export default {
       this.imageUrl = data.image;
     },
     async update() {
+      const toast = useToast();
       let res = await crudDataService
         .create(`categories/${this.id}?_method=put`, this.formData, {
           headers: {
@@ -312,31 +313,48 @@ export default {
             position: "top-center",
             timeout: 5000,
           });
-        })
-        .catch((error) => {
-          this.ShowModelEdit = false;
-          const toast = useToast();
-          toast.error(error.data.message, {
+        }).catch((error) => {
+          this.ShowModeledit = false;          
+
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
             position: "top-center",
             timeout: 5000,
           });
-        });
+        }
+      })
     },
     del(data, index, name) {
       this.$swal
         .fire({
           title: ` ؟"${name.ar}" هل تريد حذف قسم`,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+           showCancelButton: true,
+          confirmButtonText: "نعم",
+          cancelButtonText: "إلغاء", // ✅ Add cancel button text
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.$swal.fire("Deleted successfully!", "", "success");
-            crudDataService.delete("categories", `${data}`).then(() => {
-              this.rows.splice(index, 1);
-              this.ShowModelEdit = false;
-            });
+            this.$swal.fire({
+            title: "تم الحذف بنجاح!",
+            icon: "success",
+            confirmButtonText: "تم", // ✅ Custom OK button text
+          });
+         
           }
         });
     },

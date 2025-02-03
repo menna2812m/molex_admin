@@ -100,7 +100,7 @@
           </p>
         </div>
       </div>
-      <div class="text-danger">
+      <div class="text-danger" >
         *
         اذا كنت تريد الغاء هذا المندوب من هذا الاوردر
         <button class="btn "         
@@ -169,6 +169,7 @@
             <th>اسم المنتج</th>
             <th>الكمية</th>
             <th>العرض</th>
+            <th>الشحن</th>
             <th>سعر الوحدة</th>
             <th>السعر النهائي</th>
           </tr>
@@ -195,6 +196,9 @@
               {{ item.offer_discount }}
             </td>
             <td>
+              {{ list.shipping }}
+            </td>
+            <td>
               {{ item.unit_price }}
             </td>
             <td>
@@ -218,6 +222,7 @@
               v-model="status"
             />
           </div>
+          <p v-if="err" class="text-danger">{{err}}</p>
           <div class="text-center">
             <button class="fs-15 btn-save mx-1">حفظ</button>
             <button class="fs-15 btn-cancel mx-1" @click="showmodal = false">
@@ -274,7 +279,8 @@ export default {
       showmodal: false,
       status: "",
       showdeliveries:false,
-      delivery_id:null
+      delivery_id:null,
+      err:''
     };
   },
   methods: {
@@ -298,8 +304,9 @@ export default {
       this.$swal
         .fire({
           title: `؟"${data.full_name}" هل تريد حذف المندوب  `,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+           showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
         })
         .then((result) => {
           if (result.isConfirmed) {
@@ -334,9 +341,13 @@ export default {
         {
           status: this.status,
         }
-      );
-      this.showmodal = false;
-      this.order();
+      ).then(()=>{
+        this.showmodal = false;
+        this.order();
+      }).catch((error)=>{
+        this.err=error.data.message
+      })
+    
     },
     async order() {
       let res = await crudDataService.get("orders", `${this.$route.params.id}`);
@@ -345,8 +356,11 @@ export default {
       this.user();
     },
     async user() {
+      if (this.list.user_id) {
       let res = await crudDataService.get("users", `${this.list.user_id}`);
-      this.userData = res.data.data;
+      this.userData = res?.data.data;
+        
+      }
     },
   },
   mounted() {

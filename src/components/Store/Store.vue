@@ -141,7 +141,7 @@
                   <input
                     type="file"
                     @change="onFilevideo"
-                    accept=".mp4,.mov, .webm"
+                   accept="*/*"
                     class="form-control"
                   />
                 </div>
@@ -353,7 +353,7 @@
         id="add-page"
         v-model="ShowModeledit"
         hide-footer
-        title="تعديل البائع"
+        title="تعديل المتجر"
       >
         <div class="p-0">
           <form @submit.prevent="update">
@@ -402,7 +402,7 @@
                   <input
                     type="file"
                     @change="editFilevideo"
-                    accept=".mp4,.mov, .webm"
+                   accept="*/*"
                     class="form-control"
                   />
                 </div>
@@ -598,6 +598,8 @@ export default {
       this.videoUrl = data.video;
     },
     async update() {
+      const toast = useToast(); 
+
       let res = await crudDataService
         .create(`stores/${this.id}?_method=put`, this.formDataupdate, {
           headers: {
@@ -614,14 +616,29 @@ export default {
           });
           this.imageUrl = [];
           this.videoUrl = [];
-        })
-        .catch((error) => {
-          this.ShowModeledit = false;
-          const toast = useToast();
-          toast.error(error.data.message, {
+        }).catch((error) => {
+          this.ShowModeledit = false;          
+
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
             position: "top-center",
             timeout: 5000,
           });
+        }
           this.imageUrl = [];
           this.videoUrl = [];
         });
@@ -742,14 +759,19 @@ export default {
     del(data, index, name) {
       this.$swal
         .fire({
-          title: `؟"${name}" هل تريد حذف البائع `,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+          title: `؟"${name}" هل تريد حذف المتجر `,
+           showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.$swal.fire("Deleted successfully!", "", "success");
+               this.$swal.fire({
+            title: "تم الحذف بنجاح!",
+            icon: "success",
+            confirmButtonText: "تم", // ✅ Custom OK button text
+          });
             crudDataService.delete("stores", `${data}`).then(() => {
               this.myList.splice(index, 1);
             });
@@ -757,6 +779,8 @@ export default {
         });
     },
     async add() {
+      const toast = useToast();
+
       let res = await crudDataService
         .create(`stores`, this.formData, {
           headers: {
@@ -791,18 +815,29 @@ export default {
             position: "top-center",
             timeout: 5000,
           });
-        })
-        .catch((error) => {
-          this.ShowModel = false;
+        }) .catch ((error) => {
+        this.ShowModel = false;
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
 
-          this.errormessage = error.message;
-
-          const toast = useToast();
-          toast.error(error.data.message, {
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
             position: "top-center",
             timeout: 5000,
           });
-        });
+        }
+      })
     },
   },
   mounted() {

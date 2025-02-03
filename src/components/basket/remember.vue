@@ -3,10 +3,9 @@
     <button
       class="bg-transparent twobtn"
       style="
-        color: #E66239;
-        border: 1px solid #E66239;
-        border-bottom: 1px solid #E66239 !important;
-        
+        color: #e66239;
+        border: 1px solid #e66239;
+        border-bottom: 1px solid #e66239 !important;
       "
       @click="showModal()"
     >
@@ -21,7 +20,6 @@
           <h6 style="color: #febcd5" class="text-center">إنشاء تذكير جديد</h6>
           <form @submit.prevent="add(id)">
             <div class="row">
-             
               <div class="col-12">
                 <h6 class="fw-semibold">شروط التذكر</h6>
                 <p class="text-muted fs-10">
@@ -140,7 +138,9 @@
             </div>
             <div class="text-center">
               <button class="fs-15 btn-save mx-1">حفظ</button>
-              <button class="fs-15 btn-cancel mx-1" @click="ShowModel=false">الغاء</button>
+              <button class="fs-15 btn-cancel mx-1" @click="ShowModel = false">
+                الغاء
+              </button>
             </div>
           </form>
         </div>
@@ -152,7 +152,7 @@
 <script>
 import Multiselect from "@vueform/multiselect";
 import crudDataService from "../../Services/crudDataService";
-
+import { useToast } from "vue-toastification";
 export default {
   props: ["id"],
   data() {
@@ -176,7 +176,7 @@ export default {
         discount_valid_for_hours: "",
         cart_left_days: "",
         total_cart: "",
-        user_ids:[]
+        user_ids: [],
       },
     };
   },
@@ -186,49 +186,95 @@ export default {
 
   methods: {
     async showModal() {
-      this.ShowModel=true;
-    
+      this.ShowModel = true;
     },
     async add(id) {
+      const toast = useToast();
       // user_ids
       if (id) {
-        this.formData.total_cart=null;
-      this.formData.cart_left_days=null;
-        this.formData.user_ids.push(id)
-        const res = await crudDataService.create("cart_reminders", this.formData).then((response)=>{
-          this.ShowModel = false;
-          this.formData.is_free_shipping= true,
-          this.formData.is_cart_discounted= true,
-          this.formData.discount_type= '',
-          this.formData.discount_value= '',
-          this.formData.discount_end_date= '',
-          this.formData.send_channel= '',
-          this.formData.message= '',
-          this.formData.subject= '',
-          this.formData.discount_valid_for_hours= '',
-          this.formData.cart_left_days= '',
-          this.formData.total_cart= '',
-          this.formData.user_ids= ''
-        })
-     
-      }else{
-        const res = await crudDataService.create("cart_reminders", this.formData).then((response)=>{
-          this.ShowModel = false;
-          this.formData.is_free_shipping= true,
-          this.formData.is_cart_discounted= true,
-          this.formData.discount_type= '',
-          this.formData.discount_value= '',
-          this.formData.discount_end_date= '',
-          this.formData.send_channel= '',
-          this.formData.message= '',
-          this.formData.subject= '',
-          this.formData.discount_valid_for_hours= '',
-          this.formData.cart_left_days= '',
-          this.formData.total_cart= '',
-          this.formData.user_ids= ''
-        })
+        this.formData.total_cart = null;
+        this.formData.cart_left_days = null;
+        this.formData.user_ids.push(id);
+        const res = await crudDataService
+          .create("cart_reminders", this.formData)
+          .then((response) => {
+            this.ShowModel = false;
+            (this.formData.is_free_shipping = true),
+              (this.formData.is_cart_discounted = true),
+              (this.formData.discount_type = ""),
+              (this.formData.discount_value = ""),
+              (this.formData.discount_end_date = ""),
+              (this.formData.send_channel = ""),
+              (this.formData.message = ""),
+              (this.formData.subject = ""),
+              (this.formData.discount_valid_for_hours = ""),
+              (this.formData.cart_left_days = ""),
+              (this.formData.total_cart = ""),
+              (this.formData.user_ids = "");
+          }) .catch ((error) => {
+            this.ShowModel = false;
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      })
+      } else {
+        const res = await crudDataService
+          .create("cart_reminders", this.formData)
+          .then((response) => {
+            this.ShowModel = false;
+            (this.formData.is_free_shipping = true),
+              (this.formData.is_cart_discounted = true),
+              (this.formData.discount_type = ""),
+              (this.formData.discount_value = ""),
+              (this.formData.discount_end_date = ""),
+              (this.formData.send_channel = ""),
+              (this.formData.message = ""),
+              (this.formData.subject = ""),
+              (this.formData.discount_valid_for_hours = ""),
+              (this.formData.cart_left_days = ""),
+              (this.formData.total_cart = ""),
+              (this.formData.user_ids = "");
+          })    .catch ((error) => {
+        this.ShowModel = false;
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      })
       }
-      
     },
   },
 };

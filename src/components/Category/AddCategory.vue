@@ -82,79 +82,120 @@ export default {
   },
   data() {
     return {
-      Selectcategory:[],
+      Selectcategory: [],
       ShowModel: false,
       formData: {
         name: {
           ar: "",
           en: "",
         },
-        image: "",
+        image: null,
         description: {
           ar: "",
           en: "",
         },
-        parent_id:null
+        parent_id: null,
       },
       imageUrl: null,
     };
   },
   methods: {
+    // ✅ جلب جميع التصنيفات وإرسالها للأب
     async getcategories() {
-      let res = await crudDataService.getAll("categories");
-      this.$emit('customEvent',res.data.data.data);
+      try {
+        let res = await crudDataService.getAll("categories");
+        this.$emit("customEvent", res.data.data.data);
+      } catch (error) {
+        console.error("فشل في جلب التصنيفات:", error);
+      }
     },
+
+    // ✅ جلب الخيارات للقائمة المنسدلة
     async getselectoption() {
-      let res = await crudDataService.getAll("categories?limit=1000");
-      console.log(res.data.data.data);
-      this.Selectcategory = res.data.data.data.map((cat) => ({
-        value: cat.id,
-        name: cat.name.ar,
-      }));
+      try {
+        let res = await crudDataService.getAll("categories?limit=1000");
+        this.Selectcategory = res.data.data.data.map((cat) => ({
+          value: cat.id,
+          name: cat.name.ar,
+        }));
+      } catch (error) {
+        console.error("فشل في جلب قائمة الخيارات:", error);
+      }
     },
+
+    // ✅ تحميل الصورة وعرضها بشكل فوري
     onFileSelected(event) {
-      this.formData.image = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageUrl = reader.result;
-      };
-      reader.readAsDataURL(this.formData.image);
+      if (event.target.files.length > 0) {
+        this.formData.image = event.target.files[0];
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imageUrl = reader.result;
+        };
+        reader.readAsDataURL(this.formData.image);
+      }
     },
+
+    // ✅ إضافة تصنيف جديد
     async add() {
-      let res = await crudDataService.create(`categories`, this.formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }).then((res)=>{
-        this.ShowModel = false;
-        this.getcategories()
-        this.formData.name.ar= "",
-        this.formData.name.en= "",
-        this.formData.image= "",
-        this.formData.description.ar='',
-        this.formData.description.en='',
-        this.imageUrl=''
-        const toast = useToast(); 
-   toast.success(res.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   })
-      }).catch((error) => {
-          this.ShowModel = false;          
-        const toast = useToast(); 
-   toast.error(error.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   });
+      const toast = useToast();
+
+      try {
+        let res = await crudDataService.create(`categories`, this.formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
-     
+
+        // ✅ إعادة تحميل التصنيفات بعد الإضافة
+        this.getcategories();
+        this.ShowModel = false;
+
+        // ✅ إعادة تعيين الحقول بعد الإضافة
+        this.formData = {
+          name: { ar: "", en: "" },
+          image: null,
+          description: { ar: "", en: "" },
+          parent_id: null,
+        };
+        this.imageUrl = null;
+
+        // ✅ عرض إشعار النجاح
+        toast.success(res.data.message, {
+          position: "top-center",
+          timeout: 5000,
+        });
+      } catch (error) {
+        console.error("خطأ أثناء الإضافة:", error);
+
+        // ✅ استخراج رسائل الخطأ
+        const errorData = error?.response?.data?.errors || {};
+        const errorMessages = Object.values(errorData)
+          .flat()
+          .filter((msg) => typeof msg === "string");
+
+        // ✅ عرض أول رسالة خطأ إن وجدت
+        if (errorMessages.length > 0) {
+          toast.error(errorMessages[0], {
+            position: "top-center",
+            timeout: 5000,
+          });
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      }
     },
   },
-  mounted(){
-    this.getselectoption()
-  }
+
+  mounted() {
+    this.getselectoption();
+  },
 };
 </script>
+
 <style >
 #add-page {
     overflow-y: auto;

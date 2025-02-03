@@ -214,8 +214,9 @@ export default {
       this.$swal
         .fire({
           title: `؟"${name.name}" هل تريد الموافقة علي طلب سحب  `,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+           showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
         })
         .then((result) => {
           if (result.isConfirmed) {
@@ -233,8 +234,9 @@ export default {
       this.$swal
         .fire({
           title: `؟"${name.name}" هل تريد رفض  طلب سحب `,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+           showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
         })
         .then((result) => {
           if (result.isConfirmed) {

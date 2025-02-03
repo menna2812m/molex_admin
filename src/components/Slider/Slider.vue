@@ -29,7 +29,6 @@
             <tr>
               <td class="text-muted">صورة الاسلايد</td>
               <td class="text-muted">عنوان الاسلايد</td>
-              <td class="text-muted">اللينك</td>
               <td class="text-muted">التفعيل</td>
             </tr>
             <tr
@@ -43,9 +42,7 @@
               <td>
                 {{ item.title.ar }}
               </td>
-              <td>
-                {{ item.link.ar }}
-              </td>
+              
 
               <td>
                 <label class="custom-switch justify-content-start w-100"
@@ -123,26 +120,17 @@ background: #E66239;
                   />
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <div class="mt-1">
-                  <label >اللينك عربي</label>
+                  <label >اللينك </label>
                   <input
                     type="text"
                     class="form-control"
-                    v-model="formData.link.ar"
+                    v-model="formData.link"
                   />
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="mt-1">
-                  <label >اللينك انجليزي</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="formData.link.en"
-                  />
-                </div>
-              </div>
+           
               <div class="col-md-6">
                 <div class="mt-1">
                   <label >الصورة</label>
@@ -195,26 +183,17 @@ background: #E66239;
                   />
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-12">
                 <div class="mt-1">
-                  <label >اللينك عربي</label>
+                  <label >اللينك </label>
                   <input
                     type="text"
                     class="form-control"
-                    v-model="EditData.link.ar"
+                    v-model="EditData.link"
                   />
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="mt-1">
-                  <label >اللينك انجليزي</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="EditData.link.en"
-                  />
-                </div>
-              </div>
+           
               <div class="col-md-6">
                 <div class="mt-1">
                   <label >الصورة</label>
@@ -227,9 +206,9 @@ background: #E66239;
                     accept=".pdf, image/jpeg, image/png"
                   />
 
-                  <p class="pos-absolute mb-0 bg-white overflow-scroll h-75 w-50" v-if="changeedit" style="top: 5px;
+                  <!-- <p class="pos-absolute mb-0 bg-white overflow-scroll h-75 w-50" v-if="changeedit" style="top: 5px;
     left: 5px;
-  ">{{ textimage }}</p>
+  ">{{ textimage }}</p> -->
   </div>
                   <img :src="imageedit"  
                   style="width: 180px; height: 180px; object-fit: fill"
@@ -273,10 +252,7 @@ export default {
           ar: "",
           en: "",
         },
-        link: {
-          ar: "",
-          en: "",
-        },
+        link: "",
         image: "",
       },
       EditData:{
@@ -284,10 +260,7 @@ export default {
           ar: "",
           en: "",
         },
-        link: {
-          ar: "",
-          en: "",
-        },
+        link: "",
         image: "",
       },
       perminlocal: localStorage.getItem("permissions"),
@@ -337,8 +310,7 @@ editFileSelected(event) {
         this.ShowEditModel = true;
         this.EditData.title.ar = data.title.ar;       
         this.EditData.title.en = data.title.en;
-        this.EditData.link.ar = data.link.ar;
-        this.EditData.link.en = data.link.en;
+        this.EditData.link = data.link;
         this.textimage=data.image,
         this.EditData.image= this.editFileSelected(data.image) ;
         this.imageedit=data.image;   
@@ -373,7 +345,7 @@ this.loading = false; // End loading regardless of success or failure
      
     },
    async add(){
-    console.log(this.formData);
+    const toast = useToast();
 
     let res = await crudDataService.create(`sliders`, this.formData, {
         headers: {
@@ -384,23 +356,49 @@ this.loading = false; // End loading regardless of success or failure
       this.ShowModel = false;
         this.formData.title.ar= "",
         this.formData.title.en= "",
-        this.formData.link.ar= "",
-        this.formData.link.en= "",
+        this.formData.link= "",
         this.formData.image= "",
         this.imgurl=''
+      }) .catch ((error) => {
+        this.ShowModel = false;
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
       })
    },
     del(data, index, name) {
       this.$swal
         .fire({
           title: `؟"${name.ar}" هل تريد حذف الاسلايد `,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+           showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.$swal.fire("Deleted successfully!", "", "success");
+               this.$swal.fire({
+            title: "تم الحذف بنجاح!",
+            icon: "success",
+            confirmButtonText: "تم", // ✅ Custom OK button text
+          });
             crudDataService.delete("sliders", `${data}`).then(() => {
               this.myList.splice(index, 1);
             });

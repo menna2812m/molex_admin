@@ -325,6 +325,8 @@ export default {
       this.EditData.phone = data.phone;      
     },
     async update() {
+      const toast = useToast(); 
+
       let res = await crudDataService.create(
         `deliveries/${this.id}?_method=put`,
         this.EditData,
@@ -333,10 +335,40 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         }
-      );
-      console.log(this.EditData);
-      this.ShowEditModel = false;
-      this.deliveries();
+      )
+     
+      .then((res)=>{
+        this.ShowEditModel = false;
+        this.deliveries();
+   toast.success(res.data.message, {
+     position: "top-center",
+     timeout: 5000,
+   }) 
+      }) .catch((error) => {
+        this.ShowEditModel = false;
+
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      })
+  
     },
     async deliveries() {
       this.loading = true; // Start loading
@@ -352,7 +384,7 @@ export default {
       }
     },
     async add() {
-      console.log(this.formData);
+      const toast = useToast();
 
       let res = await crudDataService
         .create(`deliveries`, this.formData, {
@@ -367,19 +399,53 @@ export default {
             (this.formData.email = ""),
             (this.formData.status = ""),
             (this.formData.phone = "")
-        });
+            this.ShowModel = false;
+            const toast = useToast(); 
+   toast.success(response.data.message, {
+     position: "top-center",
+     timeout: 5000,
+   })
+        })
+        .catch ((error) => {
+          this.ShowModel = false;
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      })
     },
     del(data, index, name) {
       this.$swal
         .fire({
           title: `؟"${name}" هل تريد حذف التوصيل `,
-          showCancelButton: true,
-          confirmButtonText: "Yes",
+           showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.$swal.fire("Deleted successfully!", "", "success");
+               this.$swal.fire({
+            title: "تم الحذف بنجاح!",
+            icon: "success",
+            confirmButtonText: "تم", // ✅ Custom OK button text
+          });
             crudDataService.delete("deliveries", `${data}`).then(() => {
               this.myList.splice(index, 1);
             });
