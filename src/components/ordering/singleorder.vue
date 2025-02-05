@@ -100,7 +100,7 @@
           </p>
         </div>
       </div>
-      <div class="text-danger" >
+      <div class="text-danger" v-if="list.delivery">
         *
         اذا كنت تريد الغاء هذا المندوب من هذا الاوردر
         <button class="btn "         

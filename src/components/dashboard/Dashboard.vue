@@ -3,14 +3,16 @@
   <section class="mt-5 pt-5" v-if="perminlocal.includes('statistics-index')">
     <div class="row pb-5 "  v-if="items">
     <div class="col-xl-3" v-for="(item, key) in items" :key="key">
-      <div class="card custom-card">
+
+      <div class="card custom-card pos-relative">
+        <a :href="admin[key]?.href" class="stretched-link"></a>
         <div class="card-body">
           <div class="card-order">
             {{ admin.key }}
             <label class="main-content-label mb-3 pt-1">{{ key }}</label>
             <h2 class="text-end card-item-icon card-icon">
-              <i class=" float-start text-white" :class="admin[key]"></i
-              ><span class="font-weight-bold">{{ item }}</span>
+              <i class="float-start text-white" :class="admin[key]?.icon"></i>
+             <span class="font-weight-bold">{{ item }}</span>
             </h2>
           </div>
         </div>
@@ -76,38 +78,7 @@ export default {
       if (this.perminlocal.includes('statistics-index')) {
         const res = await crudDataService.getAll("statistics").then((res)=>{
         this.items = res.data.data;
-      console.log(this.items);
-      for (const key in this.items) {
-         
-        if (key==='admins') {
-          this.admin.admins='si si-user'
-        }else if (key==='users') {
-          this.admin.users='si si-people'
-        }
-        else if (key==='vendors') {
-          this.admin.vendors='si ti-archive'
-        }
-        else if (key==='stores') {
-          this.admin.stores='fas fa-store'
-        }
-        else if (key==='contacts') {
-          this.admin.contacts='si si-bubbles'
-        }else if (key==='coupons') {
-          this.admin.coupons='si si-tag'
-        }else if (key==='offers') {
-          this.admin.offers='si si-star'
-        }else if (key==='orders') {
-          this.admin.orders='si si-bag'
-        }
-        else if (key==='products') {
-          this.admin.products='si si-grid'
-        }else if (key==='questions') {
-          this.admin.questions='si si-question'
-        }
-        else if (key==='reviews') {
-          this.admin.reviews='si si-heart'
-        }
-    }
+        this.setupAdminIcons();
 
       }).catch((err)=>{
         console.log(err);
@@ -116,6 +87,26 @@ export default {
         console.log('nothing');
       }
   
+    },
+    setupAdminIcons() {
+      const iconMap = {
+        المسؤولين: { icon: "si si-user", href: "/admins" },
+        المستخدمين: { icon: "si si-people", href: "/customer"  },
+        البائعين: { icon: "si ti-archive", href: "/vendors"  },
+        المتاجر: { icon: "fas fa-store", href: "/stores"  },
+        "جهات الاتصال": { icon: "si si-bubbles", href: "/contact"  },
+        القسائم: { icon: "si si-tag", href: "/category"  },
+        العروض: { icon: "si si-star" , href: "/dashboard" },
+        الطلبات: { icon: "si si-bag", href: "/ordering"  },
+        المنتجات: { icon: "si si-grid", href: "/products"  },
+        الأسئلة: { icon: "si si-question", href: "/dashboard"  },
+        المراجعات: { icon: "si si-heart", href: "/dashboard"  },
+      };
+
+      this.admin = Object.keys(this.items).reduce((acc, key) => {
+        acc[key] = iconMap[key] || {};
+        return acc;
+      }, {});
     },
   },
   mounted() {

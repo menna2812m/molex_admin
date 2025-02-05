@@ -588,10 +588,10 @@ export default {
       this.formDataupdate.region_id = data.region_id;
       this.formDataupdate.city_id = data.city_id;
       this.formDataupdate.district_id = data.district_id;
-      data.categories.forEach((element) => {
+      data.categories?.forEach((element) => {
         this.formDataupdate.categories_ids.push(element.id);
       });
-      data.brands.forEach((element) => {
+      data.brands?.forEach((element) => {
         this.formDataupdate.brands_ids.push(element.id);
       });
       this.imageUrl = data.image;
@@ -616,8 +616,9 @@ export default {
           });
           this.imageUrl = [];
           this.videoUrl = [];
-        }).catch((error) => {
-          this.ShowModeledit = false;          
+        })
+        .catch((error) => {
+          // this.ShowModeledit = false;          
 
         
         const errorData = error?.data?.errors || {};
@@ -816,7 +817,7 @@ export default {
             timeout: 5000,
           });
         }) .catch ((error) => {
-        this.ShowModel = false;
+        // this.ShowModel = false;
         
         const errorData = error?.data?.errors || {};
         console.log(error);

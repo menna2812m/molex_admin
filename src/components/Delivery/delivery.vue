@@ -345,7 +345,7 @@ export default {
      timeout: 5000,
    }) 
       }) .catch((error) => {
-        this.ShowEditModel = false;
+        // this.ShowEditModel = false;
 
         
         const errorData = error?.data?.errors || {};
@@ -407,7 +407,7 @@ export default {
    })
         })
         .catch ((error) => {
-          this.ShowModel = false;
+          // this.ShowModel = false;
         
         const errorData = error?.data?.errors || {};
         console.log(error);

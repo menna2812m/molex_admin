@@ -212,7 +212,7 @@ export default {
               (this.formData.total_cart = ""),
               (this.formData.user_ids = "");
           }) .catch ((error) => {
-            this.ShowModel = false;
+            // this.ShowModel = false;
         
         const errorData = error?.data?.errors || {};
         console.log(error);
@@ -252,7 +252,7 @@ export default {
               (this.formData.total_cart = ""),
               (this.formData.user_ids = "");
           })    .catch ((error) => {
-        this.ShowModel = false;
+        // this.ShowModel = false;
         
         const errorData = error?.data?.errors || {};
         console.log(error);

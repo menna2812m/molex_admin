@@ -316,6 +316,7 @@ editFileSelected(event) {
         this.imageedit=data.image;   
       },
       async update() {
+        const toast = useToast(); 
         let res = await crudDataService.create(
           `sliders/${this.id}?_method=put`,
           this.EditData,
@@ -324,10 +325,39 @@ editFileSelected(event) {
               "Content-Type": "multipart/form-data",
             },
           }
-        );
-        console.log(this.EditData);
-        this.ShowEditModel = false;
-        this.sliders();
+        ).then((res)=>{
+          this.ShowEditModel = false;
+          this.sliders();
+          toast.success(res.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
+        })  .catch((error) => {
+          // this.ShowEditModel = false;          
+
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+         
+        });       
+      
       },
     async sliders() {
       this.loading = true; // Start loading
@@ -358,9 +388,13 @@ this.loading = false; // End loading regardless of success or failure
         this.formData.title.en= "",
         this.formData.link= "",
         this.formData.image= "",
-        this.imgurl=''
+        this.imgurl='';
+        toast.success(response.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
       }) .catch ((error) => {
-        this.ShowModel = false;
+        // this.ShowModel = false;
         
         const errorData = error?.data?.errors || {};
         console.log(error);

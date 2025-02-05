@@ -64,7 +64,7 @@
                           placeholder="*******"
                         />
                       </div>
-
+                      <p class="text-danger" v-if="errorvalidation">{{ errorvalidation }}</p>
                       <button
                         type="submit"
                         class="btn ripple btn-primary btn-block"
@@ -84,16 +84,18 @@
   </div>
 </template>
 <script>
+import { error } from "jquery";
 import crudDataService from "../../../Services/crudDataService.js";
 export default {
   data() {
     return {
+      errorvalidation: "",
       url: import.meta.env.BASE_URL,
       form: {
         email: "",
         password: "",
       },
-      permissions:[]
+      permissions: [],
     };
   },
   methods: {
@@ -101,23 +103,29 @@ export default {
       return this.$store.commit("Switcherbutton");
     },
     async handleLogin() {
-       
-      await crudDataService.create("login", this.form).then((response)=>{
+      await crudDataService.create("login", this.form)
+      .then((response) => {
         localStorage.setItem("authlocal", response.data.data.token);
-        response.data.data.admin.role[0].permissions.forEach(element => {
+        response.data.data.admin.role[0].permissions.forEach((element) => {
           this.permissions.push(element.name);
-        localStorage.setItem("permissions", this.permissions);
-        });
+          localStorage.setItem("permissions", this.permissions);
+        })
 
-      this.$router.push({name: "Dashboard"});
+        this.$router.push({ name: "Dashboard" });
 
-       setTimeout(() => {
-            window.location.reload();
-           }, 800);
-      })
-    }
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      }).catch((error) => {
+  if (error.data.errors.length>0) {    
+    this.errorvalidation = Object.values(error.data.errors).flat().join(" | ");
+  } else {        
+    this.errorvalidation = error.data.message;
+  }
+});
+
+    },
   },
- 
 };
 </script>
 

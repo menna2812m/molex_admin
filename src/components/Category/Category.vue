@@ -314,9 +314,7 @@ export default {
             timeout: 5000,
           });
         }).catch((error) => {
-          this.ShowModeledit = false;          
-
-        
+          // this.ShowModeledit = false;          
         const errorData = error?.data?.errors || {};
         console.log(error);
         
@@ -357,6 +355,9 @@ export default {
          
           }
         });
+        crudDataService.delete("categories", `${data}`).then(() => {
+          this.rows.splice(index, 1);
+          });
     },
   },
   computed: {

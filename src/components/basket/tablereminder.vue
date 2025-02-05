@@ -302,7 +302,7 @@ export default {
               timeout: 5000,
             });
         }).catch((error)=>{
-          this.ShowModelEdit=false;
+          // this.ShowModelEdit=false;
          
           const errorData = error?.data?.errors || {};
         console.log(error);
@@ -352,7 +352,7 @@ this.loading = false; // End loading regardless of success or failure
           }
         })
         .catch((error) => {
-        });
+         });
     },
     del(data, index, name) {
       this.$swal

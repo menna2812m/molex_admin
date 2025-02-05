@@ -222,7 +222,7 @@ export default {
 
         })
         .catch((error) => {
-          this.ShowModel = false;
+          // this.ShowModel = false;
 
           console.error(error);
         });

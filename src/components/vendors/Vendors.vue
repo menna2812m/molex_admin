@@ -60,7 +60,7 @@
         v-else
       >
         <div
-          style="background: #E66239; padding: 30px; font-size: 20px"
+          style="background: #e66239; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد بائعين حتي الان
@@ -369,45 +369,42 @@ export default {
       this.formDataupdate.store_id = data.store.id;
     },
     async update() {
-      const toast = useToast(); 
-      let res = await crudDataService.create(
-        `vendors/${this.id}?_method=put`,
-        this.formDataupdate
-      ).then((res)=>{
-        this.vendors();
-      this.ShowModeledit = false;
-        const toast = useToast(); 
-   toast.success(res.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   }) 
-      }) .catch((error) => {
-          this.ShowModeledit = false;          
+      const toast = useToast();
+      let res = await crudDataService
+        .create(`vendors/${this.id}?_method=put`, this.formDataupdate)
+        .then((res) => {
+          this.vendors();
+          this.ShowModeledit = false;
+          const toast = useToast();
+          toast.success(res.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
+        })
+        .catch((error) => {
+          // this.ShowModeledit = false;
 
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+          const errorData = error?.data?.errors || {};
+          console.log(error);
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
-  
-       
-   
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
     },
     async stores() {
       let res = await crudDataService.getAll("stores");
@@ -435,18 +432,18 @@ export default {
       this.$swal
         .fire({
           title: `؟"${name}" هل تريد حذف البائع `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
+            this.$swal.fire({
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم", // ✅ Custom OK button text
+            });
             crudDataService.delete("vendors", `${data}`).then(() => {
               this.myList.splice(index, 1);
             });
@@ -469,38 +466,38 @@ export default {
           this.formData.store_id = "";
           this.formData.password = "";
           this.formData.password_confirmation = "";
-        this.ShowModelEdit = false;
-        const toast = useToast(); 
-   toast.success(response.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   })
+          this.ShowModelEdit = false;
+          const toast = useToast();
+          toast.success(response.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
         })
-        .catch ((error) => {
-        this.ShowModel = false;
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+        .catch((error) => {
+          // this.ShowModel = false;
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorData = error?.data?.errors || {};
+          if (typeof errorData === "object") {
+            const errorMessages = Object.values(errorData)
+              .flat()
+              .filter((msg) => typeof msg === "string");
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
-    }
-  
+
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+          } else {
+            toast.error(error.data.message, {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
+    },
   },
   mounted() {
     this.vendors();
