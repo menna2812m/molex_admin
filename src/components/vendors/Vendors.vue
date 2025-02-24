@@ -429,27 +429,37 @@ export default {
       this.$router.push({ name: "SingleOffer", params: { id } });
     },
     del(data, index, name) {
-      this.$swal
-        .fire({
-          title: `؟"${name}" هل تريد حذف البائع `,
-          showCancelButton: true,
-          cancelButtonText: "إلغاء",
-          confirmButtonText: "نعم",
-        })
-        .then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
+  this.$swal
+    .fire({
+      title: `هل تريد حذف البائع "${name}"؟`,
+      showCancelButton: true,
+      cancelButtonText: "إلغاء",
+      confirmButtonText: "نعم",
+      icon: "warning",
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        crudDataService.delete("vendors", `${data}`) // ✅ Correct URL format
+          .then(() => {
             this.$swal.fire({
               title: "تم الحذف بنجاح!",
               icon: "success",
-              confirmButtonText: "تم", // ✅ Custom OK button text
+              confirmButtonText: "تم",
             });
-            crudDataService.delete("vendors", `${data}`).then(() => {
-              this.myList.splice(index, 1);
+            this.myList.splice(index, 1);
+          })
+          .catch((error) => {
+            this.$swal.fire({
+              title: "حدث خطأ أثناء الحذف!",
+              text: error.data.message,
+              icon: "error",
+              confirmButtonText: "موافق",
             });
-          }
-        });
-    },
+          });
+      }
+    });
+}
+,
     async add() {
       const toast = useToast();
       let res = await crudDataService

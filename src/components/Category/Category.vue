@@ -345,19 +345,28 @@ export default {
           cancelButtonText: "إلغاء", // ✅ Add cancel button text
         })
         .then((result) => {
+
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
+            crudDataService.delete("categories", `${data}`) .then(() => {
             this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم",
+            });
+            this.myList.splice(index, 1);
+          }) .catch((error) => {
+            this.$swal.fire({
+              title: "حدث خطأ أثناء الحذف!",
+              text: error.data.message,
+              icon: "error",
+              confirmButtonText: "موافق",
+            });
           });
          
           }
         });
-        crudDataService.delete("categories", `${data}`).then(() => {
-          this.rows.splice(index, 1);
-          });
+       
     },
   },
   computed: {
@@ -394,7 +403,7 @@ export default {
   right: auto;
 }
 .vgt-wrap__footer .footer__navigation {
-  display: none;
+  display: none !important;
 }
 input::file-selector-button {
   background-image: linear-gradient(to right, #e66239, #e66239) !important;

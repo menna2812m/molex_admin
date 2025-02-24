@@ -73788,3 +73788,10 @@ textarea {
     z-index: 1;
     text-decoration: none; /* Remove underline */
   }
+  .vgt-wrap__footer .footer__navigation {
+    display: none !important;
+}
+.vgt-wrap__footer .footer__row-count::after {
+    left: 0;
+    right: auto !important;
+}

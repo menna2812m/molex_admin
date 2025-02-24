@@ -274,12 +274,13 @@ export default {
         { value: "cancelled", name: "إلغاء " },
       ],
       deliveries:[],
+      showdeliveries:false,
+      delivery_id:null,
       list: "",
       userData: "",
       showmodal: false,
       status: "",
-      showdeliveries:false,
-      delivery_id:null,
+      
       err:''
     };
   },

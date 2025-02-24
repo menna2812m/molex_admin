@@ -157,6 +157,7 @@ import Multiselect from "@vueform/multiselect";
 import { reactive, ref } from "vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import crudDataService from "../../Services/crudDataService";
+import { useToast } from "vue-toastification";
 
 export default {
   components: {
@@ -204,6 +205,8 @@ export default {
       }));
     },
     async add(){
+      const toast = useToast();
+
       let res = await crudDataService.create("cart_reminders",this.formData).then((response)=>{
         this.formData.is_free_shipping= true,
         this.formData.is_cart_discounted= true,
@@ -215,6 +218,28 @@ export default {
         this.formData.subject= '',
         this.formData.discount_valid_for_hours= '',
         this.formData.user_ids= ''
+      }).catch ((error) => {
+            // this.ShowModel = false;
+        
+        const errorData = error?.data?.errors || {};
+        console.log(error);
+        
+        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+
+        if (errorMessages.length > 0) {
+          console.log(errorMessages[0]);
+          
+            toast.error(errorMessages[0], {
+              position: "top-center",
+              timeout: 5000,
+            });
+         
+        } else {
+          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
       })
     }
   },

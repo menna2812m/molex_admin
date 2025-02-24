@@ -330,13 +330,23 @@ const menu_items = [
 
   },
   {
-    path: `${import.meta.env.BASE_URL}vendors`,
+
     title: "البائعين",
-    type: "link",
+    type: "sub",
     icon: "ti-archive",
-    active: true,
+    active: false,
     defaultActive: false,
-    name: "vendors-index"
+    name: "vendors-index",
+    children: [
+      {
+        path: `${import.meta.env.BASE_URL}vendors`,
+        title: "البائعين",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+    
+    ]
 
   },
   {

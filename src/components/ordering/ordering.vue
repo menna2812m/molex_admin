@@ -26,36 +26,26 @@
                   />
           </div>
     <section class="" v-if="iscomplete">
-      <div class="card custom-card border-0 mg-b-20">
-        <div class="card-body p-0">
+      <div class="card border-0 mg-b-20 rounded-4 mt-4">
+        <div class="card-body p-0 rounded-4">
         
           <div
-            class="table-responsive border-0 rounded border-bottom-0 px-4 mb-0"
+            class="table table-bordered table-responsive rounded-4 mb-0"
           >
       
-            <table class="table text-nowrap text-md-nowrap mg-b-0">
-              <!-- <tr>
-                <th>
-                  <h4 class="mb-0 fw-semibold">
-                    احدث الطلبات
-                    <span style="color: #fb99bf" class="fw-normal">
-                      ({{ myList.length }})
-                    </span>
-                  </h4>
-                </th>
-                <th></th>
-                <th></th>
-                <th>
-                  <Multiselect
-                    label="name"
-                    :searchable="true"
-                    :options="type"
-                    placeholder="اختر النوع"
-                    @change="handleTypeChange($event)"
-                  />
-                </th>
-              </tr> -->
-              <tr
+            <table class="w-100 text-nowrap text-md-nowrap mg-b-0 ">
+              <thead>
+                <tr class="list_item py-3 w-100"
+              >
+                <td class="text-muted"> رقم الطلب </td>
+                <td class="text-muted">حالة الطلب  </td>
+                <td class="text-muted">التكلفة   </td>
+                <td class="text-muted">تاريخ الطلب   </td>
+                <td class="text-muted">فعل </td>
+              </tr>
+        
+              </thead>
+            <tr
                 v-for="(item, index) in myList"
                 :key="index"
                 class="list_item py-3 w-100 align-items-center justify-content-between"
@@ -87,8 +77,12 @@
                 <td style="color: #fb99bf">
                   {{ item.total }}
                 </td>
-                <td class="text-secondary text-center">
+                <td class="text-secondary">
                   {{ item.updated_at.split("T")[0] }}
+                </td>
+                <td class="">
+                  <i class="fe fe-settings text-warning px-2"  @click="change(item.id)"></i>
+                  <i class="fa fa-motorcycle text-info" @click="deliver(item.id)"></i>
                 </td>
               </tr>
             </table>
@@ -116,6 +110,53 @@
       </div>
     </section>
   </section>
+  <teleport to="body">
+    <b-modal id="add-body" v-model="showmodal" hide-footer title="تغير الحالة ">
+      <div class="pos-relative" style="z-index: 5555">
+        <form @submit.prevent="statchange()">
+          <div class="m-2">
+            <Multiselect
+              label="name"
+              :searchable="true"
+              :options="status_type"
+              placeholder="الحالة"
+              v-model="status"
+            />
+          </div>
+          <p v-if="err" class="text-danger">{{err}}</p>
+          <div class="text-center">
+            <button class="fs-15 btn-save mx-1">حفظ</button>
+            <button class="fs-15 btn-cancel mx-1" @click="showmodal = false">
+              الغاء
+            </button>
+          </div>
+        </form>
+      </div>
+    </b-modal>
+  </teleport>
+  <teleport to="body">
+    <b-modal id="add-body" v-model="showdeliveries" hide-footer title="اضافة مندوب  ">
+      <div class="pos-relative" style="z-index: 5555">
+        <form @submit.prevent="adddelivery(delivery_id)">
+          <div class="m-2">
+            <Multiselect
+              label="name"
+              :searchable="true"
+              :options="deliveries"
+              placeholder="المندوب"
+              v-model="delivery_id"
+            />
+          </div>
+          <div class="text-center">
+            <button class="fs-15 btn-save mx-1">حفظ</button>
+            <button class="fs-15 btn-cancel mx-1" @click="showmodal = false">
+              الغاء
+            </button>
+          </div>
+        </form>
+      </div>
+    </b-modal>
+  </teleport>
 </template>
 
 <script>
@@ -136,17 +177,40 @@ export default {
         { value: "completed", name: "مكتمل" },
         { value: "waitingForPayment", name: "انتظار الدفع " },
         { value: "cancelled", name: "إلغاء " },
-        
+      ],
+      status_type: [
+        { value: "pending", name: "قيد المراجعة" },
+        { value: "processing", name: "قيد التنفيذ" },
+        { value: "completed", name: "مكتمل" },
+        { value: "waitingForPayment", name: "انتظار الدفع " },
+        { value: "cancelled", name: "إلغاء " },
       ],
       myList: [],
+      showmodal: false,
       iscomplete: false,
       loading: false,
       page: 1,
       last: 2,
       perminlocal: localStorage.getItem("permissions"),
+      id:null,
+      deliveries:[],
+      showdeliveries:false,
     };
   },
   methods: {
+    async alldeliveries() {
+      try {
+        let res = await crudDataService.getAll("deliveries");
+        this.deliveries = res.data.data.data.map((delivery) => ({
+        value: delivery.id,
+        name: delivery.full_name,
+      }));
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      } finally {
+        this.loading = false; // End loading regardless of success or failure
+      }
+    },
     async handleTypeChange(e){
       console.log(e);
       let res = await crudDataService.getAll(`orders?filter[status]=${e}`).then((res) => {
@@ -167,6 +231,42 @@ export default {
       if (this.perminlocal.includes("orders-show")) {
         this.$router.push({ name: "SingleOrder", params: { id } });
       }
+    },
+    async change(id) {
+      this.showmodal = true;
+      this.id=id
+    },
+  async deliver(id) {
+      this.showdeliveries = true;
+      this.id=id
+    },
+    async statchange(){
+      let res = await crudDataService.create(
+        `orders/${this.id}/status`,
+        {
+          status: this.status,
+        }
+      ).then(()=>{
+        this.showmodal = false;
+        this.allorders();
+      }).catch((error)=>{
+        this.err=error.data.message
+      })
+    
+    },
+    async adddelivery(id) {      
+      let res = await crudDataService.create(
+        `deliveries/${id}/orders`,
+        {
+          order_id: this.id,
+        }
+      ).then((result) => {
+        this.showdeliveries = false;
+      this.order();
+          this.$swal.fire(result.data.message,"", "success");
+                
+      })
+      
     },
     async allorders() {
       this.loading = true;
@@ -190,6 +290,8 @@ export default {
   },
   mounted() {
     this.allorders();
+    this.alldeliveries();
+
   },
 };
 </script>

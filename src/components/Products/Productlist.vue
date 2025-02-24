@@ -7,55 +7,9 @@
           <div
             v-if="listofproducr.length >= 1"
             class="px-3 py-1 ms-2 border rounded pos-relative"
-          >
-            <input
-              type="checkbox"
-              v-model="selectAll"
-              @change="toggleSelectAll"
-            />
-            <button
-              @click="toggleDropdown"
-              class="bg-transparent py-1 border-0 me-0"
-            >
-              المنتجات المحددة
-              <span style="color: #fb99bf">
-                ( {{ listofproducr.length }} )
-              </span>
-            </button>
-            <div v-if="isDropdownOpen" class="dropitem" style="z-index: 4444">
-              <div class="tx-13 text-start">
-                <a
-                  class="dropdown-item bg-transparent text-muted d-flex border-bottom"
-                  @click="
-                    ShowModel = true;
-                    isDropdownOpen = false;
-                  "
-                >
-                  <img
-                    src="../../assets/img/delete-empty.png"
-                    class="h-25 px-2 pt-1"
-                    alt=""
-                  />
-
-                  <p class="mb-0 text-danger">حذف المنتج نهائيا</p>
-                </a>
-              </div>
-            </div>
-          </div>
+          ></div>
         </div>
         <!-- Tabs -->
-        <ul class="nav panel-tabs edit-nav">
-          <li>
-            <a href="#tab12" data-bs-toggle="tab" class="py-1">
-              <i class="mdi mdi-apps fs-5"></i>
-            </a>
-          </li>
-          <li class="">
-            <a href="#tab11" class="active px-3" data-bs-toggle="tab">
-              <i class="fa fa-bars fs-6"></i>
-            </a>
-          </li>
-        </ul>
       </div>
     </div>
     <section
@@ -67,238 +21,87 @@
       <progress class="pure-material-progress-circular" />
     </section>
     <div v-else>
-      <div class="panel-body tabs-menu-body px-0" v-if="items.length > 0">
-        <div class="tab-content">
-          <div class="tab-pane active" id="tab11">
-            <div
-              class="row border rounded mb-2 p-2"
-              v-for="(item, index) in items"
-              :key="index"
+      <div   v-if="rows && rows.length > 0">
+        <vue-good-table
+        :columns="filteredColumns"
+        :rows="rows"
+        :search-options="{ enabled: true }"
+        :group-options="{ enabled: false }"
+        :pagination-options="{
+          enabled: true,
+          perPageDropdownEnabled: false,
+        }"
+        :compactMode="true"
+        :rtl="true"
+      >
+        <template #table-row="props">
+          <span v-if="props.column.field === 'cover_image'" class="imgetext">
+            <img
+              :src="props.formattedRow[props.column.field]"
+              class="imagetable"
+              width="150"
+              height="100"
+            />
+          </span>
+          <span v-if="props.column.field == 'actions'">
+            <button
+              class="btn btn-info me-2"
+              @click="view(props.row.id)"
+              v-if="perminlocal.includes('products-show')"
             >
-              <div class="col-md-4 overflow-hidden">
-                <div
-                  class="d-flex justify-content-between py-2"
-                  style="width: max-content"
-                >
-                  <!-- <input
-                    type="checkbox"
-                    class="my-3 ms-0 me-2"
-                    @change="selectthis($event.target.checked, $event.target)"
-                  /> -->
+              <i class="si si-eye"></i>
+            </button>
+            <button
+              class="btn btn-primary me-2"
+              @click="edit(props.row)"
+              v-if="perminlocal.includes('products-update')"
+            >
+              <i class="fe fe-edit-2"></i>
+            </button>
 
-                  <vueper-slides fade>
-                    <vueper-slide
-                      v-for="img in item.images"
-                      :key="img.id"
-                      :image="img.path"
-                    />
-                  </vueper-slides>
-                </div>
-              </div>
-              <div class="col-md-8">
-                <div class="h-100 border rounded p-2">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <p class="fw-bold mb-1 mb-1">
-                        الاسم :
-                        <span class="fw-semibold"> {{ item.name.ar }}</span>
-                      </p>
-                      <p class="fw-bold mb-1" v-if="item.current_price">
-                        السعر بعد الخصم :
-                        <span class="fw-semibold">
-                          {{ item.current_price }}</span
-                        >
-                      </p>
-                      <p class="fw-bold mb-1" v-else>
-                        السعر :
-                        <span class="fw-semibold"> {{ item.base_price }}</span>
-                      </p>
-                    </div>
-                    <div class="col-md-4">
-                      <p class="fw-bold mb-1">
-                        التقييم :
-                        <span class="fw-semibold"> {{ item.rating }}</span>
-                      </p>
-
-                      <p class="fw-bold mb-1">
-                        عدد المقيمين :
-                        <span class="fw-semibold">
-                          {{ item.raters_count }}</span
-                        >
-                      </p>
-                    </div>
-                    <div class="col-md-4">
-                      <p class="fw-bold mb-1">
-                        جميع الطلبات :
-                        <span class="fw-semibold">
-                          {{ item.total_orders }}</span
-                        >
-                      </p>
-
-                      <p class="fw-bold mb-1">
-                        كمية الطلبات :
-                        <span class="fw-semibold">
-                          {{ item.total_orders_quantity }}</span
-                        >
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="col-md-2">
-                <div class="d-flex h-100 align-items-center">
-                  <button
-                    class="btn btn-info rounded m-1 border-0"
-                    @click="edit(item)"
-                    v-if="perminlocal.includes('products-update')"
-                  >
-                    <i class="fe fe-edit-2"></i>
-                  </button>
-                  <button
-                    class="btn btn-danger rounded m-1 border-0"
-                    @click="del(item.id, index, item.name)"
-                    v-if="perminlocal.includes('products-destroy')"
-                  >
-                    <i class="fe fe-trash"></i>
-                  </button>
-                  <button
-                    class="btn btn-success rounded m-1 border-0"
-                    @click="addoption(item)"
-                  >
-                    <i class="fe fe-plus"></i>
-                  </button>
-                  <div class="">
-                     <input type="text" class="form-control w-100"> 
-                    <label
-                      class="custom-switch justify-content-center"
-                      v-if="perminlocal.includes('products-toggle')"
-                    >
-                      <input
-                        type="checkbox"
-                        name="custom-switch-checkbox"
-                        class="custom-switch-input"
-                        :checked="item.is_active"
-                        @change="toggleactive(item.id)"
-                      />
-                      <span class="custom-switch-description"> </span>
-                      <span class="custom-switch-indicator"></span>
-                    </label>
-                     <button class="btn-add fs-15 twobtn ms-0">
-            <i class="ion-reply"></i>
-             رد
-              
-             الموافقة
-           </button> 
-                  </div>
-                </div>
-              </div> -->
-            </div>
-          </div>
-          <div class="tab-pane" id="tab12">
-            <div class="row">
-              <div class="col-md-4" v-for="(item, index) in items" :key="index">
-                <div class="card mb-2 align-start overflow-hidden">
-                  <!-- <input
-                    class="ms-2 mt-2"
-                    type="checkbox"
-                    @change="selectthis($event.target.checked, $event.target)"
-                  /> -->
-
-                  <div class="py-2">
-                    <vueper-slides fade>
-                      <vueper-slide
-                        v-for="img in item.images"
-                        :key="img.id"
-                        :image="img.path"
-                      />
-                    </vueper-slides>
-                  </div>
-                  <div class="h-100 rounded p-2">
-                    <p class="fw-bold mb-1 mb-1">
-                      الاسم :
-                      <span class="fw-semibold"> {{ item.name.ar }}</span>
-                    </p>
-                    <p class="fw-bold mb-1">
-                      السعر :
-                      <span class="fw-semibold"> {{ item.base_price }}</span>
-                    </p>
-                    <p class="fw-bold mb-1">
-                      التقييم :
-                      <span class="fw-semibold"> {{ item.rating }}</span>
-                    </p>
-
-                    <p class="fw-bold mb-1">
-                      عدد المقيمين :
-                      <span class="fw-semibold"> {{ item.raters_count }}</span>
-                    </p>
-                    <p class="fw-bold mb-1">
-                      جميع الطلبات :
-                      <span class="fw-semibold"> {{ item.total_orders }}</span>
-                    </p>
-
-                    <p class="fw-bold mb-1">
-                      كمية الطلبات :
-                      <span class="fw-semibold">
-                        {{ item.total_orders_quantity }}</span
-                      >
-                    </p>
-                    <div class="text-center">
-                      <button
-                        class="btn btn-info rounded m-1 border-0"
-                        @click="edit(item)"
-                        v-if="perminlocal.includes('products-update')"
-                      >
-                        <i class="fe fe-edit-2"></i>
-                      </button>
-                      <button
-                        class="btn btn-danger rounded m-1 border-0"
-                        @click="del(item.id, index, item.name)"
-                        v-if="perminlocal.includes('products-destroy')"
-                      >
-                        <i class="fe fe-trash"></i>
-                      </button>
-                      <!-- <button
-                        class="btn btn-success rounded m-1 border-0"
-                        @click="addoption(item)"
-                      >
-                        <i class="fe fe-plus"></i>
-                      </button> -->
-                      <label
-                        class="custom-switch justify-content-center"
-                        v-if="perminlocal.includes('products-toggle')"
-                      >
-                        <input
-                          type="checkbox"
-                          name="custom-switch-checkbox"
-                          class="custom-switch-input"
-                          :checked="item.is_active"
-                          @change="toggleactive(item.id)"
-                        />
-                        <span class="custom-switch-description"> </span>
-                        <span class="custom-switch-indicator"></span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <b-pagination
-          v-model="page"
-          :total-rows="last"
-          :per-page="1"
-          @click="paginag(page)"
-          class="justify-content-end"
-        ></b-pagination>
+            <button
+              class="btn btn-danger me-2"
+              v-if="perminlocal.includes('products-destroy')"
+              @click="del(props.row.id, props.index, props.row.name)"
+            >
+              <i class="fe fe-trash"></i>
+            </button>
+            <label
+              class="custom-switch justify-content-center"
+              v-if="perminlocal.includes('products-toggle')"
+            >
+              <input
+                type="checkbox"
+                name="custom-switch-checkbox"
+                class="custom-switch-input"
+                :checked="props.row.is_active"
+                @change="toggleactive(props.row.id)"
+              />
+              <span class="custom-switch-description"> </span>
+              <span
+                class="custom-switch-indicator"
+                style="background: #9fa8b8"
+              ></span>
+            </label>
+          </span>
+        </template>
+      </vue-good-table>
+      <b-pagination
+        v-model="page"
+        :total-rows="last"
+        :per-page="1"
+        @click="paginag(page)"
+        class="justify-content-end mt-4"
+      ></b-pagination>
       </div>
+  
       <section
         class="position-relative"
         style="height: 100vh; display: grid; place-items: center"
         v-else
       >
         <div
-          style="background: #E66239; padding: 30px; font-size: 20px"
+          style="background: #e66239; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد منتجات حتي الان
@@ -714,7 +517,11 @@
                             "
                             v-model="optionfirstid"
                           >
-                            <option v-for="(oneoption, i) in options" :key="i" :value="oneoption.id">
+                            <option
+                              v-for="(oneoption, i) in options"
+                              :key="i"
+                              :value="oneoption.id"
+                            >
                               {{ oneoption.name.ar }}
                             </option>
                           </select>
@@ -730,9 +537,12 @@
                             "
                             v-model="valfirstid"
                           >
-                            <option v-for="(valoption, i) in valueinoption" :key="i" :value="valoption.id">
+                            <option
+                              v-for="(valoption, i) in valueinoption"
+                              :key="i"
+                              :value="valoption.id"
+                            >
                               {{ valoption.value.ar }}
-
                             </option>
                           </select>
                         </div>
@@ -747,12 +557,16 @@
                             "
                             v-model="optionsecondid"
                           >
-                            <option v-for="(oneoption, i) in options" :key="i" :value="oneoption.id" >
+                            <option
+                              v-for="(oneoption, i) in options"
+                              :key="i"
+                              :value="oneoption.id"
+                            >
                               {{ oneoption.name.ar }}
                             </option>
                           </select>
                         </div>
-                     
+
                         <div class="col-md-6 mb-2">
                           <select
                             style="
@@ -764,7 +578,11 @@
                             "
                             v-model="valsecondid"
                           >
-                            <option v-for="(valoption, i) in valueinoption" :key="i" :value="valoption.id" >
+                            <option
+                              v-for="(valoption, i) in valueinoption"
+                              :key="i"
+                              :value="valoption.id"
+                            >
                               {{ valoption.value.ar }}
                             </option>
                           </select>
@@ -828,10 +646,7 @@
                           />
                         </div>
                         <div class="col-md-12 mb-2">
-                          <input
-                            v-model="onevar.is_default"
-                            type="checkbox"
-                          />
+                          <input v-model="onevar.is_default" type="checkbox" />
                           افتراضي
                         </div>
                       </div>
@@ -843,8 +658,7 @@
                 حفظ
               </button>
             </div>
-         </div>
-
+          </div>
         </div>
       </b-modal>
     </teleport>
@@ -874,11 +688,11 @@ export default {
   },
   data() {
     return {
-    valueinoption:[],
-      optionfirstid:'',
-      valfirstid:'',
-      optionsecondid:'',
-      valsecondid:'',
+      valueinoption: [],
+      optionfirstid: "",
+      valfirstid: "",
+      optionsecondid: "",
+      valsecondid: "",
       loading: false,
       sizesen: [],
       sizesar: [],
@@ -888,6 +702,34 @@ export default {
         { value: "text", name: "نص" },
         { value: "color", name: "لون" },
       ],
+      columns: [
+        {
+          label: "الصوره",
+          field: "cover_image",
+
+        },
+        {
+          label: "الإسم",
+          field: "name.ar",
+          
+        },
+        {
+          label: "السعر",
+          field: "current_price",
+        },
+        {
+          label: "المتجر",
+          field: "store.name",
+        },
+        {
+          label: "الماركة",
+          field: "brand.name.ar",
+        },
+     
+       
+       
+      ],
+      rows: [],
 
       options: [
         {
@@ -963,12 +805,11 @@ export default {
 
   methods: {
     handleSelectChange(selectedValue) {
-    this.valfirstid = selectedValue.target.value;
-  },
-  handleSelectvalue(selectedValue){
-    this.valsecondid = selectedValue.target.value;
-
-  },
+      this.valfirstid = selectedValue.target.value;
+    },
+    handleSelectvalue(selectedValue) {
+      this.valsecondid = selectedValue.target.value;
+    },
     async toggleactive(id) {
       let res = await crudDataService.create(`products/${id}/toggle`, "");
       const toast = useToast();
@@ -988,8 +829,8 @@ export default {
       this.imageUrl.splice(index, 1);
     },
     addalloptions() {
-      this.options.forEach(element => {
-        this.valueinoption.push(...element.values)
+      this.options.forEach((element) => {
+        this.valueinoption.push(...element.values);
       });
 
       this.cartdetail = true;
@@ -1016,17 +857,19 @@ export default {
       this.id = data.id;
     },
     async newvariant() {
-
       this.variants.forEach((element) => {
-     element.options.push({
-      option_id:this.optionfirstid,
-      value_id:this.valfirstid
-     },{
-      option_id:this.optionsecondid,
-      value_id:this.valsecondid
-     });
+        element.options.push(
+          {
+            option_id: this.optionfirstid,
+            value_id: this.valfirstid,
+          },
+          {
+            option_id: this.optionsecondid,
+            value_id: this.valsecondid,
+          }
+        );
       });
- 
+
       let res = await crudDataService.create(`products/${this.id}/variants`, {
         options: this.options,
         variants: this.variants,
@@ -1051,7 +894,7 @@ export default {
             ar: "",
             en: "",
           },
-          color:"#FFF",
+          color: "#FFF",
           id: "",
           is_new: true,
         });
@@ -1068,10 +911,8 @@ export default {
         },
         select: "",
         is_color: false,
-        values: [
-        ],
+        values: [],
       });
-     
     },
 
     selctchange(selectedValue, index) {
@@ -1091,7 +932,7 @@ export default {
         this.options[index].values.push({
           id: null,
           is_new: true,
-        color:"#FFF",
+          color: "#FFF",
           value: {
             ar: "",
             en: "",
@@ -1194,6 +1035,12 @@ export default {
         let res = await crudDataService.getAll(`products`);
         this.items = res.data.data.data;
         this.last = res.data.data.last_page;
+        if (res.data && res.data.data && res.data.data.data) {
+          this.rows = res.data.data.data.map((product) => {
+            console.log(product);
+            return { ...product };
+          });
+        }
       } catch (error) {
         console.error("Failed to fetch data:", error);
         // Handle error
@@ -1247,18 +1094,18 @@ export default {
       this.$swal
         .fire({
           title: ` ؟"${name.ar}" هل تريد حذف `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
+            this.$swal.fire({
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم", // ✅ Custom OK button text
+            });
             crudDataService.delete("products", `${data}`).then(() => {
               this.items.splice(index, 1);
               this.ShowModelEdit = false;
@@ -1266,8 +1113,23 @@ export default {
           }
         });
     },
+    async paginag(p) {
+      let res = await crudDataService.getAll(`products?page=${this.page}`);
+      this.columns = res.data.data.data;
+    },
   },
-
+  computed: {
+    filteredColumns() {
+      if (
+        !this.perminlocal.includes("products-show") ||
+        !this.perminlocal.includes("products-update") ||
+        !this.perminlocal.includes("products-destroy")
+      ) {
+        return this.columns?.length ? this.columns : [];
+      }
+      return this.columns;
+    },
+  },
   mounted() {
     this.getAllData();
     this.getbrands();
@@ -1287,11 +1149,11 @@ export default {
     background: transparent;
     padding: 9px 14px;
     margin: 0;
-    color: #E66239;
+    color: #e66239;
   }
   &.nav.panel-tabs li a.active {
     color: #fff;
-    background: #E66239;
+    background: #e66239;
   }
 }
 .plus {
@@ -1303,17 +1165,17 @@ export default {
   padding: 5px;
   background: #eff4fb;
   border-radius: 2px;
-  color: #E66239;
+  color: #e66239;
 }
 .pin-color {
   padding: 5px;
-  background: #E66239;
+  background: #e66239;
   border-radius: 2px;
   color: #eff4fb;
 }
 .spanprice {
   background: #6295d51a;
-  color: #E66239;
+  color: #e66239;
   text-align: center;
   justify-content: center;
   img {
