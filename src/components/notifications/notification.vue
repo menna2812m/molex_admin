@@ -21,9 +21,9 @@
     <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
       <div class="card-body p-0">
         <div
-          class="table-responsive border-0 rounded border-bottom-0 px-4 mb-0"
+          class="table-responsive border-0 rounded border-bottom-0 mb-0"
         >
-          <table class="table text-nowrap text-md-nowrap mg-b-0">
+          <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0">
             <tr>
               <td class="text-muted">صورة الاشعار</td>
               <td class="text-muted">عنوان الاشعار</td>

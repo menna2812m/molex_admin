@@ -68,6 +68,11 @@ const routes = [
         component: () => import("../components/Store/Store.vue"),
       },
       {
+        path: `${import.meta.env.BASE_URL}store/:id`,
+        name: "SingleStore",
+        component: () => import("../components/Store/SingleStore.vue"),
+      },
+      {
         path: `${import.meta.env.BASE_URL}tags`,
         name: "Tags",
         component: () => import("../components/Tags/Tags.vue"),

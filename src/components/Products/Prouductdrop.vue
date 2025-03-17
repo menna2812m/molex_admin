@@ -341,7 +341,6 @@ export default {
         return acc;
       }, []);
 
-      console.log(this.Selectcategories);
     },
 
     async add() {

@@ -118,7 +118,9 @@ methods: {
 
 try {
 const res = await crudDataService.getAll("contacts");
-   this.items = res.data.data.data;     
+   this.items = res.data.data.data;   
+   this.last = res.data.data.last_page;
+  
    res.data.data.data.forEach((element) => {
      if (element.is_seen===0) {
        this.notifications.push(element);

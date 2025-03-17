@@ -296,9 +296,7 @@ export default {
 <style lang="scss">
 .modal {
   overflow: auto;
-  .modal-header {
-    display: none;
-  }
+
   & .multiselect-placeholder,
   & ::placeholder {
     font-size: 12px;

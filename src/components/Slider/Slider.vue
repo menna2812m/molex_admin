@@ -23,9 +23,9 @@
     <div class="card custom-card border-0 mg-b-20"   v-if="myList.length>0">
       <div class="card-body p-0">
         <div
-          class="table-responsive border-0 rounded border-bottom-0 px-4 mb-0"
+          class="table-responsive border-0 rounded border-bottom-0 mb-0"
         >
-          <table class="table text-nowrap text-md-nowrap mg-b-0">
+          <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0">
             <tr>
               <td class="text-muted">صورة الاسلايد</td>
               <td class="text-muted">عنوان الاسلايد</td>
@@ -287,7 +287,6 @@ export default {
       reader.readAsDataURL(this.formData.image);
     },
 editFileSelected(event) {
-  console.log(event);
   if (event.target) {
     this.changeedit=false;
 
@@ -305,7 +304,6 @@ editFileSelected(event) {
   }
         },
     async edit(data) {
-        console.log(data);
         this.id = data.id;
         this.ShowEditModel = true;
         this.EditData.title.ar = data.title.ar;       
@@ -337,7 +335,6 @@ editFileSelected(event) {
 
         
         const errorData = error?.data?.errors || {};
-        console.log(error);
         
         const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
 

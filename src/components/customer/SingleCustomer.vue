@@ -50,7 +50,7 @@
                       <i class="si si-location-pin"></i>
                       المنطقة:
                       <span>
-                        {{ user.country.name }}
+                        {{ user.country?.name }}
                       </span>
                     </li>
                     <li class="pb-3">
@@ -69,7 +69,7 @@
                       >
                         <i class="si si-phone"></i>
                         <a href="tel:`+${user.country.phonecode}${user.phone}`">
-                          اتصل {{ user.phone }}
+                          اتصل {{ user?.phone }}
                         </a>
                       </p>
                     </li>
@@ -276,7 +276,7 @@ export default {
         (this.formData.gender = res.data.data.gender),
         (this.formData.email = res.data.data.email),
         (this.formData.phone = res.data.data.phone),
-        (this.formData.country_id = res.data.data.country.id),
+        (this.formData.country_id = res.data.data.country?.id),
         (this.formData.city_id = res.data.data.city?res.data.data.city.id:null),
         (this.formData.region_id = res.data.data.region?res.data.data.region.id:null),
         (this.formData.district_id = res.data.data.district?res.data.data.district.id:null)
@@ -317,7 +317,7 @@ export default {
       this.oneuser.forEach((ele) => {
         this.cities.forEach((dist) => {
           dist.districts.forEach((district) => {
-            if (ele.district.id === district.id) {
+            if (ele.district?.id === district.id) {
               this.districta = dist.districts.map((ass) => ({
                 value: ass.id,
                 name: ass.name,

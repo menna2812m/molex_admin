@@ -12,9 +12,9 @@
       <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
         <div class="card-body p-0">
           <div
-            class="table-responsive border-0 rounded border-bottom-0 px-4 mb-0"
+            class="table-responsive border-0 rounded border-bottom-0  mb-0"
           >
-            <table class="table text-nowrap text-md-nowrap mg-b-0 text-center">
+            <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0 text-center">
               <tr>
                 <td class="text-muted">اسم المتجر</td>
                 <td class="text-muted">رقم جوال المتجر</td>
@@ -32,10 +32,16 @@
                 class="list_item py-3 w-100 align-items-center justify-content-between"
               >
                 <td>
-                  {{ item.store?.name }}
+                  <button   @click="view(item.store?.id)" class="btn">
+                    {{ item.store?.name }}
+
+                  </button>
                 </td>
                 <td>
-                  {{ item.store?.phone }}
+                  <a :href="`tel:+${item.store?.phone}`" class="text-black-50"
+          >
+            {{ item.store?.phone }}
+          </a>
                 </td>
                 <td>
                   {{ item.amount }}
@@ -162,6 +168,9 @@ export default {
     };
   },
   methods: {
+    view(id) {
+      this.$router.push({ name: "SingleStore", params: { id } });
+    },
     onFileSelected(event) {
       this.formData.transfer_receipt = event.target.files[0];
       const reader = new FileReader();

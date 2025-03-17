@@ -24,9 +24,9 @@
     <div class="card custom-card border-0 mg-b-20"  v-if="items.length>0">
       <div class="card-body p-0">
         <div
-          class="table-responsive border-item rounded border-bottom-0 px-4 mb-0"
+          class="table-responsive border-item rounded border-bottom-0  mb-0"
         >
-          <table class="table text-nowrap text-md-nowrap mg-b-0">
+          <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0">
             <tr
               v-for="(item, index) in items"
               :key="index"

@@ -35,7 +35,7 @@
             style="border-radius: 25px; cursor: pointer"
             @click="showmodal = true"
           >
-            {{ list.status }}
+            {{ list.status_translated }}
             <i class="fa fa-angle-left ms-1"></i>
           </p>
         </div>

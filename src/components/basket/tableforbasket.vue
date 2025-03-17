@@ -2,26 +2,20 @@
   <section class="mt-5 pt-5">
     <div class="card custom-card border-0 mg-b-20">
       <div class="card-body p-0">
-        <div class="table-responsive border rounded border-bottom-0 px-4 mb-0">
-          <table class="table text-nowrap text-md-nowrap mg-b-0">
-            <tr>
-              <th class="d-flex">
-                <h5 class="mb-0 fw-semibold">
+        <div class="table-responsive  border rounded border-bottom-0  mb-0">
+          <div class="d-flex justify-content-between p-4">
+            <h5 class="mb-0 fw-semibold">
                   السلات المتروكة
                   <span style="color: #fb99bf" class="fw-normal">
                     ({{ myList ? myList.length : "" }})
                   </span>
                 </h5>
-              </th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th>
                 <div class="text-center ms-auto">
                   <Temporarydiscount />
                 </div>
-              </th>
-            </tr>
+          </div>
+          <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0">
+           
             <tr>
               <td class="text-muted">اسم العميل</td>
               <td class="text-muted">تاريخ انشاء السلة</td>

@@ -3,7 +3,7 @@
     <div class="tab-menu-heading">
       <div class="tabs-menu d-flex justify-content-between">
         <div class="d-flex align-items-center">
-          <Prouductdrop v-if="perminlocal.includes('products-store')" />
+          <!-- <Prouductdrop v-if="perminlocal.includes('products-store')" /> -->
           <div
             v-if="listofproducr.length >= 1"
             class="px-3 py-1 ms-2 border rounded pos-relative"
@@ -93,6 +93,7 @@
         @click="paginag(page)"
         class="justify-content-end mt-4"
       ></b-pagination>
+      
       </div>
   
       <section
@@ -1037,7 +1038,6 @@ export default {
         this.last = res.data.data.last_page;
         if (res.data && res.data.data && res.data.data.data) {
           this.rows = res.data.data.data.map((product) => {
-            console.log(product);
             return { ...product };
           });
         }
@@ -1048,10 +1048,7 @@ export default {
         this.loading = false; // End loading regardless of success or failure
       }
     },
-    async paginag(p) {
-      let res = await crudDataService.getAll(`products?page=${this.page}`);
-      this.items = res.data.data.data;
-    },
+
     async edit(data) {
       this.id = data.id;
       let res = await crudDataService.getAll(`products/${this.id}/variants`);
@@ -1115,8 +1112,9 @@ export default {
     },
     async paginag(p) {
       let res = await crudDataService.getAll(`products?page=${this.page}`);
-      this.columns = res.data.data.data;
+      this.rows = res.data.data.data;
     },
+   
   },
   computed: {
     filteredColumns() {

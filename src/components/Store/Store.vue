@@ -17,67 +17,96 @@
       <progress class="pure-material-progress-circular" />
     </section>
     <section v-else>
-      <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
-        <div class="card-body p-0">
-          <div
-            class="table-responsive border-0 rounded border-bottom-0 px-4 mb-0"
+      <section  v-if="myList.length > 0">
+
+      <vue-good-table
+     
+        :columns="filteredColumns"
+        :rows="rows"
+        :search-options="{ enabled: true }"
+        :group-options="{ enabled: false }"
+        :pagination-options="{
+          enabled: true,
+          perPageDropdownEnabled: false,
+        }"
+        :compactMode="true"
+        :rtl="true"
+      >
+        <template #table-row="props">
+          <span v-if="props.column.field === 'image'" class="imgetext">
+            <img
+              :src="props.formattedRow[props.column.field]"
+              class="imagetable"
+              width="150"
+              height="100"
+            />
+          </span>
+          <span v-if="props.column.field === 'name'" class="vendor ">
+          
+          <button class="btn text-black-50" @click="view(props.row.id)"
           >
-            <table class="table text-nowrap text-md-nowrap mg-b-0">
-              <tr>
-                <td class="text-muted">اسم المتجر</td>
-              </tr>
-              <tr
-                v-for="(item, index) in myList"
-                :key="index"
-                class="list_item py-3 w-100 align-items-center justify-content-between"
-              >
-                <td class="py-4">
-                  <img
-                    :src="item.image"
-                    alt=""
-                    v-if="item.image"
-                    style="width: 200px; height: 200px"
-                  />
-                </td>
-                <td class="py-4">{{ item.name }}</td>
-                <td class="py-4">{{ item.phone }}</td>
-                <td>
+          {{ props.row.name }}
+        </button>
+          </span>
+          <span v-if="props.column.field === 'phone'" class="vendor ">
+          <a :href="`tel:+${props.row.phone}`" class="text-black-50"
+          >
+            {{ props.row.phone }}
+          </a>
+          </span>
+         
+          <span v-if="props.column.field === 'vendors'" class="vendor">
+          <button @click="view(props.row.id)" v-for="item in props.row.vendors" :key="item.id" class="btn text-primary">
+            {{ item.name }}
+          </button>
+          </span>
+          <span v-if="props.column.field == 'actions'">
                   <label
-                    class="custom-switch justify-content-start w-100"
+                    class="custom-switch justify-content-start pe-2"
                     v-if="perminlocal.includes('stores-toggle')"
                   >
                     <input
                       type="checkbox"
                       name="custom-switch-checkbox"
                       class="custom-switch-input"
-                      :checked="item.is_active"
-                      @change="toggleactive(item.id)"
+                      :checked="props.row.is_active"
+                      @change="toggleactive(props.row.id)"
                     />
                     <span class="custom-switch-description"> </span>
                     <span class="custom-switch-indicator"></span>
                   </label>
-                </td>
-                <td>
                   <button
-                    class="btn me-2"
-                    @click="edit(item)"
+              class="btn btn-info me-2"
+              @click="view(props.row.id)"
+              v-if="perminlocal.includes('stores-show')"
+            >
+              <i class="si si-eye"></i>
+            </button>
+                  <button
+                    class="btn btn-primary me-2"
+                    @click="edit(props.row)"
                     v-if="perminlocal.includes('stores-update')"
                   >
-                    <i class="fe fe-edit-2 text-info"></i>
+                    <i class="fe fe-edit-2 "></i>
                   </button>
                   <button
-                    class="btn me-2"
-                    @click="del(item.id, index, item.name)"
+                    class="btn btn-danger me-2"
+                    @click="del(props.row.id, props.index, props.row.name)"
                     v-if="perminlocal.includes('stores-destroy')"
                   >
-                    <i class="fe fe-trash text-danger"></i>
+                    <i class="fe fe-trash"></i>
                   </button>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
+          </span>
+        </template>
+      </vue-good-table>
+      <b-pagination
+        v-model="page"
+        :total-rows="last"
+        :per-page="1"
+        @click="paginag(page)"
+        class="justify-content-end mt-4"
+      ></b-pagination>
+   </section>
       <section
         class="position-relative"
         style="height: 100vh; display: grid; place-items: center"
@@ -95,7 +124,7 @@
     <teleport to="body">
       <b-modal id="add-page" v-model="ShowModel" hide-footer title="اضافة متجر">
         <div class="p-0">
-          <form @submit.prevent="add">
+          <form @submit.prevent="add" autocomplete="off">
             <div class="row">
               <div class="col-md-6 mb-2">
                 <div class="mt-1">
@@ -250,7 +279,7 @@
                 <div class="mt-1">
                   <label> الايميل </label>
                   <input
-                    type="text"
+                    type="email"
                     class="form-control"
                     v-model="formData.email"
                   />
@@ -260,7 +289,8 @@
                 <div class="mt-1">
                   <label> الجوال </label>
                   <input
-                    type="text"
+                    type="tel"
+                    autocomplete="one-time-code"
                     class="form-control"
                     v-model="formData.phone"
                   />
@@ -273,6 +303,7 @@
                     <input
                       class="form-control"
                       v-model="formData.password"
+                      autocomplete="one-time-code"
                       :type="passwordVisible ? 'text' : 'password'"
                     />
                     <i
@@ -297,6 +328,7 @@
                     <input
                       :type="passwordconfVisible ? 'text' : 'password'"
                       class="form-control"
+                      autocomplete="one-time-code"
                       v-model="formData.password_confirmation"
                     />
                     <i
@@ -316,7 +348,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <div class="mt-1">
                   <label> تاريخ الميلاد</label>
                   <input
@@ -336,7 +368,7 @@
                   placeholder="اختر النوع "
                   v-model="formData.gender"
                 />
-              </div>
+              </div> -->
             </div>
             <div class="text-red">
               {{ errormessage ? errormessage : "" }}
@@ -512,14 +544,41 @@ export default {
       ShowModeledit: false,
       ShowModel: false,
       myList: [],
+      columns: [
+        {
+          label: "الصوره",
+          field: "image",
+
+        },
+        {
+          label: "الإسم",
+          field: "name",
+          
+        },
+        {
+          label: "رقم الجوال",
+          field: "phone",
+        },
+        {
+          label: "التاجر",
+          field: "vendors",
+        },
+        {
+          label: "الرصيد",
+          field: "balance",
+        },
+        {
+          label: "فعل",
+          field: "actions",
+        },
+      ],
+      rows: [],
       formData: {
         email: "",
         name: "",
         fname: "",
         lname: "",
         phone: "",
-        birth_date: "",
-        gender: "",
         store_phone: "",
         image: "",
         video: "",
@@ -741,11 +800,22 @@ export default {
         name: cat.name,
       }));
     },
+    view(id) {
+      console.log(id);
+      this.$router.push({ name: "SingleStore", params: { id } });
+    },
     async stores() {
       this.loading = true; // Start loading
       try {
         let res = await crudDataService.getAll("stores");
         this.myList = res.data.data.data;
+        this.last = res.data.data.last_page;
+        if (res.data && res.data.data && res.data.data.data) {
+          this.rows = res.data.data.data.map((stores) => {
+            console.log(stores);
+            return { ...stores };
+          });
+        }
         console.log(this.myList);
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -753,6 +823,10 @@ export default {
       } finally {
         this.loading = false; // End loading regardless of success or failure
       }
+    },
+    async paginag(p) {
+      let res = await crudDataService.getAll(`stores?page=${this.page}`);
+      this.myList = res.data.data.data;
     },
     singleoffer(id) {
       this.$router.push({ name: "SingleOffer", params: { id } });
@@ -774,6 +848,7 @@ export default {
             confirmButtonText: "تم", // ✅ Custom OK button text
           });
             crudDataService.delete("stores", `${data}`).then(() => {
+            this.stores();
               this.myList.splice(index, 1);
             });
           }
@@ -839,6 +914,18 @@ export default {
           });
         }
       })
+    },
+  },
+  computed: {
+    filteredColumns() {
+      if (
+        !this.perminlocal.includes("stores-show") ||
+        !this.perminlocal.includes("stores-update") ||
+        !this.perminlocal.includes("stores-destroy")
+      ) {
+        return this.columns?.length ? this.columns : [];
+      }
+      return this.columns;
     },
   },
   mounted() {

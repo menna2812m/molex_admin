@@ -149,13 +149,7 @@
                     accept=".pdf, image/jpeg, image/png"
                     class="form-control"
                   />
-                  <!-- <p
-                    class="pos-absolute mb-0 bg-white overflow-y-auto w-75"
-                    v-if="changeedit"
-                    style="top: 5px; left: 15px; height: 30px"
-                  >
-                     {{ textimage }} 
-                  </p> -->
+                 
                 </div>
                 <img
                   :src="imageUrl"

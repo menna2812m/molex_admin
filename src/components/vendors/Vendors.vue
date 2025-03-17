@@ -17,43 +17,77 @@
       <progress class="pure-material-progress-circular" />
     </section>
     <section v-else>
-      <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
-        <div class="card-body p-0">
-          <div
-            class="table-responsive border-0 rounded border-bottom-0 px-4 mb-0"
-          >
-            <table class="table text-nowrap text-md-nowrap mg-b-0">
-              <tr>
-                <td class="text-muted">اسم البائع</td>
-              </tr>
-              <tr
-                v-for="(item, index) in myList"
-                :key="index"
-                class="list_item py-3 w-100 align-items-center justify-content-between"
+      <section v-if="myList.length > 0">
+        <vue-good-table
+          :columns="filteredColumns"
+          :rows="rows"
+          :search-options="{ enabled: true }"
+          :group-options="{ enabled: false }"
+          :pagination-options="{
+            enabled: true,
+            perPageDropdownEnabled: false,
+          }"
+          :compactMode="true"
+          :rtl="true"
+        >
+          <template #table-row="props">
+            <span v-if="props.column.field === 'vendors'" class="vendor">
+              <button
+                @click="view(props.row.id)"
+                v-for="item in props.row.vendors"
+                :key="item.id"
+                class="btn text-primary"
               >
-                <td class="py-4">{{ item.name }}</td>
+                {{ item.name }}
+              </button>
+            </span>
+            <span v-if="props.column.field === 'phone'" class="vendor ">
+          <a :href="`tel:+${props.row.phone}`" class="text-black-50"
+          >
+            {{ props.row.phone }}
+          </a>
+          </span>
+          <span v-if="props.column.field === 'email'" class="vendor ">
+          <a :href="`tel:+${props.row.email}`" class="text-black-50"
+          >
+            {{ props.row.email }}
+          </a>
+          </span>
+            <span v-if="props.column.field == 'actions'">
+              <button
+                class="btn btn-info me-2"
+                @click="view(props.row.store.id)"
+                v-if="perminlocal.includes('vendors-show')"
+              >
+                <i class="si si-eye"></i>
+              </button>
 
-                <td>
-                  <button
-                    class="btn me-2"
-                    @click="edit(item)"
-                    v-if="perminlocal.includes('vendors-update')"
-                  >
-                    <i class="fe fe-edit-2 text-info"></i>
-                  </button>
-                  <button
-                    class="btn me-2"
-                    @click="del(item.id, index, item.name)"
-                    v-if="perminlocal.includes('vendors-destroy')"
-                  >
-                    <i class="fe fe-trash text-danger"></i>
-                  </button>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
+              <button
+                class="btn btn-primary me-2"
+                @click="edit(props.row)"
+                v-if="perminlocal.includes('vendors-update')"
+              >
+                <i class="fe fe-edit-2"></i>
+              </button>
+              <button
+                class="btn btn-danger me-2"
+                @click="del(props.row.id, props.index, props.row.name)"
+                v-if="perminlocal.includes('vendors-destroy')"
+              >
+                <i class="fe fe-trash"></i>
+              </button>
+            </span>
+          </template>
+        </vue-good-table>
+        <b-pagination
+          v-model="page"
+          :total-rows="last"
+          :per-page="1"
+          @click="paginag(page)"
+          class="justify-content-end mt-4"
+        ></b-pagination>
+      </section>
+     
       <section
         class="position-relative"
         style="height: 100vh; display: grid; place-items: center"
@@ -71,7 +105,7 @@
     <teleport to="body">
       <b-modal id="add-page" v-model="ShowModel" hide-footer title="اضافة بائع">
         <div class="p-0">
-          <form @submit.prevent="add">
+          <form @submit.prevent="add" autocomplete="off">
             <div class="row">
               <div class="col-md-6">
                 <div class="mt-1">
@@ -97,9 +131,10 @@
                 <div class="mt-1">
                   <label> الايميل </label>
                   <input
-                    type="text"
+                    type="email"
                     class="form-control"
                     v-model="formData.email"
+                    autocomplete="one-time-code"
                   />
                 </div>
               </div>
@@ -107,9 +142,10 @@
                 <div class="mt-1">
                   <label> الجوال </label>
                   <input
-                    type="text"
+                    type="tel"
                     class="form-control"
                     v-model="formData.phone"
+                    autocomplete="one-time-code"
                   />
                 </div>
               </div>
@@ -121,6 +157,7 @@
                       class="form-control"
                       v-model="formData.password"
                       :type="passwordVisible ? 'text' : 'password'"
+                      autocomplete="one-time-code"
                     />
                     <i
                       @click="togglePasswordVisibility"
@@ -145,6 +182,7 @@
                       :type="passwordconfVisible ? 'text' : 'password'"
                       class="form-control"
                       v-model="formData.password_confirmation"
+                      autocomplete="one-time-code"
                     />
                     <i
                       @click="togglePassword"
@@ -163,7 +201,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <div class="mt-1">
                   <label> تاريخ الميلاد</label>
                   <input
@@ -183,7 +221,7 @@
                   placeholder="اختر النوع "
                   v-model="formData.gender"
                 />
-              </div>
+              </div> -->
               <div class="col-12">
                 <label> المتجر </label>
 
@@ -320,8 +358,6 @@ export default {
         fname: "",
         lname: "",
         phone: "",
-        birth_date: "",
-        gender: "",
         password: "",
         password_confirmation: "",
         store_id: "",
@@ -331,8 +367,6 @@ export default {
         fname: "",
         lname: "",
         phone: "",
-        birth_date: "",
-        gender: "",
 
         store_id: "",
       },
@@ -344,6 +378,30 @@ export default {
       perminlocal: localStorage.getItem("permissions"),
       passwordVisible: false,
       passwordconfVisible: false,
+      columns: [
+        {
+          label: "الإسم",
+          field: "name",
+        },
+
+        {
+          label: "رقم الجوال",
+          field: "phone",
+        },
+        {
+          label: "البريد الالكتروني",
+          field: "email",
+        },
+        {
+          label: "المتجر",
+          field: "store.name",
+        },
+        {
+          label: "فعل",
+          field: "actions",
+        },
+      ],
+      rows: [],
     };
   },
   methods: {
@@ -418,6 +476,12 @@ export default {
       try {
         let res = await crudDataService.getAll("vendors");
         this.myList = res.data.data.data;
+        this.last = res.data.data.last_page;
+        if (res.data && res.data.data && res.data.data.data) {
+          this.rows = res.data.data.data.map((vendor) => {
+            return { ...vendor };
+          });
+        }
       } catch (error) {
         console.error("Failed to fetch data:", error);
         // Handle error
@@ -425,41 +489,45 @@ export default {
         this.loading = false; // End loading regardless of success or failure
       }
     },
+    async paginag(p) {
+      let res = await crudDataService.getAll(`stores?page=${this.page}`);
+      this.myList = res.data.data.data;
+    },
     singleoffer(id) {
       this.$router.push({ name: "SingleOffer", params: { id } });
     },
     del(data, index, name) {
-  this.$swal
-    .fire({
-      title: `هل تريد حذف البائع "${name}"؟`,
-      showCancelButton: true,
-      cancelButtonText: "إلغاء",
-      confirmButtonText: "نعم",
-      icon: "warning",
-    })
-    .then((result) => {
-      if (result.isConfirmed) {
-        crudDataService.delete("vendors", `${data}`) // ✅ Correct URL format
-          .then(() => {
-            this.$swal.fire({
-              title: "تم الحذف بنجاح!",
-              icon: "success",
-              confirmButtonText: "تم",
-            });
-            this.myList.splice(index, 1);
-          })
-          .catch((error) => {
-            this.$swal.fire({
-              title: "حدث خطأ أثناء الحذف!",
-              text: error.data.message,
-              icon: "error",
-              confirmButtonText: "موافق",
-            });
-          });
-      }
-    });
-}
-,
+      this.$swal
+        .fire({
+          title: `هل تريد حذف البائع "${name}"؟`,
+          showCancelButton: true,
+          cancelButtonText: "إلغاء",
+          confirmButtonText: "نعم",
+          icon: "warning",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            crudDataService
+              .delete("vendors", `${data}`) // ✅ Correct URL format
+              .then(() => {
+                this.$swal.fire({
+                  title: "تم الحذف بنجاح!",
+                  icon: "success",
+                  confirmButtonText: "تم",
+                });
+                this.myList.splice(index, 1);
+              })
+              .catch((error) => {
+                this.$swal.fire({
+                  title: "حدث خطأ أثناء الحذف!",
+                  text: error.data.message,
+                  icon: "error",
+                  confirmButtonText: "موافق",
+                });
+              });
+          }
+        });
+    },
     async add() {
       const toast = useToast();
       let res = await crudDataService
@@ -507,6 +575,21 @@ export default {
             });
           }
         });
+    },
+    view(id) {
+      this.$router.push({ name: "SingleStore", params: { id } });
+    },
+  },
+  computed: {
+    filteredColumns() {
+      if (
+        !this.perminlocal.includes("vendors-show") ||
+        !this.perminlocal.includes("vendors-update") ||
+        !this.perminlocal.includes("vendors-destroy")
+      ) {
+        return this.columns?.length ? this.columns : [];
+      }
+      return this.columns;
     },
   },
   mounted() {

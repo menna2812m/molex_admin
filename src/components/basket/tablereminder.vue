@@ -12,8 +12,8 @@
   <section v-else>
     <div class="card custom-card border-0 mg-b-20" v-if="items">
     <div class="card-body p-0">
-      <div class="table-responsive rounded border-bottom-0 px-4 mb-0">
-        <table class="table text-nowrap text-md-nowrap mg-b-0 p-4">
+      <div class="table-responsive rounded border-bottom-0 mb-0">
+        <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0 p-4">
           <tr class="mb-4">
             <td class="text-muted">الموضوع</td>
             <td class="text-muted">نوع الخصم</td>

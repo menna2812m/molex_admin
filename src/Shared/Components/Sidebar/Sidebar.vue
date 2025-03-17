@@ -312,7 +312,7 @@ const menu_items = [
   },
   {
     path: `${import.meta.env.BASE_URL}products`,
-    title: "المنتجات",
+    title: "جميع المنتجات",
     type: "link",
     icon: "ti-credit-card",
     active: true,
@@ -331,34 +331,40 @@ const menu_items = [
   },
   {
 
-    title: "البائعين",
+    title: " المتاجر",
     type: "sub",
-    icon: "ti-archive",
+    icon: "fas fa-store",
     active: false,
     defaultActive: false,
     name: "vendors-index",
     children: [
       {
-        path: `${import.meta.env.BASE_URL}vendors`,
-        title: "البائعين",
+        path: `${import.meta.env.BASE_URL}stores`,
+        title: "جميع المتاجر",
         type: "link",
         active: false,
         defaultActive: false,
       },
-    
+      {
+        path: `${import.meta.env.BASE_URL}vendors`,
+        title: "جميع التجار",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
     ]
 
   },
-  {
-    path: `${import.meta.env.BASE_URL}stores`,
-    title: "المتاجر",
-    type: "link",
-    icon: "fas fa-store",
-    active: true,
-    defaultActive: false,
-    name: "stores-index"
+  // {
+  //   path: `${import.meta.env.BASE_URL}vendors`,
+  //   title: "البائعين",
+  //   type: "link",
+  //   icon: "ti-archive",
+  //   active: true,
+  //   defaultActive: false,
+  //   name: "vendors-index"
 
-  },
+  // },
   // {
   //   path: `${import.meta.env.BASE_URL}tags`,
   //   title: "الوسوم",
@@ -413,18 +419,18 @@ const menu_items = [
     defaultActive: false,
     name:'questions-index'
   },
-  {
-    path: `${import.meta.env.BASE_URL}definition`,
-    title: "الصفحات التعريفية ",
-    type: "link",
-    icon: "ion-document-text",
-    active: true,
-    defaultActive: false,
-    name:'pages-index'
-  },
-  {
-    'headTitle': "التسويق",
-  },
+  // {
+  //   path: `${import.meta.env.BASE_URL}definition`,
+  //   title: "الصفحات التعريفية ",
+  //   type: "link",
+  //   icon: "ion-document-text",
+  //   active: true,
+  //   defaultActive: false,
+  //   name:'pages-index'
+  // },
+  // {
+  //   'headTitle': "التسويق",
+  // },
   {
     path: `${import.meta.env.BASE_URL}discount`,
     title: "كوبونات التخفيض ",
@@ -461,21 +467,7 @@ const menu_items = [
     defaultActive: false,
     name:'cart_reminders-index'
   },
-
   {
-    'headTitle': "الإعدادات",
-  },
-
-  {
-    path: `${import.meta.env.BASE_URL}notification`,
-    title: "الاشعارات",
-    type: "link",
-    icon: "si si-bell",
-    active: true,
-    defaultActive: false,
-    name:'special-offer-index'
-    }, 
-       {
     path: `${import.meta.env.BASE_URL}contact`,
     title: "للتواصل",
     type: "link",
@@ -493,66 +485,108 @@ const menu_items = [
     active: true,
     defaultActive: false,
     name:'sliders-index'
-  },  
-  {
-    path: `${import.meta.env.BASE_URL}setting`,
-    title: "الإعدادات",
-    type: "link",
-    icon: "fe fe-settings",
-    active: true,
-    defaultActive: false,
-    name:"settings-index"
   },
   {
-    'headTitle': "الادارة",
+    'headTitle': "الإعدادات",
   },
+
+  // {
+  //   path: `${import.meta.env.BASE_URL}notification`,
+  //   title: "الاشعارات",
+  //   type: "link",
+  //   icon: "si si-bell",
+  //   active: true,
+  //   defaultActive: false,
+  //   name:'special-offer-index'
+  //   }, 
+    
+
+  // {
+  //   path: `${import.meta.env.BASE_URL}setting`,
+  //   title: "الإعدادات",
+  //   type: "link",
+  //   icon: "fe fe-settings",
+  //   active: true,
+  //   defaultActive: false,
+  //   name:"settings-index"
+  // },
+  // {
+  //   'headTitle': "الادارة",
+  // },
+  // {
+  //   path: `${import.meta.env.BASE_URL}admins`,
+  //   title: "المسئولين",
+  //   type: "link",
+  //   icon: "fe fe-users",
+  //   active: true,
+  //   defaultActive: false,
+  //   name:'admins-index'
+  // },
+  // {
+  //   path: `${import.meta.env.BASE_URL}roles`,
+  //   title: "الادوار",
+  //   type: "link",
+  //   icon: "fe fe-life-buoy",
+  //   active: true,
+  //   defaultActive: false,
+  //   name:'roles-index'
+  // },
+  // {
+  //   path: `${import.meta.env.BASE_URL}payment`,
+  //   title: "طرق الدفع",
+  //   type: "link",
+  //   icon: "ti-wallet",
+  //   active: true,
+  //   defaultActive: false,
+  //   name:'payment_methods-index'
+  // },
   {
-    path: `${import.meta.env.BASE_URL}admins`,
-    title: "المسئولين",
-    type: "link",
-    icon: "fe fe-users",
-    active: true,
-    defaultActive: false,
-    name:'admins-index'
-  },
-  {
-    path: `${import.meta.env.BASE_URL}roles`,
-    title: "الادوار",
-    type: "link",
-    icon: "fe fe-life-buoy",
-    active: true,
-    defaultActive: false,
-    name:'roles-index'
-  },
-  {
-    path: `${import.meta.env.BASE_URL}payment`,
-    title: "طرق الدفع",
-    type: "link",
-    icon: "ti-wallet",
-    active: true,
-    defaultActive: false,
-    name:'payment_methods-index'
-  },
+
+title: "الشحن والتوصيل",
+type: "sub",
+icon: "fa fa-truck",
+active: false,
+defaultActive: false,
+name: "deliveries-index",
+children: [
+
   {
     path: `${import.meta.env.BASE_URL}delivery`,
     title: "التوصيل",
     type: "link",
-    icon: "fa fa-truck",
-    active: true,
+    active: false,
     defaultActive: false,
-    name: "deliveries-index"
-
   },
   {
     path: `${import.meta.env.BASE_URL}delivery_options`,
     title: "خيارات التوصيل",
     type: "link",
-    icon: "fa fa-filter",
-    active: true,
+    active: false,
     defaultActive: false,
-    name: "delivery_options-index"
-
   },
+]
+
+},
+  // {
+  //   path: `${import.meta.env.BASE_URL}delivery`,
+  //   title: "التوصيل",
+  //   type: "link",
+  //   icon: "fa fa-truck",
+  //   active: true,
+  //   defaultActive: false,
+  //   name: "deliveries-index"
+
+  // },
+  // {
+  //   path: `${import.meta.env.BASE_URL}delivery_options`,
+  //   title: "خيارات التوصيل",
+  //   type: "link",
+  //   icon: "fa fa-filter",
+  //   active: true,
+  //   defaultActive: false,
+  //   name: "delivery_options-index"
+
+  // },
   {
     path: `${import.meta.env.BASE_URL}withdrawal-requests`,
     title: " طلبات السحب",
@@ -561,8 +595,61 @@ const menu_items = [
     active: true,
     defaultActive: false,
     name: "withdrawal-requests-index"
-
   },
+  {
+
+title: "المزيد",
+type: "sub",
+icon: "fe fe-settings",
+active: false,
+defaultActive: false,
+name:"settings-index",
+children: [
+  {
+    path: `${import.meta.env.BASE_URL}setting`,
+    title: "الإعدادات",
+    type: "link",
+    active: false,
+    defaultActive: false,
+  },
+  {
+    path: `${import.meta.env.BASE_URL}notification`,
+    title: "الاشعارات",
+    type: "link",
+    active: false,
+    defaultActive: false,
+  },
+  {
+    path: `${import.meta.env.BASE_URL}admins`,
+    title: "المسئولين",
+    type: "link",
+    active: false,
+    defaultActive: false,
+  },
+  {
+    path: `${import.meta.env.BASE_URL}roles`,
+    title: "الادوار",
+    type: "link",
+    active: false,
+    defaultActive: false,
+  },
+  {
+    path: `${import.meta.env.BASE_URL}payment`,
+    title: "طرق الدفع",
+    type: "link",
+    active: false,
+    defaultActive: false,
+  },
+  {
+    path: `${import.meta.env.BASE_URL}definition`,
+    title: "الصفحات التعريفية ",
+    type: "link",
+    active: false,
+    defaultActive: false,
+  },
+]
+
+},
 ];
 
 //MenuEnd
@@ -629,7 +716,6 @@ export default {
     async getContact() {
       const res = await crudDataService.getAll("contacts");
       this.items = res.data.data.data;   
-      console.log(res.data.data.data);  
       this.notifications=[]
       res.data.data.data.forEach((element) => {
 

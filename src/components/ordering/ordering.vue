@@ -62,8 +62,9 @@
                       </h5>
                       <div class="d-flex justify-content-between">
                         <span class="text-secondary">
-                          <i class="typcn typcn-location text-black"></i>
-                          {{ item.address.address }}
+                         التفاصيل
+                         <i class=" fe fe-chevron-left"></i>
+
                         </span>
                       </div>
                     </div>
@@ -71,7 +72,7 @@
                 </td>
                 <td>
                   <p :class="[item.status, 'mb-0']">
-                    {{ item.status }}
+                    {{ item.status_translated }}
                   </p>
                 </td>
                 <td style="color: #fb99bf">
@@ -81,8 +82,11 @@
                   {{ item.updated_at.split("T")[0] }}
                 </td>
                 <td class="">
-                  <i class="fe fe-settings text-warning px-2"  @click="change(item.id)"></i>
-                  <i class="fa fa-motorcycle text-info" @click="deliver(item.id)"></i>
+                  <i class="fe fe-eye text-info px-2"  @click="gotopage(item.id)" style="cursor: pointer;"></i>
+
+                  <i class="fa fa-motorcycle text-danger" @click="deliver(item.id)" style="cursor: pointer;"></i>
+                  <i class="fe fe-settings text-warning px-2"  @click="change(item.id)" style="cursor: pointer;"></i>
+
                 </td>
               </tr>
             </table>
