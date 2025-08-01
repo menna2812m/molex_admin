@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node --max-old-space-size=8192 ./node_modules/.bin/vite build",
-    "build:prod": "node --max-old-space-size=16384 ./node_modules/.bin/vite build",
+    "build": "vite build",
+    "build:memory": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -58,6 +58,7 @@
     "print-this": "^1.16.0",
     "sass": "^1.57.1",
     "select2": "^4.1.0-rc.0",
+    "simplebar": "^6.3.2",
     "simplebar-vue3": "^0.2.0",
     "stylus": "^0.59.0",
     "stylus-loader": "^3.0.2",
@@ -105,6 +106,7 @@
     "@types/jquery": "^3.5.16",
     "@types/select2": "^4.0.57",
     "@vitejs/plugin-vue": "^4.0.0",
+    "terser": "^5.43.1",
     "vite": "^4.0.3"
   }
 }
