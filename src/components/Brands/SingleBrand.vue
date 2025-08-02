@@ -21,7 +21,7 @@
               <button
                 @click="toggleDropdown"
                 class="twobtn bg-white border"
-                style="border-color: #E66239 !important; color: #E66239"
+                style="border-color: #fd601f !important; color: #fd601f"
               >
                 خيارات الصفحة <i class="fas fa-caret-down ms-1"></i>
               </button>
@@ -147,7 +147,7 @@ export default {
   data() {
     return {
       textimage: "",
-      changeedit:true,
+      changeedit: true,
 
       isDropdownOpen: false,
       ShowModel: false,
@@ -238,7 +238,7 @@ export default {
 </style>
 <style lang="scss">
 input::file-selector-button {
-  background-image: linear-gradient(to right, #E66239) !important;
+  background-image: linear-gradient(to right, #fd601f) !important;
 }
 
 .modal .modal-header {

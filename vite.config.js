@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  base: process.env.NODE_ENV === "production" ? "/molex_vue/" : "/",
+  base: process.env.NODE_ENV === "production" ? "/" : "/",
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -18,8 +18,9 @@ export default defineConfig({
     chunkSizeWarningLimit: 160000,
     outDir: "dist",
     assetsDir: "assets",
+    esbuild: false,
     // Additional optimizations for production
-    minify: "terser",
+    minify: "false",
     rollupOptions: {
       output: {
         manualChunks: {

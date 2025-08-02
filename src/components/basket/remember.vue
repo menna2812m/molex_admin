@@ -3,9 +3,9 @@
     <button
       class="bg-transparent twobtn"
       style="
-        color: #e66239;
-        border: 1px solid #e66239;
-        border-bottom: 1px solid #e66239 !important;
+        color: #fd601f;
+        border: 1px solid #fd601f;
+        border-bottom: 1px solid #fd601f !important;
       "
       @click="showModal()"
     >
@@ -211,29 +211,31 @@ export default {
               (this.formData.cart_left_days = ""),
               (this.formData.total_cart = ""),
               (this.formData.user_ids = "");
-          }) .catch ((error) => {
+          })
+          .catch((error) => {
             // this.ShowModel = false;
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
-            toast.error(errorMessages[0], {
-              position: "top-center",
-              timeout: 5000,
-            });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
+            const errorData = error?.data?.errors || {};
+            console.log(error);
+
+            const errorMessages = Object.values(errorData)
+              .flat()
+              .filter((msg) => typeof msg === "string");
+
+            if (errorMessages.length > 0) {
+              console.log(errorMessages[0]);
+
+              toast.error(errorMessages[0], {
+                position: "top-center",
+                timeout: 5000,
+              });
+            } else {
+              toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+                position: "top-center",
+                timeout: 5000,
+              });
+            }
           });
-        }
-      })
       } else {
         const res = await crudDataService
           .create("cart_reminders", this.formData)
@@ -251,29 +253,31 @@ export default {
               (this.formData.cart_left_days = ""),
               (this.formData.total_cart = ""),
               (this.formData.user_ids = "");
-          })    .catch ((error) => {
-        // this.ShowModel = false;
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+          })
+          .catch((error) => {
+            // this.ShowModel = false;
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
-            toast.error(errorMessages[0], {
-              position: "top-center",
-              timeout: 5000,
-            });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
+            const errorData = error?.data?.errors || {};
+            console.log(error);
+
+            const errorMessages = Object.values(errorData)
+              .flat()
+              .filter((msg) => typeof msg === "string");
+
+            if (errorMessages.length > 0) {
+              console.log(errorMessages[0]);
+
+              toast.error(errorMessages[0], {
+                position: "top-center",
+                timeout: 5000,
+              });
+            } else {
+              toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+                position: "top-center",
+                timeout: 5000,
+              });
+            }
           });
-        }
-      })
       }
     },
   },

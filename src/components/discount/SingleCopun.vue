@@ -14,9 +14,8 @@
               <button
                 @click="toggleDropdown"
                 class="twobtn bg-white border"
-                style="border-color: #E66239 !important; color: #E66239"
-      v-if="perminlocal.includes('coupons-update')"
-              
+                style="border-color: #fd601f !important; color: #fd601f"
+                v-if="perminlocal.includes('coupons-update')"
               >
                 خيارات الصفحة <i class="fas fa-caret-down ms-1"></i>
               </button>
@@ -256,9 +255,7 @@
               </div>
               <div class="col-md-12">
                 <div class="mt-1">
-                  <label
-                    >الحد الأدنى للسعر دون ضريبة القيمة المضافة
-                  </label>
+                  <label>الحد الأدنى للسعر دون ضريبة القيمة المضافة </label>
                   <input
                     type="number"
                     class="form-control"
@@ -280,9 +277,7 @@
 
               <div class="col-md-12">
                 <div class="mt-1 d-flex align-items-center">
-                  <label class="mx-1"
-                    >الحد الأقصى لرؤية السعر الخصم
-                  </label>
+                  <label class="mx-1">الحد الأقصى لرؤية السعر الخصم </label>
 
                   <label class="custom-switch justify-content-center">
                     <input
@@ -350,19 +345,17 @@
       </b-modal>
     </teleport>
   </section>
-  <section class="position-relative" style="height: 100vh;display: grid;
-    place-items: center;"
+  <section
+    class="position-relative"
+    style="height: 100vh; display: grid; place-items: center"
     v-else
-   >
-
-<section class="cate">
-</section>
- <progress class="pure-material-progress-circular"/> 
-
-   </section>  
+  >
+    <section class="cate"></section>
+    <progress class="pure-material-progress-circular" />
+  </section>
 </template>
 <script>
-import moment from 'moment';
+import moment from "moment";
 import Multiselect from "@vueform/multiselect";
 import Fillter from "./Fillter.vue";
 import Tabscopuns from "./Tabscopuns.vue";
@@ -401,7 +394,7 @@ export default {
         discounted_items_excluded: false,
         is_affiliated: false,
         name: "",
-        comission_type:  "",
+        comission_type: "",
         comission_value: "",
         notes: "",
         couponables: [],
@@ -415,32 +408,33 @@ export default {
       this.formData.code = this.item.code;
       this.formData.discount_type = this.item.discount_type;
       this.formData.discount_value = this.item.discount_value;
-      this.formData.start_date = moment(this.item.start_date).format('YYYY-MM-DD');
-      this.formData.end_date = moment(this.item.end_date).format('YYYY-MM-DD');
+      this.formData.start_date = moment(this.item.start_date).format(
+        "YYYY-MM-DD"
+      );
+      this.formData.end_date = moment(this.item.end_date).format("YYYY-MM-DD");
       this.formData.max_usage_per_user = this.item.max_usage_per_user;
       this.formData.max_usage = this.item.max_usage;
       this.formData.minimum_price_without_vat =
-      this.item.minimum_price_without_vat;
+        this.item.minimum_price_without_vat;
       this.formData.max_discounted_price = this.item.max_discounted_price;
       this.formData.max_discounted_price_visibility =
-      this.item.max_discounted_price_visibility;
+        this.item.max_discounted_price_visibility;
       this.formData.is_free_shipping = this.item.is_free_shipping;
       this.formData.discounted_items_excluded =
-      this.item.discounted_items_excluded;
+        this.item.discounted_items_excluded;
       this.formData.is_affiliated = this.item.is_affiliated;
       this.formData.name = this.item.name;
       this.formData.comission_type = this.item.comission_type;
       this.formData.comission_value = this.item.comission_value;
       this.formData.notes = this.item.note;
     },
-    async update(){
-        let res = await crudDataService.put(
-        `coupons/${this.$route.params.id}`,
-        this.formData
-      ).then(()=>{
-        this.ShowModel = false;
-        this.onecopuns()
-      })
+    async update() {
+      let res = await crudDataService
+        .put(`coupons/${this.$route.params.id}`, this.formData)
+        .then(() => {
+          this.ShowModel = false;
+          this.onecopuns();
+        });
     },
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
@@ -474,7 +468,7 @@ export default {
 </style>
 <style lang="scss">
 input::file-selector-button {
-  background-image: linear-gradient(to right, #E66239, #E66239) !important;
+  background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
 
 .modal .modal-header {

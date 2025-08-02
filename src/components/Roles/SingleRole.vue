@@ -12,13 +12,11 @@
             <div class="pos-relative">
               <button
                 class="twobtn bg-white border"
-                style="border-color: #E66239 !important; color: #E66239"
-      v-if="perminlocal.includes('roles-update')"
-              
+                style="border-color: #fd601f !important; color: #fd601f"
+                v-if="perminlocal.includes('roles-update')"
               >
-                <a  @click="edit()">تعديل الأدوار </a>
+                <a @click="edit()">تعديل الأدوار </a>
               </button>
-
             </div>
           </div>
           <div class="card-body">
@@ -31,7 +29,13 @@
                   :key="i"
                 >
                   <li class="p-2">
-                  <input type="checkbox" name="vehicle1" :value="role.display_name" v-model="ischecked" disabled/>
+                    <input
+                      type="checkbox"
+                      name="vehicle1"
+                      :value="role.display_name"
+                      v-model="ischecked"
+                      disabled
+                    />
 
                     {{ role.display_name }}
                   </li>
@@ -42,18 +46,15 @@
         </div>
       </div>
     </div>
-
   </section>
-  <section class="position-relative" style="height: 100vh;display: grid;
-    place-items: center;"
+  <section
+    class="position-relative"
+    style="height: 100vh; display: grid; place-items: center"
     v-else
-   >
-
-<section class="cate">
-</section>
- <progress class="pure-material-progress-circular"/> 
-
-   </section>  
+  >
+    <section class="cate"></section>
+    <progress class="pure-material-progress-circular" />
+  </section>
 </template>
 <script>
 import crudDataService from "../../Services/crudDataService.js";
@@ -62,16 +63,16 @@ export default {
   data() {
     return {
       item: null,
-      ischecked:true,
+      ischecked: true,
       perminlocal: localStorage.getItem("permissions"),
-
     };
   },
   methods: {
-
     edit() {
-        this.$router.push({ name: "editRole", params:   `${this.$route.params.id}` });
-
+      this.$router.push({
+        name: "editRole",
+        params: `${this.$route.params.id}`,
+      });
     },
     async getPage() {
       const res = await crudDataService.get(
@@ -80,9 +81,7 @@ export default {
       );
       this.item = res.data.data;
       console.log(this.item);
-
     },
-  
   },
   mounted() {
     this.getPage();

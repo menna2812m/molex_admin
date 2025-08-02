@@ -462,7 +462,7 @@ export default {
   border-bottom: 1px solid #e8e7ff;
 }
 .progres {
-  color: #E66239;
+  color: #fd601f;
   font-weight: 600;
   font-size: 16px;
 }
@@ -491,7 +491,6 @@ export default {
   }
 }
 .twobtn {
- 
   &.export {
     background: #eff4fb;
     color: #719fd9;

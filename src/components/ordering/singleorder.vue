@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="p-4 d-flex align-items-center justify-content-end">
       <!-- <div>
         <h5 class="mb-0 text-muted">العنوان </h5>
@@ -73,13 +73,13 @@
     <div class="card-body p-4">
       <div class="d-flex justify-content-between flex-wrap">
         <div>
-          <h5 class="mb-0 text-muted">*طريقة التوصيل* </h5>
+          <h5 class="mb-0 text-muted">*طريقة التوصيل*</h5>
           <p class="mt-4">{{ list.delivery_option.name.ar }}</p>
         </div>
         <div>
           <h5 class="mb-0 text-muted">
             <i class="fa fa-money"></i>
-             طريقة الدفع
+            طريقة الدفع
           </h5>
           <p class="mt-4">
             {{ list.transaction.payment_method }}
@@ -101,17 +101,12 @@
         </div>
       </div>
       <div class="text-danger" v-if="list.delivery">
-        *
-        اذا كنت تريد الغاء هذا المندوب من هذا الاوردر
-        <button class="btn "         
-          @click="removedelivery(list.delivery, list.id)"
-        >
+        * اذا كنت تريد الغاء هذا المندوب من هذا الاوردر
+        <button class="btn" @click="removedelivery(list.delivery, list.id)">
           اضغط هنا
         </button>
       </div>
     </div>
-    
-   
   </div>
   <div class="card custom-card border-0 mg-b-20" v-if="userData">
     <div class="card-header">
@@ -222,7 +217,7 @@
               v-model="status"
             />
           </div>
-          <p v-if="err" class="text-danger">{{err}}</p>
+          <p v-if="err" class="text-danger">{{ err }}</p>
           <div class="text-center">
             <button class="fs-15 btn-save mx-1">حفظ</button>
             <button class="fs-15 btn-cancel mx-1" @click="showmodal = false">
@@ -234,7 +229,12 @@
     </b-modal>
   </teleport>
   <teleport to="body">
-    <b-modal id="add-body" v-model="showdeliveries" hide-footer title="اضافة مندوب  ">
+    <b-modal
+      id="add-body"
+      v-model="showdeliveries"
+      hide-footer
+      title="اضافة مندوب  "
+    >
       <div class="pos-relative" style="z-index: 5555">
         <form @submit.prevent="adddelivery(delivery_id)">
           <div class="m-2">
@@ -273,15 +273,15 @@ export default {
         { value: "waitingForPayment", name: "انتظار الدفع " },
         { value: "cancelled", name: "إلغاء " },
       ],
-      deliveries:[],
-      showdeliveries:false,
-      delivery_id:null,
+      deliveries: [],
+      showdeliveries: false,
+      delivery_id: null,
       list: "",
       userData: "",
       showmodal: false,
       status: "",
-      
-      err:''
+
+      err: "",
     };
   },
   methods: {
@@ -289,9 +289,9 @@ export default {
       try {
         let res = await crudDataService.getAll("deliveries");
         this.deliveries = res.data.data.data.map((delivery) => ({
-        value: delivery.id,
-        name: delivery.full_name,
-      }));
+          value: delivery.id,
+          name: delivery.full_name,
+        }));
       } catch (error) {
         console.error("Failed to fetch data:", error);
       } finally {
@@ -305,50 +305,48 @@ export default {
       this.$swal
         .fire({
           title: `؟"${data.full_name}" هل تريد حذف المندوب  `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           if (result.isConfirmed) {
-            crudDataService.delete(`deliveries/${data.id}/orders`,`${orderid}`).then((res) => {              
-                this.$swal.fire(res.data.message,"", "success");
+            crudDataService
+              .delete(`deliveries/${data.id}/orders`, `${orderid}`)
+              .then((res) => {
+                this.$swal.fire(res.data.message, "", "success");
                 this.order();
               })
               .catch((error) => {
-                this.$swal.fire(error.data.message,"", "error");
+                this.$swal.fire(error.data.message, "", "error");
               });
-          }         
+          }
         });
     },
- 
-    async adddelivery(id) {      
-      let res = await crudDataService.create(
-        `deliveries/${id}/orders`,
-        {
+
+    async adddelivery(id) {
+      let res = await crudDataService
+        .create(`deliveries/${id}/orders`, {
           order_id: this.$route.params.id,
-        }
-      ).then((result) => {
-        this.showdeliveries = false;
-      this.order();
-          this.$swal.fire(result.data.message,"", "success");
-                
-      })
-      
+        })
+        .then((result) => {
+          this.showdeliveries = false;
+          this.order();
+          this.$swal.fire(result.data.message, "", "success");
+        });
     },
     async change() {
-      let res = await crudDataService.create(
-        `orders/${this.$route.params.id}/status`,
-        {
+      let res = await crudDataService
+        .create(`orders/${this.$route.params.id}/status`, {
           status: this.status,
-        }
-      ).then(()=>{
-        this.showmodal = false;
-        this.order();
-      }).catch((error)=>{
-        this.err=error.data.message
-      })
-    
+        })
+        .then(() => {
+          this.showmodal = false;
+          this.order();
+        })
+        .catch((error) => {
+          this.err = error.data.message;
+        });
     },
     async order() {
       let res = await crudDataService.get("orders", `${this.$route.params.id}`);
@@ -358,16 +356,14 @@ export default {
     },
     async user() {
       if (this.list.user_id) {
-      let res = await crudDataService.get("users", `${this.list.user_id}`);
-      this.userData = res?.data.data;
-        
+        let res = await crudDataService.get("users", `${this.list.user_id}`);
+        this.userData = res?.data.data;
       }
     },
   },
   mounted() {
     this.order();
     this.alldeliveries();
-
   },
 };
 </script>
@@ -378,8 +374,8 @@ export default {
 .iconuser {
   padding: 8px 15px;
   border-radius: 30px;
-  color: #e66239;
-  border: 1px solid #e66239;
+  color: #fd601f;
+  border: 1px solid #fd601f;
   margin-left: 5px;
 }
 </style>

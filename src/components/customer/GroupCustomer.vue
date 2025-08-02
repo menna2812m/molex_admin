@@ -6,9 +6,10 @@
       v-for="(item, i) in items"
       :key="i"
     >
-      <button class="btn me-2" @click="del(item.id, i, item.name)"
-      v-if="perminlocal.includes('groups-destroy')"
-      
+      <button
+        class="btn me-2"
+        @click="del(item.id, i, item.name)"
+        v-if="perminlocal.includes('groups-destroy')"
       >
         <i class="fe fe-trash text-danger"></i>
       </button>
@@ -47,7 +48,7 @@
         hide-footer
         class="overflow-auto"
       >
-        <div class="mt-2 pos-relative" style="z-index: 5555;">
+        <div class="mt-2 pos-relative" style="z-index: 5555">
           <form @submit.prevent="add">
             <div class="row">
               <div class="col-12 mb-2">
@@ -67,12 +68,12 @@
                 :key="ii"
               >
                 <label>
-                  {{con.title}}
+                  {{ con.title }}
                 </label>
-              
+
                 <Multiselect
-                v-if="Array.isArray(con.values)"
-                class="mb-1"
+                  v-if="Array.isArray(con.values)"
+                  class="mb-1"
                   label="name"
                   :searchable="true"
                   :options="con.values"
@@ -80,7 +81,7 @@
                   v-model="con.values"
                 />
                 <input
-                v-else
+                  v-else
                   :type="con.values"
                   name=""
                   id=""
@@ -137,12 +138,11 @@ export default {
         image: "",
         condition: [],
       },
-    perminlocal : localStorage.getItem('permissions')
-
+      perminlocal: localStorage.getItem("permissions"),
     };
   },
   methods: {
-    anyone(e){
+    anyone(e) {
       console.log(e);
     },
     onFileSelected(event) {
@@ -163,10 +163,10 @@ export default {
       this.items = res.data.data.data;
     },
     singlegroup(id) {
-      if (this.perminlocal.includes('groups-show')) {
-
-      this.$router.push({ name: "SingleGroup", params: { id } });
-      }  },
+      if (this.perminlocal.includes("groups-show")) {
+        this.$router.push({ name: "SingleGroup", params: { id } });
+      }
+    },
     async add() {
       this.ShowModel = false;
       console.log(this.formData);
@@ -181,18 +181,18 @@ export default {
       this.$swal
         .fire({
           title: `؟"${name}" هل تريد حذف المجموعة`,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
+            this.$swal.fire({
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم", // ✅ Custom OK button text
+            });
             crudDataService.delete("groups", `${data}`).then(() => {
               this.items.splice(index, 1);
             });
@@ -241,6 +241,6 @@ export default {
   }
 }
 input::file-selector-button {
-  background-image: linear-gradient(to right, #E66239, #E66239) !important;
+  background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
 </style>

@@ -80,7 +80,7 @@
         v-else
       >
         <div
-          style="background: #E66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد عروض حتي الان
@@ -146,22 +146,22 @@
                   </div>
                 </div>
                 <div class="mt-3">
-                <label>الصوره</label>
+                  <label>الصوره</label>
                   <div class="pos-relative overflow-hidden">
-
-                  <input
-                    type="file"
-                    @change="onFileSelected"
-                    accept=".pdf, image/jpeg, image/png"
-                    class="form-control"
+                    <input
+                      type="file"
+                      @change="onFileSelected"
+                      accept=".pdf, image/jpeg, image/png"
+                      class="form-control"
+                    />
+                  </div>
+                  <img
+                    :src="imageUrl"
+                    alt="صورة"
+                    style="width: 180px; height: 180px; object-fit: fill"
+                    class="m-1"
                   />
                 </div>
-                <img :src="imageUrl" alt="صورة" 
-                style="width: 180px; height: 180px; object-fit: fill"
-                class="m-1"
-                />
-
-              </div>
                 <div class="col-md-6">
                   <div class="mt-1">
                     <label>نوع العرض </label>
@@ -326,7 +326,7 @@
                       />
                       <span
                         style="
-                          background: #E66239;
+                          background: #fd601f;
                           padding: 5px 15px;
                           border-radius: 5px;
                         "
@@ -370,7 +370,7 @@
                     ></textarea>
                   </div>
                 </div>
-               
+
                 <label class="custom-switch" v-if="showvalue">
                   <input
                     type="checkbox"
@@ -397,7 +397,7 @@
 import { useToast } from "vue-toastification";
 import Multiselect from "@vueform/multiselect";
 import crudDataService from "../../Services/crudDataService.js";
-import offerimage from "../../assets/img/offer.png"
+import offerimage from "../../assets/img/offer.png";
 import { error } from "jquery";
 export default {
   components: {
@@ -405,7 +405,7 @@ export default {
   },
   data() {
     return {
-      imageUrl:offerimage,
+      imageUrl: offerimage,
       showdiscount: false,
       showField: false,
       showvalue: false,
@@ -455,7 +455,7 @@ export default {
         x_quantity: "",
         y_quantity: "",
         offerables: [],
-        image:''
+        image: "",
       },
       perminlocal: localStorage.getItem("permissions"),
       conflictsdata: [],
@@ -463,21 +463,20 @@ export default {
     };
   },
   methods: {
-    changecoupon(e){
-if (e.target.checked) {
-  this.formData.coupon_active=1;
-}else{
-  this.formData.coupon_active=0;
-}
+    changecoupon(e) {
+      if (e.target.checked) {
+        this.formData.coupon_active = 1;
+      } else {
+        this.formData.coupon_active = 0;
+      }
     },
     onFileSelected(event) {
-    this.formData.image = event.target.files[0];
+      this.formData.image = event.target.files[0];
       const reader = new FileReader();
       reader.onload = () => {
         this.imageUrl = reader.result;
       };
       reader.readAsDataURL(this.formData.image);
-      
     },
     async toggleactive(id) {
       let res = await crudDataService.create(`offers/${id}/toggle`, "");
@@ -552,82 +551,88 @@ if (e.target.checked) {
       }
     },
     async getall(e) {
-if (this.conflictsdata.product||this.conflictsdata.category) {
-  if (this.conflictsdata.product.length > 0||this.conflictsdata.category.length > 0) {
-        console.log(e);
-
-        if (e === "products") {
+      if (this.conflictsdata.product || this.conflictsdata.category) {
+        if (
+          this.conflictsdata.product.length > 0 ||
+          this.conflictsdata.category.length > 0
+        ) {
           console.log(e);
-          this.allitempro = [];
+
+          if (e === "products") {
+            console.log(e);
+            this.allitempro = [];
+            let res = await crudDataService
+              .getAll("products-without-paginated")
+              .then((response) => {
+                this.allpro = response.data.data.map((ele) => ({
+                  value: ele.id,
+                  name: ele.name.ar,
+                }));
+                console.log(this.conflictsdata);
+                console.log(this.allpro);
+                this.allpro.forEach((element) => {
+                  console.log(
+                    this.conflictsdata.product.includes(element.value)
+                  );
+                  if (!this.conflictsdata.product.includes(element.value)) {
+                    this.allitempro.push(element);
+                    console.log(this.allitempro);
+                  }
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          } else if (e === "categories") {
+            this.allitempro = [];
+            let res = await crudDataService
+              .getAll("categories-without-paginated")
+              .then((response) => {
+                this.allpro = response.data.data.map((ele) => ({
+                  value: ele.id,
+                  name: ele.name,
+                }));
+                this.allpro.forEach((element) => {
+                  console.log(
+                    this.conflictsdata.category.includes(element.value)
+                  );
+                  if (!this.conflictsdata.category.includes(element.value)) {
+                    this.allitempro.push(element);
+                  }
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        }
+      } else {
+        if (e === "products") {
           let res = await crudDataService
-            .getAll('products-without-paginated')
+            .getAll("products-without-paginated")
             .then((response) => {
-              this.allpro = response.data.data.map((ele) => ({
+              this.allitempro = response.data.data.map((ele) => ({
                 value: ele.id,
                 name: ele.name.ar,
               }));
-              console.log(this.conflictsdata);
-              console.log(this.allpro);
-              this.allpro.forEach((element) => {
-              console.log(this.conflictsdata.product.includes(element.value));
-                if (!this.conflictsdata.product.includes(element.value)) {
-                  this.allitempro.push(element);
-                  console.log(this.allitempro);
-                }
-              });
             })
             .catch((error) => {
               console.log(error);
             });
         } else if (e === "categories") {
-          this.allitempro = [];
           let res = await crudDataService
-            .getAll('categories-without-paginated')
+            .getAll("categories-without-paginated")
             .then((response) => {
-              this.allpro = response.data.data.map((ele) => ({
+              this.allitempro = response.data.data.map((ele) => ({
                 value: ele.id,
                 name: ele.name,
               }));
-              this.allpro.forEach((element) => {
-                console.log(this.conflictsdata.category.includes(element.value));
-                if (!this.conflictsdata.category.includes(element.value)) {
-                  this.allitempro.push(element);
-                }
-              });
             })
             .catch((error) => {
               console.log(error);
             });
         }
       }
-}
-     else {
-      if (e === "products") {
-        let res = await crudDataService
-          .getAll('products-without-paginated')
-          .then((response) => {
-            this.allitempro = response.data.data.map((ele) => ({
-              value: ele.id,
-              name: ele.name.ar,
-            }));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    else  if (e === "categories") {
-        let res = await crudDataService
-          .getAll('categories-without-paginated')
-          .then((response) => {
-            this.allitempro = response.data.data.map((ele) => ({
-              value: ele.id,
-              name: ele.name  ,
-            }));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }}
     },
     allmultiy(e) {
       this.formData.offerables.forEach((element) => {
@@ -646,13 +651,12 @@ if (this.conflictsdata.product||this.conflictsdata.category) {
       console.log(this.formData.offerables);
     },
     allmulti(e) {
-      console.log( this.formData.offerables);
+      console.log(this.formData.offerables);
       this.formData.offerables.forEach((element) => {
         element.ids = e;
       });
     },
     async offers() {
-     
       this.loading = true; // Start loading
       try {
         let res = await crudDataService.getAll("offers");
@@ -673,18 +677,18 @@ if (this.conflictsdata.product||this.conflictsdata.category) {
       this.$swal
         .fire({
           title: `؟"${name}" هل تريد حذف العرض `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
+            this.$swal.fire({
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم", // ✅ Custom OK button text
+            });
             crudDataService.delete("offers", `${data}`).then(() => {
               this.myList.splice(index, 1);
             });
@@ -703,22 +707,24 @@ if (this.conflictsdata.product||this.conflictsdata.category) {
 
     async add() {
       if (!this.formData.image && this.imageUrl) {
-    try {
-      const response = await fetch(this.imageUrl);
-      const blob = await response.blob();
-      this.formData.image = new File([blob], "filename.jpg", { type: "image/jpeg" });
-    } catch (error) {
-      console.error("Error downloading image:", error);
-      return;
-    }
-  }
+        try {
+          const response = await fetch(this.imageUrl);
+          const blob = await response.blob();
+          this.formData.image = new File([blob], "filename.jpg", {
+            type: "image/jpeg",
+          });
+        } catch (error) {
+          console.error("Error downloading image:", error);
+          return;
+        }
+      }
 
       let res = await crudDataService
-        .create(`offers`, this.formData,
-        {
+        .create(`offers`, this.formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-          }})
+          },
+        })
         .then((response) => {
           this.ShowModel = false;
           this.offers();
@@ -773,7 +779,7 @@ if (this.conflictsdata.product||this.conflictsdata.category) {
 <style lang="scss">
 .modal {
   overflow: auto;
- 
+
   & .multiselect-placeholder,
   & ::placeholder {
     font-size: 12px;

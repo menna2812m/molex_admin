@@ -27,11 +27,15 @@
             </button>
           </div>
           <div class="py-2">
-            <div class="d-flex justify-content-between align-items-center" @click="opencheckes" style="cursor: pointer;">
+            <div
+              class="d-flex justify-content-between align-items-center"
+              @click="opencheckes"
+              style="cursor: pointer"
+            >
               <h6 class="pt-2" style="color: #fe7eae">عرض كوبونات التخفيض</h6>
               <i class="fe fe-minus"></i>
             </div>
-            <div v-if="checksboxes" >
+            <div v-if="checksboxes">
               <label class="ckbox">
                 <input type="checkbox" />
                 <span> الكل</span>
@@ -51,11 +55,15 @@
             </div>
           </div>
           <div class="py-2">
-            <div class="d-flex justify-content-between align-items-center" @click="opencopun" style="cursor: pointer;">
-              <h6 class="pt-2" style="color: #fe7eae">نوع الكوبون  </h6>
+            <div
+              class="d-flex justify-content-between align-items-center"
+              @click="opencopun"
+              style="cursor: pointer"
+            >
+              <h6 class="pt-2" style="color: #fe7eae">نوع الكوبون</h6>
               <i class="fe fe-minus"></i>
             </div>
-            <div v-if="copunstype" >
+            <div v-if="copunstype">
               <label class="ckbox">
                 <input type="checkbox" />
                 <span> الكل</span>
@@ -68,63 +76,74 @@
                 <input type="checkbox" />
                 <span> كوبون تسويقي</span>
               </label>
-            
             </div>
           </div>
           <div class="py-2">
-            <div class="d-flex justify-content-between align-items-center" @click="openorder" style="cursor: pointer;">
-              <h6 class="pt-2" style="color: #fe7eae">ترتيب كوبونات التخفيض   </h6>
+            <div
+              class="d-flex justify-content-between align-items-center"
+              @click="openorder"
+              style="cursor: pointer"
+            >
+              <h6 class="pt-2" style="color: #fe7eae">ترتيب كوبونات التخفيض</h6>
               <i class="fe fe-minus"></i>
             </div>
-            <div v-if="copunsorder" >
+            <div v-if="copunsorder">
               <label class="rdiobox">
                 <input name="rdio" type="radio" />
-                 <span>حسب الإضافة </span>
-                 </label>
-                 <label class="rdiobox">
+                <span>حسب الإضافة </span>
+              </label>
+              <label class="rdiobox">
                 <input name="rdio" type="radio" />
-                 <span>أبجديا  </span>
-                 </label>
-                 <label class="rdiobox">
+                <span>أبجديا </span>
+              </label>
+              <label class="rdiobox">
                 <input name="rdio" type="radio" />
-                 <span>تاريخ البداية  </span>
-                 </label>
-                 <label class="rdiobox">
+                <span>تاريخ البداية </span>
+              </label>
+              <label class="rdiobox">
                 <input name="rdio" type="radio" />
-                 <span>تاريخ الإنتهاء  </span>
-                 </label>
-                 <label class="rdiobox">
+                <span>تاريخ الإنتهاء </span>
+              </label>
+              <label class="rdiobox">
                 <input name="rdio" type="radio" />
-                 <span>الأكثر مبيعا  </span>
-                 </label>
+                <span>الأكثر مبيعا </span>
+              </label>
             </div>
           </div>
           <div class="py-2">
-            <div class="d-flex justify-content-between align-items-center" @click="openview" style="cursor: pointer;">
-              <h6 class="pt-2" style="color: #fe7eae">عرض حسب     </h6>
+            <div
+              class="d-flex justify-content-between align-items-center"
+              @click="openview"
+              style="cursor: pointer"
+            >
+              <h6 class="pt-2" style="color: #fe7eae">عرض حسب</h6>
               <i class="fe fe-minus"></i>
             </div>
-            <div v-if="copunsview" >
+            <div v-if="copunsview">
               <label class="rdiobox">
                 <input name="rdio" type="radio" />
-                 <span>الأحدث اولا  </span>
-                 </label>
-                 <label class="rdiobox">
+                <span>الأحدث اولا </span>
+              </label>
+              <label class="rdiobox">
                 <input name="rdio" type="radio" />
-                 <span>الأقدم اولا  </span>
-                 </label>
-                
+                <span>الأقدم اولا </span>
+              </label>
             </div>
           </div>
           <div class="d-flex justify-content-between align-items-center">
-                  <button
-                    class="text-white border-0 rounded w-50 me-1 p-2"
-                    style="color: #E66239; background:#E66239;"
-                  >
-                  عرض النتائج 
-                  </button>
-                  <button class="border-0 rounded w-50 p-2 text-black m-0 " style="background: #DFDFDF;">إعادة تعيين</button>
-                </div>
+            <button
+              class="text-white border-0 rounded w-50 me-1 p-2"
+              style="color: #fd601f; background: #fd601f"
+            >
+              عرض النتائج
+            </button>
+            <button
+              class="border-0 rounded w-50 p-2 text-black m-0"
+              style="background: #dfdfdf"
+            >
+              إعادة تعيين
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -141,32 +160,32 @@ export default {
   data() {
     return {
       style: false,
-      checksboxes:true,
-      copunstype:true,
-      copunsorder:true,
-      copunsview:true
+      checksboxes: true,
+      copunstype: true,
+      copunsorder: true,
+      copunsview: true,
     };
   },
   methods: {
     open() {
-        this.style = !this.style;
+      this.style = !this.style;
     },
 
     close() {
       this.style = !this.style;
     },
-    opencheckes(){
+    opencheckes() {
       this.checksboxes = !this.checksboxes;
     },
-    opencopun(){
+    opencopun() {
       this.copunstype = !this.copunstype;
     },
-    openorder(){
+    openorder() {
       this.copunsorder = !this.copunsorder;
     },
-    openview(){
-      this.copunsview=!this.copunsview
-    }
+    openview() {
+      this.copunsview = !this.copunsview;
+    },
   },
 };
 </script>
@@ -199,7 +218,7 @@ export default {
 
 .searchTerm {
   width: 100%;
-  border: 1px solid #E66239;
+  border: 1px solid #fd601f;
   border-left: none;
   border-radius: 0 5px 5px 0;
   outline: none;
@@ -207,14 +226,14 @@ export default {
 }
 
 .searchTerm:focus {
-  color: #E66239;
+  color: #fd601f;
 }
 
 .searchButton {
   width: 40px;
   height: 36px;
-  border: 1px solid #E66239;
-  background: #E66239;
+  border: 1px solid #fd601f;
+  background: #fd601f;
   text-align: center;
   color: #fff;
   border-radius: 5px 0 0 5px;

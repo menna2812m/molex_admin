@@ -298,7 +298,7 @@
         v-else
       >
         <div
-          style="background: #E66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد منتجات حتي الان
@@ -714,7 +714,11 @@
                             "
                             v-model="optionfirstid"
                           >
-                            <option v-for="(oneoption, i) in options" :key="i" :value="oneoption.id">
+                            <option
+                              v-for="(oneoption, i) in options"
+                              :key="i"
+                              :value="oneoption.id"
+                            >
                               {{ oneoption.name.ar }}
                             </option>
                           </select>
@@ -730,9 +734,12 @@
                             "
                             v-model="valfirstid"
                           >
-                            <option v-for="(valoption, i) in valueinoption" :key="i" :value="valoption.id">
+                            <option
+                              v-for="(valoption, i) in valueinoption"
+                              :key="i"
+                              :value="valoption.id"
+                            >
                               {{ valoption.value.ar }}
-
                             </option>
                           </select>
                         </div>
@@ -747,12 +754,16 @@
                             "
                             v-model="optionsecondid"
                           >
-                            <option v-for="(oneoption, i) in options" :key="i" :value="oneoption.id" >
+                            <option
+                              v-for="(oneoption, i) in options"
+                              :key="i"
+                              :value="oneoption.id"
+                            >
                               {{ oneoption.name.ar }}
                             </option>
                           </select>
                         </div>
-                     
+
                         <div class="col-md-6 mb-2">
                           <select
                             style="
@@ -764,7 +775,11 @@
                             "
                             v-model="valsecondid"
                           >
-                            <option v-for="(valoption, i) in valueinoption" :key="i" :value="valoption.id" >
+                            <option
+                              v-for="(valoption, i) in valueinoption"
+                              :key="i"
+                              :value="valoption.id"
+                            >
                               {{ valoption.value.ar }}
                             </option>
                           </select>
@@ -828,10 +843,7 @@
                           />
                         </div>
                         <div class="col-md-12 mb-2">
-                          <input
-                            v-model="onevar.is_default"
-                            type="checkbox"
-                          />
+                          <input v-model="onevar.is_default" type="checkbox" />
                           افتراضي
                         </div>
                       </div>
@@ -843,8 +855,7 @@
                 حفظ
               </button>
             </div>
-         </div>
-
+          </div>
         </div>
       </b-modal>
     </teleport>
@@ -874,11 +885,11 @@ export default {
   },
   data() {
     return {
-    valueinoption:[],
-      optionfirstid:'',
-      valfirstid:'',
-      optionsecondid:'',
-      valsecondid:'',
+      valueinoption: [],
+      optionfirstid: "",
+      valfirstid: "",
+      optionsecondid: "",
+      valsecondid: "",
       loading: false,
       sizesen: [],
       sizesar: [],
@@ -963,12 +974,11 @@ export default {
 
   methods: {
     handleSelectChange(selectedValue) {
-    this.valfirstid = selectedValue.target.value;
-  },
-  handleSelectvalue(selectedValue){
-    this.valsecondid = selectedValue.target.value;
-
-  },
+      this.valfirstid = selectedValue.target.value;
+    },
+    handleSelectvalue(selectedValue) {
+      this.valsecondid = selectedValue.target.value;
+    },
     async toggleactive(id) {
       let res = await crudDataService.create(`products/${id}/toggle`, "");
       const toast = useToast();
@@ -988,8 +998,8 @@ export default {
       this.imageUrl.splice(index, 1);
     },
     addalloptions() {
-      this.options.forEach(element => {
-        this.valueinoption.push(...element.values)
+      this.options.forEach((element) => {
+        this.valueinoption.push(...element.values);
       });
 
       this.cartdetail = true;
@@ -1016,17 +1026,19 @@ export default {
       this.id = data.id;
     },
     async newvariant() {
-
       this.variants.forEach((element) => {
-     element.options.push({
-      option_id:this.optionfirstid,
-      value_id:this.valfirstid
-     },{
-      option_id:this.optionsecondid,
-      value_id:this.valsecondid
-     });
+        element.options.push(
+          {
+            option_id: this.optionfirstid,
+            value_id: this.valfirstid,
+          },
+          {
+            option_id: this.optionsecondid,
+            value_id: this.valsecondid,
+          }
+        );
       });
- 
+
       let res = await crudDataService.create(`products/${this.id}/variants`, {
         options: this.options,
         variants: this.variants,
@@ -1051,7 +1063,7 @@ export default {
             ar: "",
             en: "",
           },
-          color:"#FFF",
+          color: "#FFF",
           id: "",
           is_new: true,
         });
@@ -1068,10 +1080,8 @@ export default {
         },
         select: "",
         is_color: false,
-        values: [
-        ],
+        values: [],
       });
-     
     },
 
     selctchange(selectedValue, index) {
@@ -1091,7 +1101,7 @@ export default {
         this.options[index].values.push({
           id: null,
           is_new: true,
-        color:"#FFF",
+          color: "#FFF",
           value: {
             ar: "",
             en: "",
@@ -1247,18 +1257,18 @@ export default {
       this.$swal
         .fire({
           title: ` ؟"${name.ar}" هل تريد حذف `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
+            this.$swal.fire({
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم", // ✅ Custom OK button text
+            });
             crudDataService.delete("products", `${data}`).then(() => {
               this.items.splice(index, 1);
               this.ShowModelEdit = false;
@@ -1287,11 +1297,11 @@ export default {
     background: transparent;
     padding: 9px 14px;
     margin: 0;
-    color: #E66239;
+    color: #fd601f;
   }
   &.nav.panel-tabs li a.active {
     color: #fff;
-    background: #E66239;
+    background: #fd601f;
   }
 }
 .plus {
@@ -1303,17 +1313,17 @@ export default {
   padding: 5px;
   background: #eff4fb;
   border-radius: 2px;
-  color: #E66239;
+  color: #fd601f;
 }
 .pin-color {
   padding: 5px;
-  background: #E66239;
+  background: #fd601f;
   border-radius: 2px;
   color: #eff4fb;
 }
 .spanprice {
   background: #6295d51a;
-  color: #E66239;
+  color: #fd601f;
   text-align: center;
   justify-content: center;
   img {

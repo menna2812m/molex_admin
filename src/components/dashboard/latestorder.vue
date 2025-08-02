@@ -137,7 +137,7 @@ export default {
   box-shadow: 1px 3px 20px 2px #e6edf0;
   border-radius: 15px;
   .card-header.header-notifi {
-    color: #E66239;
+    color: #fd601f;
     border-bottom: none;
   }
   .list_item:not(:last-child) {
@@ -166,7 +166,7 @@ export default {
     }
   }
   .progres {
-    color: #E66239;
+    color: #fd601f;
     font-weight: 600;
     font-size: 16px;
   }

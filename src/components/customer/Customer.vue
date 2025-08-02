@@ -118,7 +118,7 @@
                 <td class="text-secondary">
                   <span class="text-secondary">
                     <i class="typcn typcn-phone text-black"></i>
-                    <a :href="'tel:'+`${item.phone}`"> {{ item.phone }}</a>
+                    <a :href="'tel:' + `${item.phone}`"> {{ item.phone }}</a>
                   </span>
                 </td>
                 <td class="text-secondary">
@@ -131,8 +131,8 @@
                 </td>
                 <td>
                   <button
-                  class="btn bg-info me-2"
-                  @click="SingleCustomer(item.id)"
+                    class="btn bg-info me-2"
+                    @click="SingleCustomer(item.id)"
                     v-if="perminlocal.includes('users-show')"
                   >
                     <i class="si si-eye"></i>
@@ -156,7 +156,7 @@
         v-else
       >
         <div
-          style="background: #e66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد عملاء حتي الان
@@ -572,7 +572,7 @@ export default {
   }
 }
 .progres {
-  color: #e66239;
+  color: #fd601f;
   font-weight: 600;
   font-size: 16px;
 }

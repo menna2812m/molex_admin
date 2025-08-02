@@ -32,7 +32,6 @@
           >
             <!-- left-arrow -->
             <div class="slide-left disabled" id="slide-left">
-           
               <!-- <img
                 :src="logo"
                 class="header-brand-img desktop-logo"
@@ -56,7 +55,7 @@
                 <a class="btn-visit btn" href="https://x5smart.com" target="_blank">زيارة المتجر</a>
               </div>
             </div> -->
-         
+
             <ul class="menu-nav nav">
               <li
                 class="nav-item"
@@ -67,207 +66,213 @@
                   show: menuItem.active,
                   'nav-header': menuItem.headTitle,
                 }"
-                :style="perminlocal.includes(menuItem.name)?'display:block':'display:none'"
+                :style="
+                  perminlocal.includes(menuItem.name)
+                    ? 'display:block'
+                    : 'display:none'
+                "
               >
-              <div 
-         >
-      <!-- head title  -->
-      <span v-if="menuItem.headTitle" class="nav-label">{{
-                  menuItem.headTitle
-                }}</span>
-                <!-- has-Link -->
-                <router-link
-                  class="nav-link"
-                  v-if="menuItem.type === 'link'"
-                  :to="menuItem.path"
-                  @click="setNavActive(menuItem)"
-                >
-                  <span class="shape1"></span>
-                  <span class="shape2"></span>
-                  <div class="pos-relative">
+                <div>
+                  <!-- head title  -->
+                  <span v-if="menuItem.headTitle" class="nav-label">{{
+                    menuItem.headTitle
+                  }}</span>
+                  <!-- has-Link -->
+                  <router-link
+                    class="nav-link"
+                    v-if="menuItem.type === 'link'"
+                    :to="menuItem.path"
+                    @click="setNavActive(menuItem)"
+                  >
+                    <span class="shape1"></span>
+                    <span class="shape2"></span>
+                    <div class="pos-relative">
+                      <i
+                        :class="menuItem.icon + ' sidemenu-icon menu-icon'"
+                      ></i>
+                      <span
+                        v-if="menuItem.notifications && localStorageValue > 0"
+                        class="notification-badge"
+                      >
+                        {{ localStorageValue }}
+                      </span>
+                    </div>
+
+                    <span class="sidemenu-label">{{ menuItem.title }}</span>
+                  </router-link>
+                  <!-- has-empty -->
+                  <a
+                    class="nav-link"
+                    to=""
+                    v-if="menuItem.type === 'empty'"
+                    @click="toggleNavActive(menuItem)"
+                  >
+                    <span class="shape1"></span>
+                    <span class="shape2"></span>
                     <i :class="menuItem.icon + ' sidemenu-icon menu-icon'"></i>
-                    <span v-if="menuItem.notifications&&localStorageValue>0" class="notification-badge">
-                      {{  localStorageValue }}
-                    </span>
-                  </div>
-                
-                  <span class="sidemenu-label">{{ menuItem.title }}</span>
-
-                </router-link>
-                <!-- has-empty -->
-                <a
-                  class="nav-link"
-                  to=""
-                  v-if="menuItem.type === 'empty'"
-                  @click="toggleNavActive(menuItem)"
-                >
-                  <span class="shape1"></span>
-                  <span class="shape2"></span>
-                  <i :class="menuItem.icon + ' sidemenu-icon menu-icon'"></i>
-                  <span class="sidemenu-label">{{ menuItem.title }}</span>
-                </a>
-                <!-- has-Sub -->
-                <router-link
-                  class="nav-link with-sub"
-                  to=""
-                  :class="{ active: menuItem.active }"
-                  v-if="menuItem.type === 'sub'"
-                  @click="toggleNavActive(menuItem)"
-                >
-                  <span class="shape1"></span>
-                  <span class="shape2"></span>
-                  <i :class="menuItem.icon + ' sidemenu-icon menu-icon'"></i>
-                  <span class="sidemenu-label">{{ menuItem.title }}</span>
-                  <span
-                    :class="'badge ' + menuItem.badgeClass + ' side-badge'"
-                    v-if="menuItem.badgeClass && menuItem.badgeValue"
+                    <span class="sidemenu-label">{{ menuItem.title }}</span>
+                  </a>
+                  <!-- has-Sub -->
+                  <router-link
+                    class="nav-link with-sub"
+                    to=""
+                    :class="{ active: menuItem.active }"
+                    v-if="menuItem.type === 'sub'"
+                    @click="toggleNavActive(menuItem)"
                   >
-                    {{ menuItem.badgeValue }}
-                  </span>
-                  <i
-                    class="angle fe fe-chevron-right"
-                    :class="{ 'd-none': menuItem.badgeClass }"
-                  ></i>
-                </router-link>
-
-                <!-- 2nd Level menu -->
-                <ul
-                  class="nav-sub"
-                  v-if="menuItem.children"
-                  :class="{ open: menuItem.active, active: menuItem.active }"
-                >
-                  <li
-                    class="nav-sub-item"
-                    v-for="childrenItem in menuItem.children"
-                    :key="childrenItem.children"
-                    :class="{
-                      show: childrenItem.active,
-                      active: childrenItem.defaultActive,
-                    }"
-                  >
-                    <!-- link -->
-                    <router-link
-                      class="nav-sub-link"
-                      :class="{ active: childrenItem.active }"
-                      :to="childrenItem.path"
-                      v-if="childrenItem.type === 'link'"
-                      @click="setNavActive(childrenItem)"
+                    <span class="shape1"></span>
+                    <span class="shape2"></span>
+                    <i :class="menuItem.icon + ' sidemenu-icon menu-icon'"></i>
+                    <span class="sidemenu-label">{{ menuItem.title }}</span>
+                    <span
+                      :class="'badge ' + menuItem.badgeClass + ' side-badge'"
+                      v-if="menuItem.badgeClass && menuItem.badgeValue"
                     >
-                      {{ childrenItem.title }}
-                    </router-link>
-                    <!-- empty -->
-                    <a
-                      class="nav-sub-link"
-                      href="javascript:;"
-                      v-if="childrenItem.type === 'empty'"
+                      {{ menuItem.badgeValue }}
+                    </span>
+                    <i
+                      class="angle fe fe-chevron-right"
+                      :class="{ 'd-none': menuItem.badgeClass }"
+                    ></i>
+                  </router-link>
+
+                  <!-- 2nd Level menu -->
+                  <ul
+                    class="nav-sub"
+                    v-if="menuItem.children"
+                    :class="{ open: menuItem.active, active: menuItem.active }"
+                  >
+                    <li
+                      class="nav-sub-item"
+                      v-for="childrenItem in menuItem.children"
+                      :key="childrenItem.children"
                       :class="{
                         show: childrenItem.active,
-                        active: childrenItem.active,
+                        active: childrenItem.defaultActive,
                       }"
                     >
-                      {{ childrenItem.title }}
-                    </a>
-
-                    <!-- sub -->
-                    <router-link
-                      class="nav-sub-link sub-with-sub"
-                      :class="{ active: childrenItem.active }"
-                      to=""
-                      v-if="childrenItem.type === 'sub'"
-                      @click="toggleNavActive(childrenItem)"
-                    >
-                      <span class="sidemenu-label">{{
-                        childrenItem.title
-                      }}</span>
-                      <i class="angle fe fe-chevron-right"></i>
-                    </router-link>
-
-                    <!-- 3rd Level menu -->
-                    <ul
-                      class="sub-nav-sub"
-                      v-if="childrenItem.children"
-                      :class="{ open: childrenItem.active }"
-                    >
-                      <li
-                        class="nav-sub-item"
-                        v-for="childrenSubItem in childrenItem.children"
-                        :key="childrenSubItem.title"
+                      <!-- link -->
+                      <router-link
+                        class="nav-sub-link"
+                        :class="{ active: childrenItem.active }"
+                        :to="childrenItem.path"
+                        v-if="childrenItem.type === 'link'"
+                        @click="setNavActive(childrenItem)"
+                      >
+                        {{ childrenItem.title }}
+                      </router-link>
+                      <!-- empty -->
+                      <a
+                        class="nav-sub-link"
+                        href="javascript:;"
+                        v-if="childrenItem.type === 'empty'"
                         :class="{
-                          show: childrenSubItem.active,
-                          active: childrenSubItem.defaultActive,
+                          show: childrenItem.active,
+                          active: childrenItem.active,
                         }"
                       >
-                        <!-- link -->
-                        <router-link
-                          class="nav-sub-link"
-                          :class="{ active: childrenSubItem.active }"
-                          :to="childrenSubItem.path"
-                          v-if="childrenSubItem.type === 'link'"
-                          @click="setNavActive(childrenSubItem)"
-                        >
-                          {{ childrenSubItem.title }}
-                        </router-link>
-                        <!-- empty -->
-                        <a
-                          class="nav-sub-link"
-                          to="javascript:;"
-                          v-if="childrenSubItem.type === 'empty'"
-                        >
-                          {{ childrenSubItem.title }}a
-                        </a>
-                        <!-- sub -->
-                        <router-link
-                          class="nav-sub-link sub-with-sub"
-                          :to="childrenSubItem.path"
-                          v-if="childrenSubItem.type === 'sub'"
-                          @click="toggleNavActive(childrenSubItem)"
-                        >
-                          <span class="sidemenu-label">{{
-                            childrenSubItem.title
-                          }}</span>
-                          <i class="angle fe fe-chevron-right"></i>
-                        </router-link>
+                        {{ childrenItem.title }}
+                      </a>
 
-                        <!-- 4th level -->
-                        <ul
-                          class="sub-nav-sub"
-                          v-if="childrenSubItem.children"
-                          :class="{ open: childrenSubItem.active }"
+                      <!-- sub -->
+                      <router-link
+                        class="nav-sub-link sub-with-sub"
+                        :class="{ active: childrenItem.active }"
+                        to=""
+                        v-if="childrenItem.type === 'sub'"
+                        @click="toggleNavActive(childrenItem)"
+                      >
+                        <span class="sidemenu-label">{{
+                          childrenItem.title
+                        }}</span>
+                        <i class="angle fe fe-chevron-right"></i>
+                      </router-link>
+
+                      <!-- 3rd Level menu -->
+                      <ul
+                        class="sub-nav-sub"
+                        v-if="childrenItem.children"
+                        :class="{ open: childrenItem.active }"
+                      >
+                        <li
+                          class="nav-sub-item"
+                          v-for="childrenSubItem in childrenItem.children"
+                          :key="childrenSubItem.title"
+                          :class="{
+                            show: childrenSubItem.active,
+                            active: childrenSubItem.defaultActive,
+                          }"
                         >
-                          <!-- link  -->
-                          <li
-                            class="nav-sub-item"
-                            v-for="childrenSubItem1 in childrenSubItem.children"
-                            :key="childrenSubItem1.title"
-                            :class="{
-                              show: childrenSubItem1.active,
-                              active: childrenSubItem1.defaultActive,
-                            }"
+                          <!-- link -->
+                          <router-link
+                            class="nav-sub-link"
+                            :class="{ active: childrenSubItem.active }"
+                            :to="childrenSubItem.path"
+                            v-if="childrenSubItem.type === 'link'"
+                            @click="setNavActive(childrenSubItem)"
                           >
-                            <a
-                              class="nav-sub-link"
-                              :class="{ active: childrenSubItem1.active }"
-                              :to="childrenSubItem1.path"
-                              v-if="childrenSubItem1.type === 'link'"
+                            {{ childrenSubItem.title }}
+                          </router-link>
+                          <!-- empty -->
+                          <a
+                            class="nav-sub-link"
+                            to="javascript:;"
+                            v-if="childrenSubItem.type === 'empty'"
+                          >
+                            {{ childrenSubItem.title }}a
+                          </a>
+                          <!-- sub -->
+                          <router-link
+                            class="nav-sub-link sub-with-sub"
+                            :to="childrenSubItem.path"
+                            v-if="childrenSubItem.type === 'sub'"
+                            @click="toggleNavActive(childrenSubItem)"
+                          >
+                            <span class="sidemenu-label">{{
+                              childrenSubItem.title
+                            }}</span>
+                            <i class="angle fe fe-chevron-right"></i>
+                          </router-link>
+
+                          <!-- 4th level -->
+                          <ul
+                            class="sub-nav-sub"
+                            v-if="childrenSubItem.children"
+                            :class="{ open: childrenSubItem.active }"
+                          >
+                            <!-- link  -->
+                            <li
+                              class="nav-sub-item"
+                              v-for="childrenSubItem1 in childrenSubItem.children"
+                              :key="childrenSubItem1.title"
+                              :class="{
+                                show: childrenSubItem1.active,
+                                active: childrenSubItem1.defaultActive,
+                              }"
                             >
-                              {{ childrenSubItem1.title }}
-                            </a>
-                            <!---empty-->
-                            <a
-                              class="nav-sub-link"
-                              to=""
-                              v-if="childrenSubItem1.type === 'empty'"
-                            >
-                              {{ childrenSubItem1.title }}
-                            </a>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-          
+                              <a
+                                class="nav-sub-link"
+                                :class="{ active: childrenSubItem1.active }"
+                                :to="childrenSubItem1.path"
+                                v-if="childrenSubItem1.type === 'link'"
+                              >
+                                {{ childrenSubItem1.title }}
+                              </a>
+                              <!---empty-->
+                              <a
+                                class="nav-sub-link"
+                                to=""
+                                v-if="childrenSubItem1.type === 'empty'"
+                              >
+                                {{ childrenSubItem1.title }}
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
               </li>
             </ul>
             <!-- right-arrow  -->
@@ -292,9 +297,9 @@
 </template>
 
 <script>
-import crudDataService from '../../../Services/crudDataService';
-import NotificationUpdater from '../../../components/Contact/Contact.vue';
-import { ref, onMounted, onUnmounted } from 'vue';
+import crudDataService from "../../../Services/crudDataService";
+import NotificationUpdater from "../../../components/Contact/Contact.vue";
+import { ref, onMounted, onUnmounted } from "vue";
 // import Switcher from "../Switcher/Switcher.vue";
 //MenuStart
 const menu_items = [
@@ -308,7 +313,7 @@ const menu_items = [
     icon: "typcn typcn-home",
     active: true,
     defaultActive: true,
-    name:'statistics-index'
+    name: "statistics-index",
   },
   {
     path: `${import.meta.env.BASE_URL}products`,
@@ -317,7 +322,7 @@ const menu_items = [
     icon: "ti-credit-card",
     active: true,
     defaultActive: false,
-    name:'products-index'
+    name: "products-index",
   },
   {
     path: `${import.meta.env.BASE_URL}category`,
@@ -326,11 +331,9 @@ const menu_items = [
     icon: "ti-package",
     active: true,
     defaultActive: false,
-    name: "categories-index"
-
+    name: "categories-index",
   },
   {
-
     title: " المتاجر",
     type: "sub",
     icon: "fas fa-store",
@@ -352,8 +355,7 @@ const menu_items = [
         active: false,
         defaultActive: false,
       },
-    ]
-
+    ],
   },
   // {
   //   path: `${import.meta.env.BASE_URL}vendors`,
@@ -390,7 +392,7 @@ const menu_items = [
     icon: "fe fe-shopping-bag",
     active: true,
     defaultActive: false,
-    name:'orders-index'
+    name: "orders-index",
   },
   {
     path: `${import.meta.env.BASE_URL}customer`,
@@ -399,7 +401,7 @@ const menu_items = [
     icon: "mdi mdi-account-plus",
     active: true,
     defaultActive: false,
-    name:'users-index'
+    name: "users-index",
   },
   {
     path: `${import.meta.env.BASE_URL}reports`,
@@ -408,7 +410,7 @@ const menu_items = [
     icon: "fa fa-bar-chart",
     active: true,
     defaultActive: false,
-    name:'reports-index'
+    name: "reports-index",
   },
   {
     path: `${import.meta.env.BASE_URL}question`,
@@ -417,7 +419,7 @@ const menu_items = [
     icon: "ti-comment-alt",
     active: true,
     defaultActive: false,
-    name:'questions-index'
+    name: "questions-index",
   },
   // {
   //   path: `${import.meta.env.BASE_URL}definition`,
@@ -438,17 +440,16 @@ const menu_items = [
     icon: "fas fa-ticket-alt",
     active: true,
     defaultActive: false,
-    name:'coupons-index'
+    name: "coupons-index",
   },
   {
-
     path: `${import.meta.env.BASE_URL}offer`,
     title: "العروض",
     type: "link",
     icon: "pe-7s-diamond",
     active: true,
     defaultActive: false,
-    name:"offers-index"
+    name: "offers-index",
   },
   // {
   //   path: `${import.meta.env.BASE_URL}marketing`,
@@ -458,14 +459,14 @@ const menu_items = [
   //   active: true,
   //   defaultActive: false,
   // },
-   {
+  {
     path: `${import.meta.env.BASE_URL}basket`,
     title: "السلات المتروكة",
     type: "link",
     icon: "zmdi zmdi-mall",
     active: true,
     defaultActive: false,
-    name:'cart_reminders-index'
+    name: "cart_reminders-index",
   },
   {
     path: `${import.meta.env.BASE_URL}contact`,
@@ -475,8 +476,8 @@ const menu_items = [
     active: true,
     defaultActive: false,
     notifications: 1,
-    name:'contacts-index'
-    },
+    name: "contacts-index",
+  },
   {
     path: `${import.meta.env.BASE_URL}sliders`,
     title: "اسلايدر",
@@ -484,10 +485,10 @@ const menu_items = [
     icon: "typcn typcn-code-outline",
     active: true,
     defaultActive: false,
-    name:'sliders-index'
+    name: "sliders-index",
   },
   {
-    'headTitle': "الإعدادات",
+    headTitle: "الإعدادات",
   },
 
   // {
@@ -498,8 +499,7 @@ const menu_items = [
   //   active: true,
   //   defaultActive: false,
   //   name:'special-offer-index'
-  //   }, 
-    
+  //   },
 
   // {
   //   path: `${import.meta.env.BASE_URL}setting`,
@@ -541,32 +541,29 @@ const menu_items = [
   //   name:'payment_methods-index'
   // },
   {
-
-title: "الشحن والتوصيل",
-type: "sub",
-icon: "fa fa-truck",
-active: false,
-defaultActive: false,
-name: "deliveries-index",
-children: [
-
-  {
-    path: `${import.meta.env.BASE_URL}delivery`,
-    title: "التوصيل",
-    type: "link",
+    title: "الشحن والتوصيل",
+    type: "sub",
+    icon: "fa fa-truck",
     active: false,
     defaultActive: false,
+    name: "deliveries-index",
+    children: [
+      {
+        path: `${import.meta.env.BASE_URL}delivery`,
+        title: "التوصيل",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+      {
+        path: `${import.meta.env.BASE_URL}delivery_options`,
+        title: "خيارات التوصيل",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+    ],
   },
-  {
-    path: `${import.meta.env.BASE_URL}delivery_options`,
-    title: "خيارات التوصيل",
-    type: "link",
-    active: false,
-    defaultActive: false,
-  },
-]
-
-},
   // {
   //   path: `${import.meta.env.BASE_URL}delivery`,
   //   title: "التوصيل",
@@ -594,88 +591,87 @@ children: [
     icon: "fa fa-money",
     active: true,
     defaultActive: false,
-    name: "withdrawal-requests-index"
+    name: "withdrawal-requests-index",
   },
   {
-
-title: "المزيد",
-type: "sub",
-icon: "fe fe-settings",
-active: false,
-defaultActive: false,
-name:"settings-index",
-children: [
-  {
-    path: `${import.meta.env.BASE_URL}setting`,
-    title: "الإعدادات",
-    type: "link",
+    title: "المزيد",
+    type: "sub",
+    icon: "fe fe-settings",
     active: false,
     defaultActive: false,
+    name: "settings-index",
+    children: [
+      {
+        path: `${import.meta.env.BASE_URL}setting`,
+        title: "الإعدادات",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+      {
+        path: `${import.meta.env.BASE_URL}notification`,
+        title: "الاشعارات",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+      {
+        path: `${import.meta.env.BASE_URL}admins`,
+        title: "المسئولين",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+      {
+        path: `${import.meta.env.BASE_URL}roles`,
+        title: "الادوار",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+      {
+        path: `${import.meta.env.BASE_URL}payment`,
+        title: "طرق الدفع",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+      {
+        path: `${import.meta.env.BASE_URL}definition`,
+        title: "الصفحات التعريفية ",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+    ],
   },
-  {
-    path: `${import.meta.env.BASE_URL}notification`,
-    title: "الاشعارات",
-    type: "link",
-    active: false,
-    defaultActive: false,
-  },
-  {
-    path: `${import.meta.env.BASE_URL}admins`,
-    title: "المسئولين",
-    type: "link",
-    active: false,
-    defaultActive: false,
-  },
-  {
-    path: `${import.meta.env.BASE_URL}roles`,
-    title: "الادوار",
-    type: "link",
-    active: false,
-    defaultActive: false,
-  },
-  {
-    path: `${import.meta.env.BASE_URL}payment`,
-    title: "طرق الدفع",
-    type: "link",
-    active: false,
-    defaultActive: false,
-  },
-  {
-    path: `${import.meta.env.BASE_URL}definition`,
-    title: "الصفحات التعريفية ",
-    type: "link",
-    active: false,
-    defaultActive: false,
-  },
-]
-
-},
 ];
 
 //MenuEnd
 export default {
   name: "Sidebar",
-  components:{
-    NotificationUpdater
+  components: {
+    NotificationUpdater,
   },
   data() {
     return {
       url: import.meta.env.BASE_URL,
       MENUITEMS: menu_items,
-      logo:'',
-      notificationCount:'',
-      notifications:[],
-    perminlocal : localStorage.getItem('permissions')
-
+      logo: "",
+      notificationCount: "",
+      notifications: [],
+      perminlocal: localStorage.getItem("permissions"),
     };
   },
   setup() {
     // Reactive property for storing the current value
-    const localStorageValue = ref(localStorage.getItem('notificationCount') || '');
+    const localStorageValue = ref(
+      localStorage.getItem("notificationCount") || ""
+    );
 
     // Function to poll localStorage for changes
     const pollLocalStorage = () => {
-      const currentValue = localStorage.getItem('notificationCount');
+      const currentValue = localStorage.getItem("notificationCount");
       if (localStorageValue.value !== currentValue) {
         localStorageValue.value = currentValue;
       }
@@ -702,27 +698,22 @@ export default {
   },
 
   methods: {
-   
     async getlogo() {
-    let res = await crudDataService.getAll(
-        `settings`
-      );
-      res.data.data.forEach(element => {
-        if (element.key==='logo') {
-          this.logo=element.image
+      let res = await crudDataService.getAll(`settings`);
+      res.data.data.forEach((element) => {
+        if (element.key === "logo") {
+          this.logo = element.image;
         }
       });
     },
     async getContact() {
       const res = await crudDataService.getAll("contacts");
-      this.items = res.data.data.data;   
-      this.notifications=[]
+      this.items = res.data.data.data;
+      this.notifications = [];
       res.data.data.data.forEach((element) => {
-
-        if (element.is_seen===0) {
+        if (element.is_seen === 0) {
           this.notifications.push(element);
-localStorage.setItem('notificationCount', this.notifications.length);
-
+          localStorage.setItem("notificationCount", this.notifications.length);
         }
       });
     },
@@ -884,18 +875,16 @@ localStorage.setItem('notificationCount', this.notifications.length);
       document.body.classList.remove("main-sidebar-open");
     },
   },
-  mounted(){
-    this.getContact()
+  mounted() {
+    this.getContact();
     this.getlogo();
-  }
+  },
 };
 </script>
 
 <style scoped lang="scss">
 .main-sidebar-header {
-
-
-.btn-visit{
+  .btn-visit {
     width: 120px;
     height: 35px;
     background: transparent;
@@ -903,22 +892,21 @@ localStorage.setItem('notificationCount', this.notifications.length);
     color: #fff;
     border-radius: 7px;
     margin-right: 15px;
+  }
 }
-}
-.img-logo{
+.img-logo {
   width: 60px;
-    height: 60px;
+  height: 60px;
 }
 .notification-badge {
   background-color: red;
   color: white;
-    border-radius: 50%;
-    padding: 2px 8px;
-    font-size: 0.75rem;
-    margin-left: 8px;
-    top: -6px;
-    position: absolute;
-    right: 16px;
-  }
-
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  margin-left: 8px;
+  top: -6px;
+  position: absolute;
+  right: 16px;
+}
 </style>

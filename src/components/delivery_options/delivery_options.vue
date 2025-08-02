@@ -21,14 +21,14 @@
     <section v-else>
       <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
         <div class="card-body p-0">
-          <div
-            class="table-responsive border-0 rounded border-bottom-0 mb-0"
-          >
-            <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0">
+          <div class="table-responsive border-0 rounded border-bottom-0 mb-0">
+            <table
+              class="table table-bordered text-nowrap text-md-nowrap mg-b-0"
+            >
               <tr>
                 <td class="text-muted">الاسم</td>
-                <td class="text-muted">الوصف </td>
-                <td class="text-muted">السعر </td>
+                <td class="text-muted">الوصف</td>
+                <td class="text-muted">السعر</td>
                 <td class="text-muted">التفعيل</td>
               </tr>
               <tr
@@ -89,7 +89,7 @@
         v-else
       >
         <div
-          style="background: #e66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد خيار توصيل حتي الان
@@ -104,7 +104,7 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                  <label>  الاسم عربي </label>
+                  <label> الاسم عربي </label>
                   <input
                     type="text"
                     class="form-control"
@@ -114,7 +114,7 @@
               </div>
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                  <label>  الاسم انجليزي </label>
+                  <label> الاسم انجليزي </label>
                   <input
                     type="text"
                     class="form-control"
@@ -125,7 +125,7 @@
 
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                  <label>الوصف عربي  </label>
+                  <label>الوصف عربي </label>
                   <input
                     type="text"
                     class="form-control"
@@ -135,7 +135,7 @@
               </div>
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                  <label>الوصف انجليزي  </label>
+                  <label>الوصف انجليزي </label>
                   <input
                     type="text"
                     class="form-control"
@@ -144,7 +144,7 @@
                 </div>
               </div>
               <div class="col-12 mb-3">
-                <label>السعر  </label>
+                <label>السعر </label>
                 <input
                   type="number"
                   name=""
@@ -152,8 +152,6 @@
                   v-model="formData.price"
                 />
               </div>
-          
-           
             </div>
             <button class="btn btn-primary m-auto mt-3 d-block" type="submit">
               اضافة
@@ -174,7 +172,7 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                  <label>الاسم عربي  </label>
+                  <label>الاسم عربي </label>
                   <input
                     type="text"
                     class="form-control"
@@ -184,7 +182,7 @@
               </div>
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                  <label>الاسم انجليزي  </label>
+                  <label>الاسم انجليزي </label>
                   <input
                     type="text"
                     class="form-control"
@@ -194,7 +192,7 @@
               </div>
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                  <label>الوصف عربي  </label>
+                  <label>الوصف عربي </label>
                   <input
                     type="text"
                     class="form-control"
@@ -204,7 +202,7 @@
               </div>
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                  <label>الوصف انجليزي  </label>
+                  <label>الوصف انجليزي </label>
                   <input
                     type="text"
                     class="form-control"
@@ -214,7 +212,7 @@
               </div>
               <div class="col-md-12 mb-3">
                 <div class="mt-1">
-                  <label>السعر  </label>
+                  <label>السعر </label>
                   <input
                     type="text"
                     class="form-control"
@@ -222,7 +220,6 @@
                   />
                 </div>
               </div>
-            
             </div>
             <button class="btn btn-primary m-auto mt-3 d-block" type="submit">
               تعديل
@@ -252,14 +249,14 @@ export default {
       id: null,
       loading: false,
       formData: {
-        name:{ar:'',en:''},
+        name: { ar: "", en: "" },
         price: "",
-        description: {ar:'',en:''},
+        description: { ar: "", en: "" },
       },
       EditData: {
-        name:{ar:'',en:''},
+        name: { ar: "", en: "" },
         price: "",
-        description:{ar:'',en:''},
+        description: { ar: "", en: "" },
       },
       perminlocal: localStorage.getItem("permissions"),
     };
@@ -328,25 +325,25 @@ export default {
           this.ShowModel = false;
           (this.formData.name = ""),
             (this.formData.description = ""),
-            (this.formData.price = "")
+            (this.formData.price = "");
         });
     },
     del(data, index, name) {
       this.$swal
         .fire({
           title: `؟"${name}" هل تريد حذف خيار التوصيل `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
+            this.$swal.fire({
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم", // ✅ Custom OK button text
+            });
             crudDataService.delete("delivery_options", `${data}`).then(() => {
               this.myList.splice(index, 1);
             });

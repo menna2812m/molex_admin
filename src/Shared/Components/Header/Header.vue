@@ -26,27 +26,34 @@
       </div>
       <div class="w-50 me-auto">
         <div class="position-relative search mt-2">
-            <div class="w-100 d-flex mx-auto align-center paddinginput">
-              <input
-            type="text"
-            class="searchTerm"
-            placeholder=" ابحث برقم الطلب"
-            @keyup.enter="performSearch"
-            v-model="searchQuery"
-          />
-          <button type="submit" class="searchButton" @click="performSearch">
-            <i class="fa fa-search fs-6 pb-3"></i>
-          </button>  
+          <div class="w-100 d-flex mx-auto align-center paddinginput">
+            <input
+              type="text"
+              class="searchTerm"
+              placeholder=" ابحث برقم الطلب"
+              @keyup.enter="performSearch"
+              v-model="searchQuery"
+            />
+            <button type="submit" class="searchButton" @click="performSearch">
+              <i class="fa fa-search fs-6 pb-3"></i>
+            </button>
           </div>
           <div class="searchdiv" v-if="show">
-             <div class="d-flex py-2 border-b" v-for="oneitem in resultsearch" :key="oneitem.id" >
-              <h4 class="pr-2" @click="detail(oneitem.id)" style="cursor: pointer">
-                {{  oneitem.order_id  }}
+            <div
+              class="d-flex py-2 border-b"
+              v-for="oneitem in resultsearch"
+              :key="oneitem.id"
+            >
+              <h4
+                class="pr-2"
+                @click="detail(oneitem.id)"
+                style="cursor: pointer"
+              >
+                {{ oneitem.order_id }}
               </h4>
-             </div>
             </div>
           </div>
-   
+        </div>
       </div>
       <div class="avatar-select">
         <i
@@ -58,9 +65,9 @@
         </button>
 
         <div class="text-start dropend mt-1" v-if="isDropdownOpen">
-          <a class="dropdown-item " @click="profile">
+          <a class="dropdown-item" @click="profile">
             <i class="fe fe-user"></i>
-            الملف الشخصي 
+            الملف الشخصي
           </a>
           <a class="dropdown-item text-danger" @click="logout">
             <i class="fe fe-log-in"></i>
@@ -80,49 +87,47 @@ export default {
     return {
       url: import.meta.env.BASE_URL,
       isDropdownOpen: false,
-      resultsearch:[],
-      show:false,
-      searchQuery: '',
+      resultsearch: [],
+      show: false,
+      searchQuery: "",
     };
   },
   name: "Header",
 
   methods: {
     detail(id) {
-        this.$router.push({ name: "SingleOrder", params: { id } });
-        this.show=false;
-        setTimeout(() => {
-            window.location.reload();
-           }, 1000);
+      this.$router.push({ name: "SingleOrder", params: { id } });
+      this.show = false;
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     },
     async performSearch() {
       // Logic to perform the search
-      console.log('Searching for:', this.searchQuery);
+      console.log("Searching for:", this.searchQuery);
       // Add your API call or search logic here
-      let res = await crudDataService.getAll(`orders?filter[order_id]=${this.searchQuery}`);
+      let res = await crudDataService.getAll(
+        `orders?filter[order_id]=${this.searchQuery}`
+      );
       console.log(res.data.data.data);
-      if (res.data.data.data.length>0) {
-      this.resultsearch=res.data.data.data
-        this.show=true;
-      }else{
-        this.show=false
+      if (res.data.data.data.length > 0) {
+        this.resultsearch = res.data.data.data;
+        this.show = true;
+      } else {
+        this.show = false;
       }
     },
-    async logout(){
-
-      let res=  await crudDataService.create(
-        "logout",
-        ``
-      );
-      localStorage.clear()
+    async logout() {
+      let res = await crudDataService.create("logout", ``);
+      localStorage.clear();
       this.$router.push({
-        name:'SignIn'
-      });  
+        name: "SignIn",
+      });
     },
-    async profile(){
+    async profile() {
       this.$router.push({
-        name:'Profile'
-      });  
+        name: "Profile",
+      });
     },
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
@@ -148,18 +153,18 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.searchdiv{
+.searchdiv {
   position: absolute;
-    border: 1px solid #bb86fc;
-    width: 100%;
-    border-radius: 6px;
-    padding: 10px;
-    background: #fff;
-    z-index: 111111111;
-    height: 250px;
-    overflow-y: scroll;
-    top: 100%;
-border-top: 0;
+  border: 1px solid #bb86fc;
+  width: 100%;
+  border-radius: 6px;
+  padding: 10px;
+  background: #fff;
+  z-index: 111111111;
+  height: 250px;
+  overflow-y: scroll;
+  top: 100%;
+  border-top: 0;
 }
 .dropend {
   background: #fff;
@@ -182,7 +187,7 @@ border-top: 0;
 
 .searchTerm {
   width: 100%;
-  border: 1px solid #E66239;
+  border: 1px solid #fd601f;
   border-left: none;
   border-radius: 0 5px 5px 0;
   outline: none;
@@ -190,14 +195,14 @@ border-top: 0;
 }
 
 .searchTerm:focus {
-  color: #E66239;
+  color: #fd601f;
 }
 
 .searchButton {
   width: 40px;
   height: 36px;
-  border: 1px solid #E66239;
-  background: #E66239;
+  border: 1px solid #fd601f;
+  background: #fd601f;
   text-align: center;
   color: #fff;
   border-radius: 5px 0 0 5px;

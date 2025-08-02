@@ -48,20 +48,20 @@
           >
             <i class="fe fe-trash text-danger"></i>
           </button>
-          <label class="custom-switch justify-content-center" 
-           v-if="perminlocal.includes('brands-toggle')">
-           
-               <input
-                 type="checkbox"
-                 name="custom-switch-checkbox"
-                 class="custom-switch-input"
-                 :checked="item.is_active"
-               
-                 @change="toggleactive(item.id)"
-               />
-               <span class="custom-switch-description"> </span>
-               <span class="custom-switch-indicator" ></span>
-             </label>
+          <label
+            class="custom-switch justify-content-center"
+            v-if="perminlocal.includes('brands-toggle')"
+          >
+            <input
+              type="checkbox"
+              name="custom-switch-checkbox"
+              class="custom-switch-input"
+              :checked="item.is_active"
+              @change="toggleactive(item.id)"
+            />
+            <span class="custom-switch-description"> </span>
+            <span class="custom-switch-indicator"></span>
+          </label>
         </div>
       </div>
       <section
@@ -70,7 +70,7 @@
         v-else
       >
         <div
-          style="background: #E66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد ماركات حتي الان
@@ -184,17 +184,17 @@ export default {
     };
   },
   methods: {
-    async toggleactive(id){
+    async toggleactive(id) {
       console.log(id);
- let res=  await crudDataService.create(`brands/${id}/toggle`,"");
-   const toast = useToast(); 
-   if(res.data.success){
-   toast.success(res.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   });
- }
- },
+      let res = await crudDataService.create(`brands/${id}/toggle`, "");
+      const toast = useToast();
+      if (res.data.success) {
+        toast.success(res.data.message, {
+          position: "top-center",
+          timeout: 5000,
+        });
+      }
+    },
     async add() {
       const toast = useToast();
 
@@ -213,34 +213,36 @@ export default {
             (this.formData.description.en = ""),
             (this.formData.image = ""),
             (this.imageUrl = "");
-            const toast = useToast(); 
-   toast.success(res.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   })
-        }).catch ((error) => {
-        // this.ShowModel = false;
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+          const toast = useToast();
+          toast.success(res.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
+        })
+        .catch((error) => {
+          // this.ShowModel = false;
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorData = error?.data?.errors || {};
+          console.log(error);
+
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
     },
     onFileSelected(event) {
       this.formData.image = event.target.files[0];
@@ -272,18 +274,18 @@ export default {
       this.$swal
         .fire({
           title: `؟"${name.ar}" هل تريد حذف ماركة`,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
+            this.$swal.fire({
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم", // ✅ Custom OK button text
+            });
             crudDataService.delete("brands", `${data}`).then(() => {
               this.items.splice(index, 1);
             });
@@ -299,6 +301,6 @@ export default {
 </script>
 <style>
 input::file-selector-button {
-  background-image: linear-gradient(to right, #E66239, #E66239) !important;
+  background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
 </style>

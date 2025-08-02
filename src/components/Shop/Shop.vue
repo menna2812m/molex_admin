@@ -6,16 +6,18 @@
           <div class="card-body p-0">
             <div class="d-flex justify-content-between align-items-start p-3">
               <img src="../../assets/img/logo.png" alt="" class="ps-3" />
-             
+
               <div class="w-100">
                 <div class="">
-                  <div class="d-flex w-100 justify-content-between align-items-end">
-                <h4 class="fw-semibold pb-1 mb-0">كشك بلس</h4>
-              <p class="fw-semibold mb-0">
-                    <span style="color: #fe7eae" class="fs-5">99</span>
-                    ر.س / شهريا
-                  </p>
-              </div>
+                  <div
+                    class="d-flex w-100 justify-content-between align-items-end"
+                  >
+                    <h4 class="fw-semibold pb-1 mb-0">كشك بلس</h4>
+                    <p class="fw-semibold mb-0">
+                      <span style="color: #fe7eae" class="fs-5">99</span>
+                      ر.س / شهريا
+                    </p>
+                  </div>
                   <div class="pt-3">
                     <ul class="list-unstyled">
                       <li
@@ -62,19 +64,17 @@
                       </li>
                     </ul>
                   </div>
-               
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                   <button
                     class="twobtn bg-white"
-                    style="color: #E66239; border: 1px solid #E66239"
+                    style="color: #fd601f; border: 1px solid #fd601f"
                   >
                     أكتشف المزيد
                   </button>
                   <button class="btn-add twobtn">تغير</button>
                 </div>
               </div>
-            
             </div>
           </div>
         </div>
@@ -87,13 +87,16 @@
               <img src="../../assets/img/logo.png" alt="" class="ps-3" />
               <div class="w-100">
                 <div class="">
-                  <div class="d-flex justify-content-between align-items-end" style="width: 85%;">
-                <h4 class="fw-semibold pb-1 mb-0">كشك بلس</h4>
-              <p class="fw-semibold mb-0">
-                    <span style="color: #fe7eae" class="fs-5">99</span>
-                    ر.س / شهريا
-                  </p>
-              </div>
+                  <div
+                    class="d-flex justify-content-between align-items-end"
+                    style="width: 85%"
+                  >
+                    <h4 class="fw-semibold pb-1 mb-0">كشك بلس</h4>
+                    <p class="fw-semibold mb-0">
+                      <span style="color: #fe7eae" class="fs-5">99</span>
+                      ر.س / شهريا
+                    </p>
+                  </div>
                   <div class="pt-3">
                     <ul class="list-unstyled">
                       <li
@@ -140,12 +143,11 @@
                       </li>
                     </ul>
                   </div>
-               
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                   <button
                     class="twobtn bg-white"
-                    style="color: #E66239; border: 1px solid #E66239"
+                    style="color: #fd601f; border: 1px solid #fd601f"
                   >
                     أكتشف المزيد
                   </button>
@@ -158,7 +160,7 @@
       </div>
     </div>
     <SMS />
-    <More/>
+    <More />
   </section>
 </template>
 
@@ -169,7 +171,7 @@ import More from "./More.vue";
 export default {
   components: {
     SMS,
-    More
+    More,
   },
   data() {
     return {};
@@ -242,8 +244,7 @@ export default {
 }
 @media (max-width: 576px) {
   .twobtn {
-                width: 100px;
-             
-            }
+    width: 100px;
+  }
 }
 </style>

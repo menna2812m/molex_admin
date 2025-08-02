@@ -19,13 +19,12 @@
         :rows="rows"
         :search-options="{ enabled: true }"
         :group-options="{ enabled: false }"
-      
         :pagination-options="{
-  enabled: true,
-  mode: 'fixed',
-  rowsPerPage: 10,
-  rowsPerPageLabel: 'عدد الصفوف',
-}"
+          enabled: true,
+          mode: 'fixed',
+          rowsPerPage: 10,
+          rowsPerPageLabel: 'عدد الصفوف',
+        }"
         :compactMode="true"
         :rtl="true"
       >
@@ -86,7 +85,7 @@
         v-else
       >
         <div
-          style="background: #e66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد اقسام حتي الان
@@ -149,7 +148,6 @@
                     accept=".pdf, image/jpeg, image/png"
                     class="form-control"
                   />
-                 
                 </div>
                 <img
                   :src="imageUrl"
@@ -224,7 +222,7 @@ export default {
     async toggleactive(id) {
       let res = await crudDataService.create(`categories/${id}/toggle`, "");
       console.log(res.data);
-      
+
       const toast = useToast();
       if (res.data.status) {
         toast.success(res.data.message, {
@@ -301,66 +299,68 @@ export default {
         })
         .then((res) => {
           this.ShowModelEdit = false;
-          this.getcategories()
+          this.getcategories();
           const toast = useToast();
           toast.success(res.data.message, {
             position: "top-center",
             timeout: 5000,
           });
-        }).catch((error) => {
-          // this.ShowModeledit = false;          
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+        })
+        .catch((error) => {
+          // this.ShowModeledit = false;
+          const errorData = error?.data?.errors || {};
+          console.log(error);
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
     },
     del(data, index, name) {
       this.$swal
         .fire({
           title: ` ؟"${name.ar}" هل تريد حذف قسم`,
-           showCancelButton: true,
+          showCancelButton: true,
           confirmButtonText: "نعم",
           cancelButtonText: "إلغاء", // ✅ Add cancel button text
         })
         .then((result) => {
-
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            crudDataService.delete("categories", `${data}`) .then(() => {
-            this.$swal.fire({
-              title: "تم الحذف بنجاح!",
-              icon: "success",
-              confirmButtonText: "تم",
-            });
-            this.myList.splice(index, 1);
-          }) .catch((error) => {
-            this.$swal.fire({
-              title: "حدث خطأ أثناء الحذف!",
-              text: error.data.message,
-              icon: "error",
-              confirmButtonText: "موافق",
-            });
-          });
-         
+            crudDataService
+              .delete("categories", `${data}`)
+              .then(() => {
+                this.$swal.fire({
+                  title: "تم الحذف بنجاح!",
+                  icon: "success",
+                  confirmButtonText: "تم",
+                });
+                this.myList.splice(index, 1);
+              })
+              .catch((error) => {
+                this.$swal.fire({
+                  title: "حدث خطأ أثناء الحذف!",
+                  text: error.data.message,
+                  icon: "error",
+                  confirmButtonText: "موافق",
+                });
+              });
           }
         });
-       
     },
   },
   computed: {
@@ -400,7 +400,7 @@ export default {
   display: none !important;
 }
 input::file-selector-button {
-  background-image: linear-gradient(to right, #e66239, #e66239) !important;
+  background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
 .imgetext + span {
   display: none;

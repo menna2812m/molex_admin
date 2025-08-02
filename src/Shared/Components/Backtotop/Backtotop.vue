@@ -1,5 +1,8 @@
 <template>
-  <div @click="scrollToTop()"  :class="['back-to-top-btn', isTop ?  'go-top':'' ]">
+  <div
+    @click="scrollToTop()"
+    :class="['back-to-top-btn', isTop ? 'go-top' : '']"
+  >
     <div><i class="fe fe-arrow-up fs-14"></i></div>
     <i class="ri-arrow-up-s-line"></i>
   </div>
@@ -27,25 +30,26 @@ export default {
         }, delay);
       };
     },
-
   },
   mounted() {
     let scrollpage;
     if (window) {
       scrollpage = window;
-    }
-    else {
+    } else {
       scrollpage = document.documentElement;
     }
-    scrollpage.addEventListener("scroll", this.debounce(e => {
-      const that = this;
-      let scrollPos = scrollpage.scrollY;
-      if (scrollPos >= 90) {
-        that.isTop = true;
-      } else {
-        that.isTop = false;
-      }
-    }, 1000));
+    scrollpage.addEventListener(
+      "scroll",
+      this.debounce((e) => {
+        const that = this;
+        let scrollPos = scrollpage.scrollY;
+        if (scrollPos >= 90) {
+          that.isTop = true;
+        } else {
+          that.isTop = false;
+        }
+      }, 1000)
+    );
   },
 };
 </script>
@@ -55,7 +59,7 @@ export default {
   position: fixed;
   cursor: pointer;
   color: #ffffff;
-  background-color: #E66239;
+  background-color: #fd601f;
   z-index: 4;
   width: 40px;
   height: 40px;
@@ -86,8 +90,8 @@ export default {
   }
   &:hover {
     background-color: #fff;
-    border: 1px solid #E66239;
-    color: #E66239;
+    border: 1px solid #fd601f;
+    color: #fd601f;
     transition: 0.6s;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     // transform: translateY(-5px);

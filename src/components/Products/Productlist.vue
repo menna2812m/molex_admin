@@ -21,88 +21,87 @@
       <progress class="pure-material-progress-circular" />
     </section>
     <div v-else>
-      <div   v-if="rows && rows.length > 0">
+      <div v-if="rows && rows.length > 0">
         <vue-good-table
-        :columns="filteredColumns"
-        :rows="rows"
-        :search-options="{ enabled: true }"
-        :group-options="{ enabled: false }"
-        :pagination-options="{
-          enabled: true,
-          perPageDropdownEnabled: false,
-        }"
-        :compactMode="true"
-        :rtl="true"
-      >
-        <template #table-row="props">
-          <span v-if="props.column.field === 'cover_image'" class="imgetext">
-            <img
-              :src="props.formattedRow[props.column.field]"
-              class="imagetable"
-              width="150"
-              height="100"
-            />
-          </span>
-          <span v-if="props.column.field == 'actions'">
-            <button
-              class="btn btn-info me-2"
-              @click="view(props.row.id)"
-              v-if="perminlocal.includes('products-show')"
-            >
-              <i class="si si-eye"></i>
-            </button>
-            <button
-              class="btn btn-primary me-2"
-              @click="edit(props.row)"
-              v-if="perminlocal.includes('products-update')"
-            >
-              <i class="fe fe-edit-2"></i>
-            </button>
-
-            <button
-              class="btn btn-danger me-2"
-              v-if="perminlocal.includes('products-destroy')"
-              @click="del(props.row.id, props.index, props.row.name)"
-            >
-              <i class="fe fe-trash"></i>
-            </button>
-            <label
-              class="custom-switch justify-content-center"
-              v-if="perminlocal.includes('products-toggle')"
-            >
-              <input
-                type="checkbox"
-                name="custom-switch-checkbox"
-                class="custom-switch-input"
-                :checked="props.row.is_active"
-                @change="toggleactive(props.row.id)"
+          :columns="filteredColumns"
+          :rows="rows"
+          :search-options="{ enabled: true }"
+          :group-options="{ enabled: false }"
+          :pagination-options="{
+            enabled: true,
+            perPageDropdownEnabled: false,
+          }"
+          :compactMode="true"
+          :rtl="true"
+        >
+          <template #table-row="props">
+            <span v-if="props.column.field === 'cover_image'" class="imgetext">
+              <img
+                :src="props.formattedRow[props.column.field]"
+                class="imagetable"
+                width="150"
+                height="100"
               />
-              <span class="custom-switch-description"> </span>
-              <span
-                class="custom-switch-indicator"
-                style="background: #9fa8b8"
-              ></span>
-            </label>
-          </span>
-        </template>
-      </vue-good-table>
-      <b-pagination
-        v-model="page"
-        :total-rows="last"
-        :per-page="1"
-        @click="paginag(page)"
-        class="justify-content-end mt-4"
-      ></b-pagination>
-      
+            </span>
+            <span v-if="props.column.field == 'actions'">
+              <button
+                class="btn btn-info me-2"
+                @click="view(props.row.id)"
+                v-if="perminlocal.includes('products-show')"
+              >
+                <i class="si si-eye"></i>
+              </button>
+              <button
+                class="btn btn-primary me-2"
+                @click="edit(props.row)"
+                v-if="perminlocal.includes('products-update')"
+              >
+                <i class="fe fe-edit-2"></i>
+              </button>
+
+              <button
+                class="btn btn-danger me-2"
+                v-if="perminlocal.includes('products-destroy')"
+                @click="del(props.row.id, props.index, props.row.name)"
+              >
+                <i class="fe fe-trash"></i>
+              </button>
+              <label
+                class="custom-switch justify-content-center"
+                v-if="perminlocal.includes('products-toggle')"
+              >
+                <input
+                  type="checkbox"
+                  name="custom-switch-checkbox"
+                  class="custom-switch-input"
+                  :checked="props.row.is_active"
+                  @change="toggleactive(props.row.id)"
+                />
+                <span class="custom-switch-description"> </span>
+                <span
+                  class="custom-switch-indicator"
+                  style="background: #9fa8b8"
+                ></span>
+              </label>
+            </span>
+          </template>
+        </vue-good-table>
+        <b-pagination
+          v-model="page"
+          :total-rows="last"
+          :per-page="1"
+          @click="paginag(page)"
+          class="justify-content-end mt-4"
+        ></b-pagination>
       </div>
-  
+
       <section
         class="position-relative"
         style="height: 100vh; display: grid; place-items: center"
         v-else
       >
         <div
-          style="background: #e66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد منتجات حتي الان
@@ -707,12 +706,10 @@ export default {
         {
           label: "الصوره",
           field: "cover_image",
-
         },
         {
           label: "الإسم",
           field: "name.ar",
-          
         },
         {
           label: "السعر",
@@ -726,9 +723,6 @@ export default {
           label: "الماركة",
           field: "brand.name.ar",
         },
-     
-       
-       
       ],
       rows: [],
 
@@ -1114,7 +1108,6 @@ export default {
       let res = await crudDataService.getAll(`products?page=${this.page}`);
       this.rows = res.data.data.data;
     },
-   
   },
   computed: {
     filteredColumns() {
@@ -1147,11 +1140,11 @@ export default {
     background: transparent;
     padding: 9px 14px;
     margin: 0;
-    color: #e66239;
+    color: #fd601f;
   }
   &.nav.panel-tabs li a.active {
     color: #fff;
-    background: #e66239;
+    background: #fd601f;
   }
 }
 .plus {
@@ -1163,17 +1156,17 @@ export default {
   padding: 5px;
   background: #eff4fb;
   border-radius: 2px;
-  color: #e66239;
+  color: #fd601f;
 }
 .pin-color {
   padding: 5px;
-  background: #e66239;
+  background: #fd601f;
   border-radius: 2px;
   color: #eff4fb;
 }
 .spanprice {
   background: #6295d51a;
-  color: #e66239;
+  color: #fd601f;
   text-align: center;
   justify-content: center;
   img {

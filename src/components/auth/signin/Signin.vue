@@ -64,7 +64,9 @@
                           placeholder="*******"
                         />
                       </div>
-                      <p class="text-danger" v-if="errorvalidation">{{ errorvalidation }}</p>
+                      <p class="text-danger" v-if="errorvalidation">
+                        {{ errorvalidation }}
+                      </p>
                       <button
                         type="submit"
                         class="btn ripple btn-primary btn-block"
@@ -103,27 +105,30 @@ export default {
       return this.$store.commit("Switcherbutton");
     },
     async handleLogin() {
-      await crudDataService.create("login", this.form)
-      .then((response) => {
-        localStorage.setItem("authlocal", response.data.data.token);
-        response.data.data.admin.role[0].permissions.forEach((element) => {
-          this.permissions.push(element.name);
-          localStorage.setItem("permissions", this.permissions);
+      await crudDataService
+        .create("login", this.form)
+        .then((response) => {
+          localStorage.setItem("authlocal", response.data.data.token);
+          response.data.data.admin.role[0].permissions.forEach((element) => {
+            this.permissions.push(element.name);
+            localStorage.setItem("permissions", this.permissions);
+          });
+
+          this.$router.push({ name: "Dashboard" });
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
         })
-
-        this.$router.push({ name: "Dashboard" });
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 800);
-      }).catch((error) => {
-  if (error.data.errors.length>0) {    
-    this.errorvalidation = Object.values(error.data.errors).flat().join(" | ");
-  } else {        
-    this.errorvalidation = error.data.message;
-  }
-});
-
+        .catch((error) => {
+          if (error.data.errors.length > 0) {
+            this.errorvalidation = Object.values(error.data.errors)
+              .flat()
+              .join(" | ");
+          } else {
+            this.errorvalidation = error.data.message;
+          }
+        });
     },
   },
 };

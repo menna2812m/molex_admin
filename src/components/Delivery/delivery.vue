@@ -21,15 +21,15 @@
     <section v-else>
       <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
         <div class="card-body p-0">
-          <div
-            class="table-responsive border-0 rounded border-bottom-0 mb-0"
-          >
-            <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0">
+          <div class="table-responsive border-0 rounded border-bottom-0 mb-0">
+            <table
+              class="table table-bordered text-nowrap text-md-nowrap mg-b-0"
+            >
               <tr>
-                <td class="text-muted"> الاسم</td>
-                <td class="text-muted">البريد الالكتروني </td>
-                <td class="text-muted">رقم الجوال  </td>
-                <td class="text-muted">الحالة   </td>
+                <td class="text-muted">الاسم</td>
+                <td class="text-muted">البريد الالكتروني</td>
+                <td class="text-muted">رقم الجوال</td>
+                <td class="text-muted">الحالة</td>
                 <td class="text-muted">التفعيل</td>
               </tr>
               <tr
@@ -37,7 +37,6 @@
                 :key="index"
                 class="list_item py-3 w-100 align-items-center justify-content-between"
               >
-               
                 <td>
                   {{ item.full_name }}
                 </td>
@@ -50,7 +49,7 @@
                 <td>
                   {{ item.status }}
                 </td>
-                
+
                 <td>
                   <label
                     class="custom-switch justify-content-start w-100"
@@ -94,7 +93,7 @@
         v-else
       >
         <div
-          style="background: #e66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد توصيل حتي الان
@@ -109,7 +108,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="mt-1">
-                  <label>  الاسم الاول </label>
+                  <label> الاسم الاول </label>
                   <input
                     type="text"
                     class="form-control"
@@ -127,7 +126,7 @@
                   />
                 </div>
               </div>
-              
+
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
                   <label>البريد الالكتروني </label>
@@ -139,7 +138,7 @@
                 </div>
               </div>
               <div class="col-6 mb-3">
-                <label >كلمة السر </label>
+                <label>كلمة السر </label>
                 <input
                   type="password"
                   name=""
@@ -148,7 +147,7 @@
                 />
               </div>
               <div class="col-6 mb-3">
-                <label >تاكيد كلمة السر </label>
+                <label>تاكيد كلمة السر </label>
                 <input
                   type="password"
                   name=""
@@ -168,17 +167,17 @@
               </div>
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                    <label>المدينة  </label>
-                <Multiselect
-              label="name"
-              :searchable="true"
-              :options="cities"
-              placeholder="المدينة"
-              v-model="formData.city_id"
-            />
-            </div>
-            </div>   
+                  <label>المدينة </label>
+                  <Multiselect
+                    label="name"
+                    :searchable="true"
+                    :options="cities"
+                    placeholder="المدينة"
+                    v-model="formData.city_id"
+                  />
                 </div>
+              </div>
+            </div>
             <button class="btn btn-primary m-auto mt-3 d-block" type="submit">
               اضافة
             </button>
@@ -238,17 +237,16 @@
               </div>
               <div class="col-md-6 mb-3">
                 <div class="mt-1">
-                    <label>المدينة  </label>
-                <Multiselect
-              label="name"
-              :searchable="true"
-              :options="cities"
-              placeholder="المدينة"
-              v-model="EditData.city_id"
-            />
-            </div>
-            </div>   
-           
+                  <label>المدينة </label>
+                  <Multiselect
+                    label="name"
+                    :searchable="true"
+                    :options="cities"
+                    placeholder="المدينة"
+                    v-model="EditData.city_id"
+                  />
+                </div>
+              </div>
             </div>
             <button class="btn btn-primary m-auto mt-3 d-block" type="submit">
               تعديل
@@ -277,30 +275,30 @@ export default {
       myList: [],
       id: null,
       loading: false,
-      cities:[],
+      cities: [],
       formData: {
-        fname:'',
-        lname:'',
+        fname: "",
+        lname: "",
         email: "",
-        phone:'',
+        phone: "",
         password: "",
         password_confirmation: "",
-        city_id:''
+        city_id: "",
       },
       EditData: {
-        fname:'',
-        lname:'',
+        fname: "",
+        lname: "",
         email: "",
-        phone:'',
-        city_id:''
+        phone: "",
+        city_id: "",
       },
       perminlocal: localStorage.getItem("permissions"),
     };
   },
   methods: {
     async allcities() {
-        const res = await axios.get("https://mall-express.code7x.com/api/cities");    
-          this.cities = res.data.data.map((city) => ({
+      const res = await axios.get("https://mall-express.code7x.com/api/cities");
+      this.cities = res.data.data.map((city) => ({
         value: city.id,
         name: city.name,
       }));
@@ -320,55 +318,52 @@ export default {
       this.ShowEditModel = true;
       this.EditData.fname = data.fname;
       this.EditData.lname = data.lname;
-      this.EditData.email = data.email;  
-      this.EditData.city_id=data.city.id    
-      this.EditData.phone = data.phone;      
+      this.EditData.email = data.email;
+      this.EditData.city_id = data.city.id;
+      this.EditData.phone = data.phone;
     },
     async update() {
-      const toast = useToast(); 
+      const toast = useToast();
 
-      let res = await crudDataService.create(
-        `deliveries/${this.id}?_method=put`,
-        this.EditData,
-        {
+      let res = await crudDataService
+        .create(`deliveries/${this.id}?_method=put`, this.EditData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
-      )
-     
-      .then((res)=>{
-        this.ShowEditModel = false;
-        this.deliveries();
-   toast.success(res.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   }) 
-      }) .catch((error) => {
-        // this.ShowEditModel = false;
+        })
 
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+        .then((res) => {
+          this.ShowEditModel = false;
+          this.deliveries();
+          toast.success(res.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
+        })
+        .catch((error) => {
+          // this.ShowEditModel = false;
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorData = error?.data?.errors || {};
+          console.log(error);
+
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
-  
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
     },
     async deliveries() {
       this.loading = true; // Start loading
@@ -398,54 +393,55 @@ export default {
           (this.formData.full_name = ""),
             (this.formData.email = ""),
             (this.formData.status = ""),
-            (this.formData.phone = "")
-            this.ShowModel = false;
-            const toast = useToast(); 
-   toast.success(response.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   })
+            (this.formData.phone = "");
+          this.ShowModel = false;
+          const toast = useToast();
+          toast.success(response.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
         })
-        .catch ((error) => {
+        .catch((error) => {
           // this.ShowModel = false;
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorData = error?.data?.errors || {};
+          console.log(error);
+
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
     },
     del(data, index, name) {
       this.$swal
         .fire({
           title: `؟"${name}" هل تريد حذف التوصيل `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
+            this.$swal.fire({
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم", // ✅ Custom OK button text
+            });
             crudDataService.delete("deliveries", `${data}`).then(() => {
               this.myList.splice(index, 1);
             });

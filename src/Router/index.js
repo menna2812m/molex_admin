@@ -1,8 +1,12 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from "vue-router";
 import MainDashboard from "../Shared/Layouts/MainDashboard.vue";
 import Themepage from "../Shared/Layouts/Themepage.vue";
 const routes = [
-   {
+  {
     path: `${import.meta.env.BASE_URL}`,
     children: [
       {
@@ -25,7 +29,6 @@ const routes = [
         component: () =>
           import("../components/custompages/lockscreen/Lockscreen.vue"),
       },
-      
     ],
   },
   {
@@ -33,9 +36,9 @@ const routes = [
     children: [
       // {
       //   path: `${import.meta.env.BASE_URL}/admin`,
-      //   redirect: `${import.meta.env.BASE_URL}`, 
+      //   redirect: `${import.meta.env.BASE_URL}`,
       //   component: () => import("../components/dashboard/Dashboard.vue"),
-        
+
       // },
       // {
       //   path: `${import.meta.env.BASE_URL}/admin`,
@@ -139,8 +142,8 @@ const routes = [
       },
       {
         path: `${import.meta.env.BASE_URL}brands/:id`,
-        name:'singlebrand',
-        component:()=>import('../components/Brands/SingleBrand.vue')
+        name: "singlebrand",
+        component: () => import("../components/Brands/SingleBrand.vue"),
       },
       {
         path: `${import.meta.env.BASE_URL}discount`,
@@ -215,47 +218,49 @@ const routes = [
       {
         path: `${import.meta.env.BASE_URL}admins`,
         name: "Admins",
-        component: () => import("../components/Admins/Admins.vue")
+        component: () => import("../components/Admins/Admins.vue"),
       },
       {
         path: `${import.meta.env.BASE_URL}singleadmins/:id`,
         name: "OneAdmin",
-        component: () => import("../components/Admins/SingleAdmin.vue")
+        component: () => import("../components/Admins/SingleAdmin.vue"),
       },
       {
         path: `${import.meta.env.BASE_URL}roles`,
         name: "Roles",
-        component: () => import("../components/Roles/Roles.vue")
+        component: () => import("../components/Roles/Roles.vue"),
       },
       {
         path: `${import.meta.env.BASE_URL}role/:id`,
         name: "SingleRole",
-        component: () => import("../components/Roles/SingleRole.vue")
+        component: () => import("../components/Roles/SingleRole.vue"),
       },
       {
         path: `${import.meta.env.BASE_URL}edit-role/:id`,
         name: "editRole",
-        component: () => import("../components/Roles/editRole.vue")
+        component: () => import("../components/Roles/editRole.vue"),
       },
       {
         path: `${import.meta.env.BASE_URL}payment`,
         name: "Payment",
-        component: () => import("../components/Payment/Payment.vue")
+        component: () => import("../components/Payment/Payment.vue"),
       },
       {
         path: `${import.meta.env.BASE_URL}delivery`,
         name: "delivery",
-        component: () => import("../components/Delivery/delivery.vue")
+        component: () => import("../components/Delivery/delivery.vue"),
       },
       {
         path: `${import.meta.env.BASE_URL}delivery_options`,
         name: "delivery_options",
-        component: () => import("../components/delivery_options/delivery_options.vue")
+        component: () =>
+          import("../components/delivery_options/delivery_options.vue"),
       },
       {
         path: `${import.meta.env.BASE_URL}withdrawal-requests`,
         name: "withdrawal-requests",
-        component: () => import("../components/withdrawal-requests/withdrawal-requests.vue")
+        component: () =>
+          import("../components/withdrawal-requests/withdrawal-requests.vue"),
       },
     ],
   },
@@ -272,7 +277,7 @@ const routes = [
       },
     ],
   },
- 
+
   //.....Errorpage.....
   {
     path: "/:pathMatch(.*)*",
@@ -282,24 +287,23 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 });
 
 router.beforeEach((to) => {
-
-setTimeout(() => {
+  setTimeout(() => {
     window.scrollTo(0, 0);
   }, 100);
 });
 
 router.beforeEach((to, from, next) => {
-  const loggedInUserData = localStorage.getItem('authlocal');
-  if(loggedInUserData && to.name == 'SignIn'){
-    next('dashboard');
-  }else{
-    if (!localStorage.getItem('authlocal') && to.name !== 'SignIn'  ) {
-      next('Signin'); // Redirect to SignIn if token is not present and the current route is not SignIn
+  const loggedInUserData = localStorage.getItem("authlocal");
+  if (loggedInUserData && to.name == "SignIn") {
+    next("dashboard");
+  } else {
+    if (!localStorage.getItem("authlocal") && to.name !== "SignIn") {
+      next("Signin"); // Redirect to SignIn if token is not present and the current route is not SignIn
     } else {
       next(); // Allow the navigation to proceed
     }

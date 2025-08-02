@@ -6,17 +6,16 @@
           <div
             class="card-header pb-2 d-flex align-items-center justify-content-between"
           >
-            <img :src="item.image" alt="" width="100"/>
+            <img :src="item.image" alt="" width="100" />
             <h4 class="mb-0">
-              {{ item.name?item.name.ar:'' }}
+              {{ item.name ? item.name.ar : "" }}
             </h4>
             <div class="pos-relative">
               <button
                 @click="toggleDropdown"
                 class="twobtn bg-white border"
-                style="border-color: #E66239 !important; color: #E66239"
+                style="border-color: #fd601f !important; color: #fd601f"
                 v-if="perminlocal.includes('groups-update')"
-              
               >
                 خيارات الصفحة <i class="fas fa-caret-down ms-1"></i>
               </button>
@@ -31,13 +30,12 @@
               <h5>الخيارات :</h5>
               <div v-if="item.conditions">
                 <ul>
-
                   <li v-for="(con, i) in item.conditions" :key="i">
-                    {{ con.type?con.type:''}}
-                    {{ con.min_value?con.min_value:''}}
-                    {{ con.operator?con.operator:''}}
-                    {{ con.value?con.value:''}}
-                    {{ con.max_value?con.max_value:''}}
+                    {{ con.type ? con.type : "" }}
+                    {{ con.min_value ? con.min_value : "" }}
+                    {{ con.operator ? con.operator : "" }}
+                    {{ con.value ? con.value : "" }}
+                    {{ con.max_value ? con.max_value : "" }}
                   </li>
                 </ul>
               </div>
@@ -63,8 +61,7 @@
                 />
               </div>
               <div class="col-6 mb-3">
-                <label>
-                  الاسم انجليزي</label>
+                <label> الاسم انجليزي</label>
                 <input
                   type="text"
                   name=""
@@ -78,27 +75,26 @@
                 v-for="(con, ii) in formData.condition"
                 :key="ii"
               >
-        
-                <label>{{ con.title?con.title:con.type }}</label>
+                <label>{{ con.title ? con.title : con.type }}</label>
                 <input
-                v-if="con.min_value"
-                type="text"
+                  v-if="con.min_value"
+                  type="text"
                   name=""
                   id=""
                   class="form-control my-1"
                   v-model="con.min_value"
                 />
                 <input
-                v-if="con.min_value"
+                  v-if="con.min_value"
                   type="text"
                   name=""
                   id=""
                   class="form-control my-1"
                   v-model="con.max_value"
-                /> 
+                />
                 <input
-                v-else
-                 type="text"
+                  v-else
+                  type="text"
                   name=""
                   id=""
                   class="form-control"
@@ -146,21 +142,20 @@ export default {
       formData: {
         name: {
           ar: "",
-          en:""
+          en: "",
         },
         image: "",
         condition: [],
       },
-      conditions:[],
-      perminlocal : localStorage.getItem('permissions')
-
+      conditions: [],
+      perminlocal: localStorage.getItem("permissions"),
     };
   },
   methods: {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
- 
+
     onFileSelected(event) {
       console.log(event);
       if (event.target) {
@@ -186,13 +181,12 @@ export default {
     async edit(data) {
       this.ShowModel = true;
       console.log(data);
-      
+
       this.formData.name.ar = data.name.ar;
       this.formData.name.en = data.name.en;
       this.formData.condition = data.conditions;
-      this.formData.image = data.image;   
-      (this.formData.image = this.onFileSelected(data.image));
-
+      this.formData.image = data.image;
+      this.formData.image = this.onFileSelected(data.image);
     },
     async getPage() {
       const res = await crudDataService.get(
@@ -204,50 +198,47 @@ export default {
     },
     async update() {
       console.log(this.formData);
-      const toast = useToast(); 
+      const toast = useToast();
 
-      let res = await crudDataService.create(
-        `groups/${this.$route.params.id}?_method=put`,
-        this.formData,
-        {
+      let res = await crudDataService
+        .create(`groups/${this.$route.params.id}?_method=put`, this.formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          
-        }
-      ).then((res)=>{
-        this.getPage();
-        this.ShowModel = false;
-        const toast = useToast(); 
-   toast.success(res.data.message, {
-     position: "top-center",
-     timeout: 5000,
-   }) 
-      }) .catch((error) => {
-          // this.ShowModel = false;          
+        })
+        .then((res) => {
+          this.getPage();
+          this.ShowModel = false;
+          const toast = useToast();
+          toast.success(res.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
+        })
+        .catch((error) => {
+          // this.ShowModel = false;
 
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+          const errorData = error?.data?.errors || {};
+          console.log(error);
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
-      
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
     },
   },
   mounted() {
@@ -271,7 +262,7 @@ export default {
 </style>
 <style lang="scss">
 input::file-selector-button {
-  background-image: linear-gradient(to right, #E66239, #E66239) !important;
+  background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
 
 .modal .modal-header {

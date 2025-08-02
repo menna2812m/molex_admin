@@ -47,7 +47,7 @@
                         </th>
                         <th></th>
                         <th></th>
-                        <th >
+                        <th>
                           <div class="text-end ms-auto pos-relative">
                             <button
                               @click="toggleDropdown"
@@ -209,7 +209,7 @@
                         <td style="color: #fb99bf">
                           {{ item.price }}
                         </td>
-                        <td class="text-secondary text-center " >
+                        <td class="text-secondary text-center">
                           {{ item.span }}
                         </td>
                       </tr>
@@ -235,7 +235,6 @@
                 <div class="tab-pane" id="tab8"></div>
                 <div class="tab-pane" id="tab9"></div>
                 <div class="tab-pane" id="tab10"></div> -->
-
               </div>
             </div>
           </div>
@@ -249,9 +248,9 @@
 import NewRequest from "./NewRequest.vue";
 import Waiting_for_payment from "./Waiting_for_payment.vue";
 import Waiting_for_review from "./Waiting_for_review.vue";
-import Underway from './Underway.vue'
-import Done from './Done.vue'
-import Delivery_in_progress from './Delivery_in_progress.vue'
+import Underway from "./Underway.vue";
+import Done from "./Done.vue";
+import Delivery_in_progress from "./Delivery_in_progress.vue";
 export default {
   components: {
     NewRequest,
@@ -259,8 +258,8 @@ export default {
     Waiting_for_review,
     Underway,
     Done,
-    Delivery_in_progress
-},
+    Delivery_in_progress,
+  },
   data() {
     return {
       isDropdownOpen: false,
@@ -389,15 +388,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 .list_item:not(:last-child) {
   border-bottom: 1px solid #e8e7ff;
 }
 .icon_color {
   padding: 12px;
-    border-radius: 50%;
-    height: 40px;
-    padding-right: 13px;
+  border-radius: 50%;
+  height: 40px;
+  padding-right: 13px;
   &.icon_color_1 {
     color: #929aff;
     background: #e8e7ff;
@@ -416,7 +414,7 @@ export default {
   }
 }
 .progres {
-  color: #E66239;
+  color: #fd601f;
   font-weight: 600;
   font-size: 16px;
 }

@@ -6,11 +6,11 @@
           <div
             class="card-header pb-2 d-flex align-items-center justify-content-between"
           >
-          <img
-                  :src="item.image"
-                  alt=""
-                  style="width: 40px; height: 40px; border-radius: 50%"
-                />
+            <img
+              :src="item.image"
+              alt=""
+              style="width: 40px; height: 40px; border-radius: 50%"
+            />
             <h4 class="mb-0">
               {{ item.name }}
             </h4>
@@ -18,9 +18,8 @@
               <button
                 @click="toggleDropdown"
                 class="twobtn bg-white border"
-                style="border-color: #E66239 !important; color: #E66239"
-      v-if="perminlocal.includes('admins-update')"
-                           
+                style="border-color: #fd601f !important; color: #fd601f"
+                v-if="perminlocal.includes('admins-update')"
               >
                 خيارات الصفحة <i class="fas fa-caret-down ms-1"></i>
               </button>
@@ -81,11 +80,11 @@
           <img src="../../assets/img/23.png" alt="img2" />
         </div>
         <div class="mt-4 pt-1 pos-relative" style="z-index: 5555">
-          <h6 style="color: #febcd5" class="text-center">تعديل </h6>
+          <h6 style="color: #febcd5" class="text-center">تعديل</h6>
           <form @submit.prevent="update">
             <div class="row">
               <div class="col-12 mb-3">
-                <label >الاسم</label>
+                <label>الاسم</label>
                 <input
                   type="text"
                   name=""
@@ -96,7 +95,7 @@
                 />
               </div>
               <div class="col-12 mb-3">
-                <label >البريد الالكتروني </label>
+                <label>البريد الالكتروني </label>
                 <input
                   type="email"
                   name=""
@@ -107,7 +106,7 @@
               </div>
 
               <div class="col-12 mb-3">
-                <label >رقم الجوال</label>
+                <label>رقم الجوال</label>
                 <input
                   type="number"
                   name=""
@@ -117,7 +116,7 @@
                 />
               </div>
               <div class="col-6 mb-3">
-                <label >كلمة السر </label>
+                <label>كلمة السر </label>
                 <input
                   type="password"
                   name=""
@@ -127,7 +126,7 @@
                 />
               </div>
               <div class="col-6 mb-3">
-                <label >تاكيد كلمة السر </label>
+                <label>تاكيد كلمة السر </label>
                 <input
                   type="password"
                   name=""
@@ -137,7 +136,7 @@
                 />
               </div>
               <div class="col-12 mb-3">
-                <label >الاذن/الادوار</label>
+                <label>الاذن/الادوار</label>
                 <input
                   type="text"
                   name=""
@@ -158,7 +157,6 @@
                   <img :src="imageUrl" alt="صورة" />
                 </div>
               </div>
-              
             </div>
             <div class="text-center">
               <button class="fs-15 btn-save mx-1" type="submit">تعديل</button>
@@ -171,16 +169,14 @@
       </b-modal>
     </teleport>
   </section>
-  <section class="position-relative" style="height: 100vh;display: grid;
-    place-items: center;"
+  <section
+    class="position-relative"
+    style="height: 100vh; display: grid; place-items: center"
     v-else
-   >
-
-<section class="cate">
-</section>
- <progress class="pure-material-progress-circular"/> 
-
-   </section>  
+  >
+    <section class="cate"></section>
+    <progress class="pure-material-progress-circular" />
+  </section>
 </template>
 <script>
 import crudDataService from "../../Services/crudDataService.js";
@@ -194,16 +190,15 @@ export default {
       imageUrl: null,
       item: null,
       formData: {
-        name:"",
-        email:"",
+        name: "",
+        email: "",
         password: "",
         password_confirmation: "",
-        phone:"",
-        image:'',
-        role_name:""
+        phone: "",
+        image: "",
+        role_name: "",
       },
       perminlocal: localStorage.getItem("permissions"),
-
     };
   },
   methods: {
@@ -222,12 +217,12 @@ export default {
       this.ShowModel = true;
       this.formData.name = this.item.name;
       this.formData.email = this.item.email;
-      this.formData.password=this.item.password;
-        this.formData.password_confirmation=this.item.password_confirmation;
-        this.formData.phone=this.item.phone;
-        this.imageUrl=this.item.image
-        this.formData.role_name=this.item.role[0].name
-       },
+      this.formData.password = this.item.password;
+      this.formData.password_confirmation = this.item.password_confirmation;
+      this.formData.phone = this.item.phone;
+      this.imageUrl = this.item.image;
+      this.formData.role_name = this.item.role[0].name;
+    },
     async getPage() {
       const res = await crudDataService.get(
         "admins",
@@ -245,7 +240,7 @@ export default {
           },
         }
       );
-      this.isDropdownOpen=false
+      this.isDropdownOpen = false;
       this.getPage();
       this.ShowModel = false;
     },
@@ -270,7 +265,7 @@ export default {
 </style>
 <style lang="scss">
 input::file-selector-button {
-  background-image: linear-gradient(to right, #E66239, #E66239) !important;
+  background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
 
 .modal .modal-header {

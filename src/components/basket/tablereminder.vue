@@ -1,111 +1,108 @@
 <template>
-     <section class="position-relative" style="height: 100vh;display: grid;
-    place-items: center;"
+  <section
+    class="position-relative"
+    style="height: 100vh; display: grid; place-items: center"
     v-if="loading"
-   >
-
-<section class="cate">
-</section>
- <progress class="pure-material-progress-circular"/> 
-
-   </section>  
+  >
+    <section class="cate"></section>
+    <progress class="pure-material-progress-circular" />
+  </section>
   <section v-else>
     <div class="card custom-card border-0 mg-b-20" v-if="items">
-    <div class="card-body p-0">
-      <div class="table-responsive rounded border-bottom-0 mb-0">
-        <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0 p-4">
-          <tr class="mb-4">
-            <td class="text-muted">الموضوع</td>
-            <td class="text-muted">نوع الخصم</td>
-            <td class="text-muted">قيمة الخصم</td>
-            <td class="text-muted">عدد ايام السله المتروكه</td>
-            <td class="text-muted">الخصم صالح لمدة</td>
-            <td class="text-muted">التذكير</td>
-          </tr>
-          <tr
-            v-for="(item, index) in items"
-            :key="index"
-            class="list_item py-3 w-100 align-items-center justify-content-between"
+      <div class="card-body p-0">
+        <div class="table-responsive rounded border-bottom-0 mb-0">
+          <table
+            class="table table-bordered text-nowrap text-md-nowrap mg-b-0 p-4"
           >
-            <td>
-              <h6 class="mb-0 fw-semibold">
-                {{ item.subject }}
-              </h6>
-            </td>
+            <tr class="mb-4">
+              <td class="text-muted">الموضوع</td>
+              <td class="text-muted">نوع الخصم</td>
+              <td class="text-muted">قيمة الخصم</td>
+              <td class="text-muted">عدد ايام السله المتروكه</td>
+              <td class="text-muted">الخصم صالح لمدة</td>
+              <td class="text-muted">التذكير</td>
+            </tr>
+            <tr
+              v-for="(item, index) in items"
+              :key="index"
+              class="list_item py-3 w-100 align-items-center justify-content-between"
+            >
+              <td>
+                <h6 class="mb-0 fw-semibold">
+                  {{ item.subject }}
+                </h6>
+              </td>
 
-            <td>{{ item.discount_type }}</td>
-            <td>
-              {{ item.discount_value }}
-            </td>
-            <td>
-              {{ item.cart_left_days }}
-            </td>
-            <td>
-              {{ item.discount_valid_for_hours }}
-            </td>
-            <td>
-              <label class="custom-switch w-100"
-      v-if="perminlocal.includes('cart_reminders-toggle')"
-              
-              >
-                <input
-                  type="checkbox"
-                  name="custom-switch-checkbox"
-                  class="custom-switch-input border-bottom-0"
-                  :checked="item.is_active"
-                  @change="toggleactive(item.id)"
-                />
-                <span class="custom-switch-description"> </span>
-                <span class="custom-switch-indicator"></span>
-              </label>
-            </td>
-            <td class="text-center py-3">
-              <button
-                class="bg-transparent rounded"
-                style="
-                  color: #E66239;
-                  border: 1px solid #E66239;
-                  border-bottom: 1px solid #E66239 !important;
-                "
-                @click="edit(item)"
-      v-if="perminlocal.includes('cart_reminders-update')"
-
-              >
-                تعديل
-              </button>
-              <button
-                class="bg-transparent rounded mx-1"
-                style="
-                  color: red;
-                  border: 1px solid red;
-                  border-bottom: 1px solid red !important;
-                "
-                @click="del(item.id, index, item.subject)"
-                v-if="perminlocal.includes('cart_reminders-destroy')"
-
-              >
-               <i class="fe fe-trash"></i>
-              </button>
-            </td>
-          </tr>
-        </table>
+              <td>{{ item.discount_type }}</td>
+              <td>
+                {{ item.discount_value }}
+              </td>
+              <td>
+                {{ item.cart_left_days }}
+              </td>
+              <td>
+                {{ item.discount_valid_for_hours }}
+              </td>
+              <td>
+                <label
+                  class="custom-switch w-100"
+                  v-if="perminlocal.includes('cart_reminders-toggle')"
+                >
+                  <input
+                    type="checkbox"
+                    name="custom-switch-checkbox"
+                    class="custom-switch-input border-bottom-0"
+                    :checked="item.is_active"
+                    @change="toggleactive(item.id)"
+                  />
+                  <span class="custom-switch-description"> </span>
+                  <span class="custom-switch-indicator"></span>
+                </label>
+              </td>
+              <td class="text-center py-3">
+                <button
+                  class="bg-transparent rounded"
+                  style="
+                    color: #fd601f;
+                    border: 1px solid #fd601f;
+                    border-bottom: 1px solid #fd601f !important;
+                  "
+                  @click="edit(item)"
+                  v-if="perminlocal.includes('cart_reminders-update')"
+                >
+                  تعديل
+                </button>
+                <button
+                  class="bg-transparent rounded mx-1"
+                  style="
+                    color: red;
+                    border: 1px solid red;
+                    border-bottom: 1px solid red !important;
+                  "
+                  @click="del(item.id, index, item.subject)"
+                  v-if="perminlocal.includes('cart_reminders-destroy')"
+                >
+                  <i class="fe fe-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="text-center" v-else>
-    <img src="../../assets/img/Interse.png" alt="" class="d-block m-auto" />
-    <span class="text-muted"> لا توجد تذكيرات بعد </span>
-  </div>
-  <teleport to="body">
+    <div class="text-center" v-else>
+      <img src="../../assets/img/Interse.png" alt="" class="d-block m-auto" />
+      <span class="text-muted"> لا توجد تذكيرات بعد </span>
+    </div>
+    <teleport to="body">
       <b-modal id="add" v-model="ShowModelEdit" hide-footer>
         <div class="imgtoadd">
           <img src="../../assets/img/Interse.png" alt="img2" />
         </div>
         <div class="mt-5 pos-relative" style="z-index: 5555">
-          <h6 style="color: #febcd5" class="text-center">تعديل تذكير </h6>
+          <h6 style="color: #febcd5" class="text-center">تعديل تذكير</h6>
           <form @submit.prevent="updates">
             <div class="row">
-             
               <div class="col-12">
                 <h6 class="fw-semibold">شروط التذكر</h6>
                 <p class="text-muted fs-10">
@@ -224,14 +221,18 @@
             </div>
             <div class="text-center">
               <button class="fs-15 btn-save mx-1">حفظ</button>
-              <button class="fs-15 btn-cancel mx-1" @click="ShowModelEdit=false">الغاء</button>
+              <button
+                class="fs-15 btn-cancel mx-1"
+                @click="ShowModelEdit = false"
+              >
+                الغاء
+              </button>
             </div>
           </form>
         </div>
       </b-modal>
     </teleport>
   </section>
-  
 </template>
 
 <script>
@@ -251,9 +252,9 @@ export default {
         { value: "percent", name: "نسية مئوية" },
       ],
       send_channel: [{ value: "email", name: "بريد الكتروني" }],
-      loading:false,
-      ShowModelEdit:false,
-      id:null,
+      loading: false,
+      ShowModelEdit: false,
+      id: null,
       items: [],
       selectAll: false,
       formData: {
@@ -270,12 +271,11 @@ export default {
         total_cart: "",
       },
       perminlocal: localStorage.getItem("permissions"),
-
     };
   },
   methods: {
-    edit(data){
-      this.ShowModelEdit=true;
+    edit(data) {
+      this.ShowModelEdit = true;
       this.id = data.id;
       this.formData.cart_left_days = data.cart_left_days;
       this.formData.discount_end_date = data.discount_end_date;
@@ -290,55 +290,55 @@ export default {
       this.formData.total_cart = data.total_cart;
     },
     async updates() {
-      const toast = useToast(); 
+      const toast = useToast();
       console.log(this.id);
-      let res = await crudDataService.create(
-        `cart_reminders/${this.id}?_method=put`,
-        this.formData).then((response)=>{
-          this.ShowModelEdit=false;
+      let res = await crudDataService
+        .create(`cart_reminders/${this.id}?_method=put`, this.formData)
+        .then((response) => {
+          this.ShowModelEdit = false;
           const toast = useToast();
           toast.success(response.data.message, {
-              position: "top-center",
-              timeout: 5000,
-            });
-        }).catch((error)=>{
+            position: "top-center",
+            timeout: 5000,
+          });
+        })
+        .catch((error) => {
           // this.ShowModelEdit=false;
-         
-          const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorData = error?.data?.errors || {};
+          console.log(error);
+
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
-  
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
     },
     async getcarts() {
       this.loading = true; // Start loading
-try {
-  let res = await crudDataService.getAll("cart_reminders");
-      this.items = res.data.data;
-  
-}catch (error) {
-console.error("Failed to fetch data:", error);
-// Handle error
-} finally {
-this.loading = false; // End loading regardless of success or failure
-}
-       },
+      try {
+        let res = await crudDataService.getAll("cart_reminders");
+        this.items = res.data.data;
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+        // Handle error
+      } finally {
+        this.loading = false; // End loading regardless of success or failure
+      }
+    },
     async toggleactive(id) {
       const toast = useToast();
       await crudDataService
@@ -351,14 +351,13 @@ this.loading = false; // End loading regardless of success or failure
             });
           }
         })
-        .catch((error) => {
-         });
+        .catch((error) => {});
     },
     del(data, index, name) {
       this.$swal
         .fire({
           title: ` ؟"${name}" هل تريد حذف التذكير`,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
@@ -366,17 +365,17 @@ this.loading = false; // End loading regardless of success or failure
           /* Read more about isConfirmed, isDenied below */
           console.log(result);
           if (result.isConfirmed) {
-            crudDataService.delete("cart_reminders", `${data}`)
-            .then(() => {
-              this.items.splice(index, 1);
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
-            }).catch(()=>{
-                
-            })
+            crudDataService
+              .delete("cart_reminders", `${data}`)
+              .then(() => {
+                this.items.splice(index, 1);
+                this.$swal.fire({
+                  title: "تم الحذف بنجاح!",
+                  icon: "success",
+                  confirmButtonText: "تم", // ✅ Custom OK button text
+                });
+              })
+              .catch(() => {});
           }
         });
     },

@@ -41,18 +41,16 @@
                 {{ item.name }}
               </button>
             </span>
-            <span v-if="props.column.field === 'phone'" class="vendor ">
-          <a :href="`tel:+${props.row.phone}`" class="text-black-50"
-          >
-            {{ props.row.phone }}
-          </a>
-          </span>
-          <span v-if="props.column.field === 'email'" class="vendor ">
-          <a :href="`tel:+${props.row.email}`" class="text-black-50"
-          >
-            {{ props.row.email }}
-          </a>
-          </span>
+            <span v-if="props.column.field === 'phone'" class="vendor">
+              <a :href="`tel:+${props.row.phone}`" class="text-black-50">
+                {{ props.row.phone }}
+              </a>
+            </span>
+            <span v-if="props.column.field === 'email'" class="vendor">
+              <a :href="`tel:+${props.row.email}`" class="text-black-50">
+                {{ props.row.email }}
+              </a>
+            </span>
             <span v-if="props.column.field == 'actions'">
               <button
                 class="btn btn-info me-2"
@@ -87,14 +85,14 @@
           class="justify-content-end mt-4"
         ></b-pagination>
       </section>
-     
+
       <section
         class="position-relative"
         style="height: 100vh; display: grid; place-items: center"
         v-else
       >
         <div
-          style="background: #e66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد بائعين حتي الان

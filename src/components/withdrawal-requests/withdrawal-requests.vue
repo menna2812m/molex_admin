@@ -11,10 +11,10 @@
     <section v-else>
       <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
         <div class="card-body p-0">
-          <div
-            class="table-responsive border-0 rounded border-bottom-0  mb-0"
-          >
-            <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0 text-center">
+          <div class="table-responsive border-0 rounded border-bottom-0 mb-0">
+            <table
+              class="table table-bordered text-nowrap text-md-nowrap mg-b-0 text-center"
+            >
               <tr>
                 <td class="text-muted">اسم المتجر</td>
                 <td class="text-muted">رقم جوال المتجر</td>
@@ -23,7 +23,7 @@
                 <td class="text-muted">الحالة</td>
                 <td class="text-muted">اسم البنك</td>
                 <td class="text-muted">القبول</td>
-                <td class="text-muted">تأكيد التحويل </td>
+                <td class="text-muted">تأكيد التحويل</td>
                 <td class="text-muted">الرفض</td>
               </tr>
               <tr
@@ -32,27 +32,25 @@
                 class="list_item py-3 w-100 align-items-center justify-content-between"
               >
                 <td>
-                  <button   @click="view(item.store?.id)" class="btn">
+                  <button @click="view(item.store?.id)" class="btn">
                     {{ item.store?.name }}
-
                   </button>
                 </td>
                 <td>
-                  <a :href="`tel:+${item.store?.phone}`" class="text-black-50"
-          >
-            {{ item.store?.phone }}
-          </a>
+                  <a :href="`tel:+${item.store?.phone}`" class="text-black-50">
+                    {{ item.store?.phone }}
+                  </a>
                 </td>
                 <td>
                   {{ item.amount }}
                 </td>
                 <td>
                   <img
-                        :src="item.transfer_receipt"
-                        style="width: 100px; height: 100px; object-fit: fill"
-                        class="m-1"
-                        v-if="item.transfer_receipt"
-                      />
+                    :src="item.transfer_receipt"
+                    style="width: 100px; height: 100px; object-fit: fill"
+                    class="m-1"
+                    v-if="item.transfer_receipt"
+                  />
                 </td>
                 <td>
                   {{ item.status }}
@@ -61,26 +59,20 @@
                   {{ item.bank_account?.bank_name }}
                 </td>
                 <td>
-                 
-                 <button
-                   class="btn me-2"
-                   @click="approve(item.id, index, item.store)"
-                 >
-                   <i class="fa fa-check text-success"></i>
-                 </button>
-               </td>
-               <td>
-                 
-                 <button
-                   class="btn me-2"
-                    @click="edit(item)"
-                 >
-                   <i class="fa fa-exchange text-info"></i>
-                 </button>
-               </td>
-              
+                  <button
+                    class="btn me-2"
+                    @click="approve(item.id, index, item.store)"
+                  >
+                    <i class="fa fa-check text-success"></i>
+                  </button>
+                </td>
                 <td>
-                 
+                  <button class="btn me-2" @click="edit(item)">
+                    <i class="fa fa-exchange text-info"></i>
+                  </button>
+                </td>
+
+                <td>
                   <button
                     class="btn me-2"
                     @click="del(item.id, index, item.store)"
@@ -100,7 +92,7 @@
         v-else
       >
         <div
-          style="background: #e66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد طلبات سحب حتي الان
@@ -118,22 +110,21 @@
           <form @submit.prevent="update">
             <div class="row">
               <div class="mt-1">
-                  <label >صورة الايصال</label>
-                    <input
-                    type="file"
-                    class="form-control "
-                    @change="onFileSelected($event)"
-                    accept=".pdf, image/jpeg, image/png"
-                  />
+                <label>صورة الايصال</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  @change="onFileSelected($event)"
+                  accept=".pdf, image/jpeg, image/png"
+                />
 
-               
-                  <img
-                        :src="imgurl"
-                        style="width: 180px; height: 180px; object-fit: fill"
-                        class="m-1"
-                        v-if="imgurl.length>0"
-                      />
-                </div>
+                <img
+                  :src="imgurl"
+                  style="width: 180px; height: 180px; object-fit: fill"
+                  class="m-1"
+                  v-if="imgurl.length > 0"
+                />
+              </div>
             </div>
             <button class="btn btn-primary m-auto mt-3 d-block" type="submit">
               اضافة
@@ -161,9 +152,9 @@ export default {
       id: null,
       loading: false,
       formData: {
-        transfer_receipt:''
+        transfer_receipt: "",
       },
-      imgurl:'',
+      imgurl: "",
       perminlocal: localStorage.getItem("permissions"),
     };
   },
@@ -182,79 +173,79 @@ export default {
     async edit(data) {
       this.id = data.id;
       this.confirmModel = true;
-      this.imgurl=data.transfer_receipt
+      this.imgurl = data.transfer_receipt;
     },
     async update() {
-      let res = await crudDataService.create(
-        `withdrawal-requests/${this.id}/transfer`,
-        this.formData,
-        {
+      let res = await crudDataService
+        .create(`withdrawal-requests/${this.id}/transfer`, this.formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
-      ).then((response)=>{
-        console.log(response,"ijjijijii");
-        
-        this.withdrawal_requests();
-        this.confirmModel = false;
-        this.withdrawal-requests();
-        this.formData.transfer_receipt= "",
-        this.imgurl=''
-      }).catch((error)=>{
-        this.confirmModel = false;
-        this.$swal.fire(error.data.message,"", "error");
+        })
+        .then((response) => {
+          console.log(response, "ijjijijii");
 
-        
-      })
+          this.withdrawal_requests();
+          this.confirmModel = false;
+          this.withdrawal - requests();
+          (this.formData.transfer_receipt = ""), (this.imgurl = "");
+        })
+        .catch((error) => {
+          this.confirmModel = false;
+          this.$swal.fire(error.data.message, "", "error");
+        });
     },
     async withdrawal_requests() {
-      this.loading = true; 
+      this.loading = true;
       try {
         let res = await crudDataService.getAll("withdrawal-requests");
         this.myList = res.data.data;
       } catch (error) {
         console.error("Failed to fetch data:", error);
       } finally {
-        this.loading = false; 
+        this.loading = false;
       }
-    },    
+    },
     approve(data, index, name) {
       this.$swal
         .fire({
           title: `؟"${name.name}" هل تريد الموافقة علي طلب سحب  `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           if (result.isConfirmed) {
-            crudDataService.create(`withdrawal-requests/${data}/approve`).then((res) => {              
-                this.$swal.fire(res.data.message,"", "success");
+            crudDataService
+              .create(`withdrawal-requests/${data}/approve`)
+              .then((res) => {
+                this.$swal.fire(res.data.message, "", "success");
                 this.withdrawal_requests();
               })
               .catch((error) => {
-                this.$swal.fire(error.data.message,"", "error");
+                this.$swal.fire(error.data.message, "", "error");
               });
-          }         
+          }
         });
     },
     del(data, index, name) {
       this.$swal
         .fire({
           title: `؟"${name.name}" هل تريد رفض  طلب سحب `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           if (result.isConfirmed) {
-            crudDataService.delete("withdrawal-requests", `${data}`).then((res) => {              
-                this.$swal.fire(res.data.message,"", "success");
+            crudDataService
+              .delete("withdrawal-requests", `${data}`)
+              .then((res) => {
+                this.$swal.fire(res.data.message, "", "success");
                 this.withdrawal_requests();
               })
               .catch((error) => {
-                this.$swal.fire(error.data.message,"", "error");
+                this.$swal.fire(error.data.message, "", "error");
               });
           }
         });

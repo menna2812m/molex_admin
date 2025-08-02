@@ -60,7 +60,6 @@ export default {
         permission: [],
       },
       permissions: [],
-      
     };
   },
   methods: {
@@ -80,32 +79,33 @@ export default {
       );
       this.item = res.data.data;
       //   console.log(this.permissions);
-    //   for (const key in this.permissions) {
-    //     console.log("tttt");
-        
-    //     for (let i = 0; i < this.item.permissions.length; i++) {
-    //       console.log("tttt");
-    //       console.log(this.item.permissions[i].name === key.name);
-    //       if (this.item.permissions[i].name === key.name) {
-    //         console.log("one");
-    //       }
-    //     }
-    //   }
-    for (const key in this.permissions) {
-  if (this.permissions.hasOwnProperty(key)) {
-    // console.log("Processing:", key);
-    const permissionGroup = this.permissions[key].permissions;
-    for (let i = 0; i < permissionGroup.length; i++) {
-      console.log("Checking:", permissionGroup[i].name);
-      const hasPermission = this.item.permissions.some(itemPermission => itemPermission.name === permissionGroup[i].name);
-      if (hasPermission) {
+      //   for (const key in this.permissions) {
+      //     console.log("tttt");
 
-        console.log("Match found for:", permissionGroup[i].name);
+      //     for (let i = 0; i < this.item.permissions.length; i++) {
+      //       console.log("tttt");
+      //       console.log(this.item.permissions[i].name === key.name);
+      //       if (this.item.permissions[i].name === key.name) {
+      //         console.log("one");
+      //       }
+      //     }
+      //   }
+      for (const key in this.permissions) {
+        if (this.permissions.hasOwnProperty(key)) {
+          // console.log("Processing:", key);
+          const permissionGroup = this.permissions[key].permissions;
+          for (let i = 0; i < permissionGroup.length; i++) {
+            console.log("Checking:", permissionGroup[i].name);
+            const hasPermission = this.item.permissions.some(
+              (itemPermission) =>
+                itemPermission.name === permissionGroup[i].name
+            );
+            if (hasPermission) {
+              console.log("Match found for:", permissionGroup[i].name);
+            }
+          }
+        }
       }
-    }
-  }
-}
-
     },
 
     async update() {
@@ -141,7 +141,7 @@ export default {
 </style>
 <style lang="scss">
 input::file-selector-button {
-  background-image: linear-gradient(to right, #E66239, #E66239) !important;
+  background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
 
 .modal .modal-header {

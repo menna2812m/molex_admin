@@ -17,103 +17,103 @@
       <progress class="pure-material-progress-circular" />
     </section>
     <section v-else>
-      <section  v-if="myList.length > 0">
+      <section v-if="myList.length > 0">
+        <vue-good-table
+          :columns="filteredColumns"
+          :rows="rows"
+          :search-options="{ enabled: true }"
+          :group-options="{ enabled: false }"
+          :pagination-options="{
+            enabled: true,
+            perPageDropdownEnabled: false,
+          }"
+          :compactMode="true"
+          :rtl="true"
+        >
+          <template #table-row="props">
+            <span v-if="props.column.field === 'image'" class="imgetext">
+              <img
+                :src="props.formattedRow[props.column.field]"
+                class="imagetable"
+                width="150"
+                height="100"
+              />
+            </span>
+            <span v-if="props.column.field === 'name'" class="vendor">
+              <button class="btn text-black-50" @click="view(props.row.id)">
+                {{ props.row.name }}
+              </button>
+            </span>
+            <span v-if="props.column.field === 'phone'" class="vendor">
+              <a :href="`tel:+${props.row.phone}`" class="text-black-50">
+                {{ props.row.phone }}
+              </a>
+            </span>
 
-      <vue-good-table
-     
-        :columns="filteredColumns"
-        :rows="rows"
-        :search-options="{ enabled: true }"
-        :group-options="{ enabled: false }"
-        :pagination-options="{
-          enabled: true,
-          perPageDropdownEnabled: false,
-        }"
-        :compactMode="true"
-        :rtl="true"
-      >
-        <template #table-row="props">
-          <span v-if="props.column.field === 'image'" class="imgetext">
-            <img
-              :src="props.formattedRow[props.column.field]"
-              class="imagetable"
-              width="150"
-              height="100"
-            />
-          </span>
-          <span v-if="props.column.field === 'name'" class="vendor ">
-          
-          <button class="btn text-black-50" @click="view(props.row.id)"
-          >
-          {{ props.row.name }}
-        </button>
-          </span>
-          <span v-if="props.column.field === 'phone'" class="vendor ">
-          <a :href="`tel:+${props.row.phone}`" class="text-black-50"
-          >
-            {{ props.row.phone }}
-          </a>
-          </span>
-         
-          <span v-if="props.column.field === 'vendors'" class="vendor">
-          <button @click="view(props.row.id)" v-for="item in props.row.vendors" :key="item.id" class="btn text-primary">
-            {{ item.name }}
-          </button>
-          </span>
-          <span v-if="props.column.field == 'actions'">
-                  <label
-                    class="custom-switch justify-content-start pe-2"
-                    v-if="perminlocal.includes('stores-toggle')"
-                  >
-                    <input
-                      type="checkbox"
-                      name="custom-switch-checkbox"
-                      class="custom-switch-input"
-                      :checked="props.row.is_active"
-                      @change="toggleactive(props.row.id)"
-                    />
-                    <span class="custom-switch-description"> </span>
-                    <span class="custom-switch-indicator"></span>
-                  </label>
-                  <button
-              class="btn btn-info me-2"
-              @click="view(props.row.id)"
-              v-if="perminlocal.includes('stores-show')"
-            >
-              <i class="si si-eye"></i>
-            </button>
-                  <button
-                    class="btn btn-primary me-2"
-                    @click="edit(props.row)"
-                    v-if="perminlocal.includes('stores-update')"
-                  >
-                    <i class="fe fe-edit-2 "></i>
-                  </button>
-                  <button
-                    class="btn btn-danger me-2"
-                    @click="del(props.row.id, props.index, props.row.name)"
-                    v-if="perminlocal.includes('stores-destroy')"
-                  >
-                    <i class="fe fe-trash"></i>
-                  </button>
-          </span>
-        </template>
-      </vue-good-table>
-      <b-pagination
-        v-model="page"
-        :total-rows="last"
-        :per-page="1"
-        @click="paginag(page)"
-        class="justify-content-end mt-4"
-      ></b-pagination>
-   </section>
+            <span v-if="props.column.field === 'vendors'" class="vendor">
+              <button
+                @click="view(props.row.id)"
+                v-for="item in props.row.vendors"
+                :key="item.id"
+                class="btn text-primary"
+              >
+                {{ item.name }}
+              </button>
+            </span>
+            <span v-if="props.column.field == 'actions'">
+              <label
+                class="custom-switch justify-content-start pe-2"
+                v-if="perminlocal.includes('stores-toggle')"
+              >
+                <input
+                  type="checkbox"
+                  name="custom-switch-checkbox"
+                  class="custom-switch-input"
+                  :checked="props.row.is_active"
+                  @change="toggleactive(props.row.id)"
+                />
+                <span class="custom-switch-description"> </span>
+                <span class="custom-switch-indicator"></span>
+              </label>
+              <button
+                class="btn btn-info me-2"
+                @click="view(props.row.id)"
+                v-if="perminlocal.includes('stores-show')"
+              >
+                <i class="si si-eye"></i>
+              </button>
+              <button
+                class="btn btn-primary me-2"
+                @click="edit(props.row)"
+                v-if="perminlocal.includes('stores-update')"
+              >
+                <i class="fe fe-edit-2"></i>
+              </button>
+              <button
+                class="btn btn-danger me-2"
+                @click="del(props.row.id, props.index, props.row.name)"
+                v-if="perminlocal.includes('stores-destroy')"
+              >
+                <i class="fe fe-trash"></i>
+              </button>
+            </span>
+          </template>
+        </vue-good-table>
+        <b-pagination
+          v-model="page"
+          :total-rows="last"
+          :per-page="1"
+          @click="paginag(page)"
+          class="justify-content-end mt-4"
+        ></b-pagination>
+      </section>
       <section
         class="position-relative"
         style="height: 100vh; display: grid; place-items: center"
         v-else
       >
         <div
-          style="background: #e66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد متاجر حتي الان
@@ -170,7 +170,7 @@
                   <input
                     type="file"
                     @change="onFilevideo"
-                   accept="*/*"
+                    accept="*/*"
                     class="form-control"
                   />
                 </div>
@@ -434,7 +434,7 @@
                   <input
                     type="file"
                     @change="editFilevideo"
-                   accept="*/*"
+                    accept="*/*"
                     class="form-control"
                   />
                 </div>
@@ -548,12 +548,10 @@ export default {
         {
           label: "الصوره",
           field: "image",
-
         },
         {
           label: "الإسم",
           field: "name",
-          
         },
         {
           label: "رقم الجوال",
@@ -657,7 +655,7 @@ export default {
       this.videoUrl = data.video;
     },
     async update() {
-      const toast = useToast(); 
+      const toast = useToast();
 
       let res = await crudDataService
         .create(`stores/${this.id}?_method=put`, this.formDataupdate, {
@@ -677,28 +675,28 @@ export default {
           this.videoUrl = [];
         })
         .catch((error) => {
-          // this.ShowModeledit = false;          
+          // this.ShowModeledit = false;
 
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+          const errorData = error?.data?.errors || {};
+          console.log(error);
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
           this.imageUrl = [];
           this.videoUrl = [];
         });
@@ -835,20 +833,20 @@ export default {
       this.$swal
         .fire({
           title: `؟"${name}" هل تريد حذف المتجر `,
-           showCancelButton: true,
+          showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-               this.$swal.fire({
-            title: "تم الحذف بنجاح!",
-            icon: "success",
-            confirmButtonText: "تم", // ✅ Custom OK button text
-          });
+            this.$swal.fire({
+              title: "تم الحذف بنجاح!",
+              icon: "success",
+              confirmButtonText: "تم", // ✅ Custom OK button text
+            });
             crudDataService.delete("stores", `${data}`).then(() => {
-            this.stores();
+              this.stores();
               this.myList.splice(index, 1);
             });
           }
@@ -891,29 +889,31 @@ export default {
             position: "top-center",
             timeout: 5000,
           });
-        }) .catch ((error) => {
-        // this.ShowModel = false;
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+        })
+        .catch((error) => {
+          // this.ShowModel = false;
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorData = error?.data?.errors || {};
+          console.log(error);
+
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
     },
   },
   computed: {
@@ -1003,6 +1003,6 @@ export default {
   }
 }
 input::file-selector-button {
-  background-image: linear-gradient(to right, #e66239, #e66239) !important;
+  background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
 </style>

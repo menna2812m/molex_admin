@@ -1,8 +1,10 @@
 <template>
   <section class="mt-5">
     <div class="pos-relative">
-      <button @click="ShowModel = true" class="btn-add me-0 mb-4" 
-      v-if="perminlocal.includes('special-offer-store')"
+      <button
+        @click="ShowModel = true"
+        class="btn-add me-0 mb-4"
+        v-if="perminlocal.includes('special-offer-store')"
       >
         <i class="fe fe-plus"></i>
         اشعار جديد
@@ -17,44 +19,49 @@
       <progress class="pure-material-progress-circular" />
     </section>
     <section v-else>
-
-    <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
-      <div class="card-body p-0">
-        <div
-          class="table-responsive border-0 rounded border-bottom-0 mb-0"
-        >
-          <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0">
-            <tr>
-              <td class="text-muted">صورة الاشعار</td>
-              <td class="text-muted">عنوان الاشعار</td>
-              <td class="text-muted">تفاصيل الاشعار</td>
-            </tr>
-            <tr
-              v-for="(item, index) in myList"
-              :key="index"
-              class="list_item py-3 w-100 align-items-center justify-content-between"
+      <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
+        <div class="card-body p-0">
+          <div class="table-responsive border-0 rounded border-bottom-0 mb-0">
+            <table
+              class="table table-bordered text-nowrap text-md-nowrap mg-b-0"
             >
-              <td>
-                <img :src="item.image" alt="" width="150" height="150" class="rounded-circle"/>
-              </td>
-              <td>
-                {{ item.title.ar }}
-              </td>
-              <td>
-                {{ item.body.ar }}
-              </td>
-            </tr>
-          </table>
+              <tr>
+                <td class="text-muted">صورة الاشعار</td>
+                <td class="text-muted">عنوان الاشعار</td>
+                <td class="text-muted">تفاصيل الاشعار</td>
+              </tr>
+              <tr
+                v-for="(item, index) in myList"
+                :key="index"
+                class="list_item py-3 w-100 align-items-center justify-content-between"
+              >
+                <td>
+                  <img
+                    :src="item.image"
+                    alt=""
+                    width="150"
+                    height="150"
+                    class="rounded-circle"
+                  />
+                </td>
+                <td>
+                  {{ item.title.ar }}
+                </td>
+                <td>
+                  {{ item.body.ar }}
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
-    <section
+      <section
         class="position-relative"
         style="height: 100vh; display: grid; place-items: center"
         v-else
       >
         <div
-          style="background: #E66239; padding: 30px; font-size: 20px"
+          style="background: #fd601f; padding: 30px; font-size: 20px"
           class="w-50 text-center text-white rounded-10"
         >
           لا يوجد اشعارات حتي الان
@@ -131,14 +138,13 @@
         </div>
       </b-modal>
     </teleport>
-  
+
     <b-pagination
       v-model="page"
       :total-rows="last"
       :per-page="1"
       @click="paginag(page)"
       class="justify-content-end"
-     
     ></b-pagination>
   </section>
 </template>
@@ -152,7 +158,7 @@ export default {
   },
   data() {
     return {
-        page: 1,
+      page: 1,
       last: 2,
       ShowModel: false,
       myList: [],
@@ -182,20 +188,19 @@ export default {
       };
       reader.readAsDataURL(this.formData.image);
     },
-  
+
     async notification() {
       this.loading = true; // Start loading
       try {
         let res = await crudDataService.getAll("special-offer");
-      this.myList = res.data.data.data;
-      this.last = res.data.data.last_page;
+        this.myList = res.data.data.data;
+        this.last = res.data.data.last_page;
       } catch (error) {
         console.error("Failed to fetch data:", error);
         // Handle error
       } finally {
         this.loading = false; // End loading regardless of success or failure
       }
-      
     },
     async paginag(p) {
       console.log(p);
@@ -217,9 +222,8 @@ export default {
             (this.formData.title.en = ""),
             (this.formData.body.ar = ""),
             (this.formData.body.en = ""),
-            this.imgurl='',
+            (this.imgurl = ""),
             (this.formData.image = "");
-
         })
         .catch((error) => {
           // this.ShowModel = false;

@@ -266,8 +266,8 @@ export default {
         },
       ],
       selectAll: false,
-      isDropdownOpen:false,
-      isDropendOpen:false
+      isDropdownOpen: false,
+      isDropendOpen: false,
     };
   },
   methods: {
@@ -290,9 +290,9 @@ export default {
 }
 .icon_color {
   padding: 12px;
-    border-radius: 50%;
-    height: 40px;
-    padding-right: 13px;
+  border-radius: 50%;
+  height: 40px;
+  padding-right: 13px;
   &.icon_color_1 {
     color: #929aff;
     background: #e8e7ff;
@@ -312,7 +312,7 @@ export default {
 }
 
 .progres {
-  color: #E66239;
+  color: #fd601f;
   font-weight: 600;
   font-size: 16px;
 }

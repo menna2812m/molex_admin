@@ -6,13 +6,12 @@
           <div
             class="card-header pb-2 d-flex align-items-center justify-content-between"
           >
-            <h4 class="mb-0">{{ item.title?item.title.ar:'' }}</h4>
+            <h4 class="mb-0">{{ item.title ? item.title.ar : "" }}</h4>
             <div class="pos-relative">
               <button
                 @click="toggleDropdown"
                 class="twobtn bg-white border"
-                style="border-color: #E66239 !important; color: #E66239"
-              
+                style="border-color: #fd601f !important; color: #fd601f"
               >
                 خيارات الصفحة <i class="fas fa-caret-down ms-1"></i>
               </button>
@@ -43,8 +42,7 @@
             </ul>
             <div>
               <h3>المحتوي:</h3>
-              <p v-if="item.content" v-html="item.content.ar">
-              </p>
+              <p v-if="item.content" v-html="item.content.ar"></p>
             </div>
           </div>
         </div>
@@ -80,24 +78,22 @@
                 />
               </div>
               <div class="col-12 mb-3">
-                <label> محتوي الصفحة  عربي</label>
+                <label> محتوي الصفحة عربي</label>
 
                 <ckeditor
                   :editor="editor"
                   v-model="formData.content.ar"
                   :editorConfigs="editorConfigs"
                 ></ckeditor>
-               
               </div>
               <div class="col-12 mb-3">
-                <label> محتوي الصفحة  انجليزي</label>
+                <label> محتوي الصفحة انجليزي</label>
 
                 <ckeditor
                   :editor="editor"
                   v-model="formData.content.en"
                   :editorConfigs="editorConfigs"
                 ></ckeditor>
-               
               </div>
 
               <div class="col-12 mb-3">
@@ -142,16 +138,14 @@
       </b-modal>
     </teleport>
   </section>
-  <section class="position-relative" style="height: 100vh;display: grid;
-    place-items: center;"
+  <section
+    class="position-relative"
+    style="height: 100vh; display: grid; place-items: center"
     v-else
-   >
-
-<section class="cate">
-</section>
- <progress class="pure-material-progress-circular"/> 
-
-   </section>  
+  >
+    <section class="cate"></section>
+    <progress class="pure-material-progress-circular" />
+  </section>
 </template>
 <script>
 import crudDataService from "../../Services/crudDataService.js";
@@ -168,18 +162,17 @@ export default {
       formData: {
         title: {
           ar: "",
-          en:""
+          en: "",
         },
         content: {
           ar: "",
-          en:""
+          en: "",
         },
         seo_title: "",
         seo_description: "",
         seo_url: "",
       },
-    perminlocal : localStorage.getItem('permissions')
-
+      perminlocal: localStorage.getItem("permissions"),
     };
   },
   setup() {
@@ -211,9 +204,8 @@ export default {
       let res = await crudDataService.create(
         `pages/${this.$route.params.id}?_method=put`,
         this.formData
-     
       );
-      this.getPage()
+      this.getPage();
       this.ShowModel = false;
       console.log(res.data.data);
     },
