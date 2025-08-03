@@ -1,10 +1,10 @@
 import axios from "axios";
 const authlocal = localStorage.getItem("authlocal");
 console.log(authlocal);
-var domain = "https://mall-express.code7x.com/dashboard";
+var domain = "https://mall.alharazy.com/api";
 axios.defaults.baseURL = domain;
-if (domain == "https://mall-express.code7x.com/dashboard") {
-    axios.defaults.token = `Bearer ${authlocal}`;
+if (domain == "https://mall.alharazy.com/api") {
+  axios.defaults.token = `Bearer ${authlocal}`;
 } else {
   axios.defaults.token;
 }
