@@ -12,12 +12,12 @@
         <div class="hor-logo">
           <router-link class="main-logo" :to="`${url}admin`">
             <img
-              src="../../../../src/assets/img/logo.png"
+              src="../../../../src/assets/icons/logo.png"
               class="header-brand-img desktop-logo"
               alt="logo"
             />
             <img
-              src="../../../../src/assets/img/logo.png"
+              src="../../../../src/assets/icons/logo.png"
               class="header-brand-img desktop-logo-dark"
               alt="logo"
             />
@@ -55,24 +55,27 @@
           </div>
         </div>
       </div>
-      <div class="avatar-select">
-        <i
-          data-v-fe05682f=""
-          class="mdi mdi-account-plus icon_color icon_color_2"
-        ></i>
-        <button @click="toggleDropdown" class="twobtn bg-white">
-          مدير المتجر <i class="fas fa-caret-down ms-1"></i>
-        </button>
+      <div class="d-flex align-items-center">
+        <!-- <ThemeToggle class="me-3" /> -->
+        <div class="avatar-select">
+          <i
+            data-v-fe05682f=""
+            class="mdi mdi-account-plus icon_color icon_color_2"
+          ></i>
+          <button @click="toggleDropdown" class="twobtn bg-white text-white">
+            مدير المتجر <i class="fas fa-caret-down ms-1"></i>
+          </button>
 
-        <div class="text-start dropend mt-1" v-if="isDropdownOpen">
-          <a class="dropdown-item" @click="profile">
-            <i class="fe fe-user"></i>
-            الملف الشخصي
-          </a>
-          <a class="dropdown-item text-danger" @click="logout">
-            <i class="fe fe-log-in"></i>
-            تسجيل الخروج
-          </a>
+          <div class="text-start dropend mt-1" v-if="isDropdownOpen">
+            <a class="dropdown-item" @click="profile">
+              <i class="fe fe-user"></i>
+              الملف الشخصي
+            </a>
+            <a class="dropdown-item text-danger" @click="logout">
+              <i class="fe fe-log-in"></i>
+              تسجيل الخروج
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -81,6 +84,7 @@
 
 <script>
 import crudDataService from "../../../Services/crudDataService.js";
+import ThemeToggle from "../ThemeToggle/ThemeToggle.vue";
 
 export default {
   data() {
@@ -150,6 +154,9 @@ export default {
       }
     },
   },
+  components: {
+    ThemeToggle,
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -167,14 +174,12 @@ export default {
   border-top: 0;
 }
 .dropend {
-  background: #fff;
   position: absolute;
   width: 150px;
   border-radius: 3px;
   left: 32px;
   top: 48px;
 
-  box-shadow: 0px 3px 10px 7px #e6edf0;
   a {
     cursor: pointer;
   }

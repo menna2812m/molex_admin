@@ -20,7 +20,7 @@
                 v-if="logo"
               /> -->
               <img
-                src="../../../../src/assets/img/logo.png"
+                src="../../../../src/assets/icons/logo.png"
                 class="header-brand-img desktop-logo p-2 bg-white"
                 alt="logo"
               />
@@ -39,7 +39,7 @@
                 v-if="logo"
               /> -->
               <img
-                src="../../../../src/assets/img/logo.png"
+                src="../../../../src/assets/icons/logo.png"
                 class="header-brand-img desktop-logo"
                 alt="logo"
               />

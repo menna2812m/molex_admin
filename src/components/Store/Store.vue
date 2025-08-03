@@ -40,12 +40,12 @@
               />
             </span>
             <span v-if="props.column.field === 'name'" class="vendor">
-              <button class="btn text-black-50" @click="view(props.row.id)">
+              <button class="btn" @click="view(props.row.id)">
                 {{ props.row.name }}
               </button>
             </span>
             <span v-if="props.column.field === 'phone'" class="vendor">
-              <a :href="`tel:+${props.row.phone}`" class="text-black-50">
+              <a :href="`tel:+${props.row.phone}`" class="">
                 {{ props.row.phone }}
               </a>
             </span>

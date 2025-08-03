@@ -1,0 +1,110 @@
+/* Dark Theme CSS Custom Properties */
+:root {
+  --dark-theme: #1a1a2e;
+  --dark-body: #16213e;
+  --dark-color: #ffffff;
+  --dark-border: #2d3748;
+
+  /* Primary colors for dark theme - using #fd601f */
+  --primary-bg-color: #fd601f;
+  --primary-bg-hover: #e55a1c;
+  --primary-bg-border: #fd601f;
+  --primary01: rgba(253, 96, 31, 0.1);
+  --primary005: rgba(253, 96, 31, 0.05);
+  --primary02: rgba(253, 96, 31, 0.2);
+  --primary03: rgba(253, 96, 31, 0.3);
+  --primary05: rgba(253, 96, 31, 0.5);
+  --primary07: rgba(253, 96, 31, 0.7);
+  --primary08: rgba(253, 96, 31, 0.8);
+}
+
+/* Dark theme specific overrides */
+body.dark-theme {
+  background-color: var(--dark-body) !important;
+  color: var(--dark-color) !important;
+}
+
+.dark-theme .main-header {
+  background-color: var(--dark-theme) !important;
+  border-bottom-color: var(--dark-border) !important;
+}
+
+.dark-theme .main-sidebar {
+  background-color: var(--dark-theme) !important;
+  border-right-color: var(--dark-border) !important;
+}
+
+.dark-theme .card {
+  background-color: var(--dark-theme) !important;
+  border-color: var(--dark-border) !important;
+}
+
+.dark-theme .form-control {
+  background-color: var(--dark-theme) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-color) !important;
+}
+
+.dark-theme .table {
+  color: var(--dark-color) !important;
+}
+
+.dark-theme .table td,
+.dark-theme .table th {
+  border-color: var(--dark-border) !important;
+}
+
+.dark-theme .dropdown-menu,
+.dropend {
+  background-color: var(--dark-theme) !important;
+  border-color: var(--dark-border) !important;
+}
+
+.dark-theme .dropdown-item {
+  color: var(--dark-color) !important;
+}
+
+.dark-theme .dropdown-item:hover {
+  background-color: var(--dark-border) !important;
+}
+
+/* Primary color overrides for dark theme */
+.dark-theme .btn-primary {
+  background-color: var(--primary-bg-color) !important;
+  border-color: var(--primary-bg-color) !important;
+}
+
+.dark-theme .btn-primary:hover {
+  background-color: var(--primary-bg-hover) !important;
+  border-color: var(--primary-bg-hover) !important;
+}
+
+.dark-theme .text-primary {
+  color: var(--primary-bg-color) !important;
+}
+
+.dark-theme .bg-primary {
+  background-color: var(--primary-bg-color) !important;
+}
+
+.dark-theme .border-primary {
+  border-color: var(--primary-bg-color) !important;
+}
+
+/* Form elements with primary color */
+.dark-theme .form-control:focus {
+  border-color: var(--primary-bg-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(253, 96, 31, 0.25) !important;
+}
+
+/* Links with primary color */
+.dark-theme a {
+  color: var(--primary-bg-color);
+}
+
+.dark-theme a:hover {
+  color: var(--primary-bg-hover);
+}
+.dark-theme .bg-primary-05 {
+  background-color: var(--primary05) !important;
+}

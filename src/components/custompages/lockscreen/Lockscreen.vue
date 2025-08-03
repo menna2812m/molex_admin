@@ -1,7 +1,11 @@
 <template>
   <div class="page main-signin-wrapper">
     <div class="d-flex header-setting-icon demo-icon fa-spin">
-      <a class="nav-link icon" href="javascript:void(0)" v-on:click="Switcherbutton()">
+      <a
+        class="nav-link icon"
+        href="javascript:void(0)"
+        v-on:click="Switcherbutton()"
+      >
         <i class="fe fe-settings settings-icon"></i>
       </a>
     </div>
@@ -14,7 +18,7 @@
             <div class="col-lg-6 col-xl-5 d-none d-lg-block bg-primary details">
               <div class="mt-4 pt-4 px-5 ms-3 pos-absolute">
                 <img
-                  src="../../../assets/img/logo.png"
+                  src="../../../assets/icons/logo.png"
                   class="header-brand-img mb-4"
                   alt="logo"
                 />
@@ -35,12 +39,12 @@
                 <div class="row row-sm">
                   <div class="card-body main-profile-overview mt-3 mb-3">
                     <img
-                      src="../../../assets/img/logo.png"
+                      src="../../../assets/icons/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo-light"
                       alt="logo"
                     />
                     <img
-                      src="../../../assets/img/logo.png"
+                      src="../../../assets/icons/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo"
                       alt="logo"
                     />
@@ -57,7 +61,9 @@
                           src="../../../assets/img/svgs/user.svg"
                         />
                         <div class="my-auto">
-                          <p class="font-weight-semibold my-auto ms-2 text-uppercase">
+                          <p
+                            class="font-weight-semibold my-auto ms-2 text-uppercase"
+                          >
                             Sonia Taylor
                           </p>
                         </div>

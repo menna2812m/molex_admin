@@ -4,22 +4,22 @@
     <div class="row signpages text-center">
       <div class="col-md-12 my-auto">
         <div class="card">
-          <div class="row row-sm">
+          <div class="d-flex">
             <div
-              class="col-lg-6 col-xl-5 d-none d-lg-block text-center bg-primary"
+              class="col-lg-6 col-xl-5 d-none d-lg-block text-center bg-primary-05"
             >
               <div
                 class="mt-2 p-2 d-flex justify-content-between flex-column align-items-center"
               >
                 <img
-                  src="../../../assets/img/logo.png"
-                  class="header-brand-img mb-4"
+                  src="../../../assets/icons/logo.png"
+                  class="header-brand-img"
                   alt="logo"
                 />
                 <div class="clearfix"></div>
                 <img
                   src="../../../assets/img/svgs/user.svg"
-                  class="ht-100 mb-0 mt-4"
+                  class="ht-100 mb-0"
                   alt="user"
                 />
                 <!-- <h5 class="mt-4 text-white">Create Your Account</h5> -->
@@ -33,13 +33,13 @@
                 <div class="row row-sm">
                   <div class="card-body mt-2 mb-2">
                     <img
-                      src="../../../assets/img/logo.png"
-                      class="d-lg-none header-brand-img text-start float-start mb-4 error-logo-light"
+                      src="../../../assets/icons/logo.png"
+                      class="d-lg-none header-brand-img text-start float-start error-logo-light"
                       alt="logo"
                     />
                     <img
-                      src="../../../assets/img/logo.png"
-                      class="d-lg-none header-brand-img text-start float-start mb-4 error-logo"
+                      src="../../../assets/icons/logo.png"
+                      class="d-lg-none header-brand-img text-start float-start error-logo"
                       alt="logo"
                     />
                     <div class="clearfix"></div>

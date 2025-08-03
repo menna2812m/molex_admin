@@ -42,12 +42,12 @@
               </button>
             </span>
             <span v-if="props.column.field === 'phone'" class="vendor">
-              <a :href="`tel:+${props.row.phone}`" class="text-black-50">
+              <a :href="`tel:+${props.row.phone}`" class="">
                 {{ props.row.phone }}
               </a>
             </span>
             <span v-if="props.column.field === 'email'" class="vendor">
-              <a :href="`tel:+${props.row.email}`" class="text-black-50">
+              <a :href="`tel:+${props.row.email}`" class="">
                 {{ props.row.email }}
               </a>
             </span>

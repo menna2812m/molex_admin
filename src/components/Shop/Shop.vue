@@ -5,7 +5,7 @@
         <div class="card custom-card mg-b-20 card-shop">
           <div class="card-body p-0">
             <div class="d-flex justify-content-between align-items-start p-3">
-              <img src="../../assets/img/logo.png" alt="" class="ps-3" />
+              <img src="../../assets/icons/logo.png" alt="" class="ps-3" />
 
               <div class="w-100">
                 <div class="">
@@ -84,7 +84,7 @@
           <div class="card-body p-0">
             <div class="ribbon ribbon-top-left"><span>اختيار التجار</span></div>
             <div class="d-flex justify-content-between align-items-start p-3">
-              <img src="../../assets/img/logo.png" alt="" class="ps-3" />
+              <img src="../../assets/icons/logo.png" alt="" class="ps-3" />
               <div class="w-100">
                 <div class="">
                   <div

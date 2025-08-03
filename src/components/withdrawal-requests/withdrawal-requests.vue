@@ -37,7 +37,7 @@
                   </button>
                 </td>
                 <td>
-                  <a :href="`tel:+${item.store?.phone}`" class="text-black-50">
+                  <a :href="`tel:+${item.store?.phone}`" class="">
                     {{ item.store?.phone }}
                   </a>
                 </td>

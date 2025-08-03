@@ -20,7 +20,10 @@
                           checked
                           v-on:click="RtltoLtr()"
                         />
-                        <label for="myonoffswitch19" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch19"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle d-flex mt-2">
@@ -33,7 +36,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="LtrtoRtl()"
                         />
-                        <label for="myonoffswitch20" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch20"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                   </div>
@@ -54,7 +60,10 @@
                           checked
                           v-on:click="VerticalMenu()"
                         />
-                        <label for="myonoffswitch01" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch01"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle d-flex mt-2">
@@ -67,7 +76,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="Horizontal()"
                         />
-                        <label for="myonoffswitch02" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch02"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle d-flex mt-2">
@@ -80,7 +92,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="HorizontalHoverMenu()"
                         />
-                        <label for="myonoffswitch03" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch03"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                   </div>
@@ -101,7 +116,10 @@
                           checked
                           v-on:click="LightTheme()"
                         />
-                        <label for="myonoffswitch1" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch1"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle d-flex mt-2">
@@ -109,7 +127,7 @@
                       <div class="">
                         <input
                           class="wd-30 ht-30 input-color-picker color-primary-light"
-                          value="#6259ca"
+                          value="#fd601f"
                           id="colorID"
                           type="color"
                           data-id="bg-color"
@@ -138,7 +156,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="Dark()"
                         />
-                        <label for="myonoffswitch2" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch2"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle d-flex mt-2">
@@ -146,7 +167,7 @@
                       <div class="">
                         <input
                           class="wd-30 ht-30 input-dark-color-picker color-primary-dark"
-                          value="#6259ca"
+                          value="#fd601f"
                           type="color"
                           data-id="bg-color"
                           data-id1="bg-hover"
@@ -175,7 +196,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="LightMenu()"
                         />
-                        <label for="myonoffswitch3" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch3"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle colorMenu d-flex mt-2">
@@ -188,7 +212,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="ColorMenu()"
                         />
-                        <label for="myonoffswitch4" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch4"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle darkMenu d-flex mt-2">
@@ -202,7 +229,10 @@
                           checked
                           v-on:click="DarkMenu()"
                         />
-                        <label for="myonoffswitch5" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch5"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                   </div>
@@ -223,7 +253,10 @@
                           checked
                           v-on:click="Lightheader()"
                         />
-                        <label for="myonoffswitch6" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch6"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle colorHeader d-flex mt-2">
@@ -236,7 +269,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="Colorheader()"
                         />
-                        <label for="myonoffswitch7" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch7"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle darkHeader d-flex mt-2">
@@ -249,7 +285,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="Darkheader()"
                         />
-                        <label for="myonoffswitch8" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch8"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                   </div>
@@ -270,7 +309,10 @@
                           checked
                           v-on:click="FullWidth()"
                         />
-                        <label for="myonoffswitch9" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch9"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle d-flex mt-2">
@@ -283,7 +325,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="Boxed()"
                         />
-                        <label for="myonoffswitch10" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch10"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                   </div>
@@ -304,7 +349,10 @@
                           checked
                           v-on:click="Fixed()"
                         />
-                        <label for="myonoffswitch11" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch11"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                     <div class="switch-toggle d-flex mt-2">
@@ -317,7 +365,10 @@
                           class="onoffswitch2-checkbox"
                           v-on:click="Scrollable()"
                         />
-                        <label for="myonoffswitch12" class="onoffswitch2-label"></label>
+                        <label
+                          for="myonoffswitch12"
+                          class="onoffswitch2-label"
+                        ></label>
                       </p>
                     </div>
                   </div>
@@ -328,7 +379,10 @@
                 <h4>Reset All Styles</h4>
                 <div class="skin-body">
                   <div class="switch_section my-4">
-                    <button class="btn btn-danger btn-block" v-on:click="resetData()">
+                    <button
+                      class="btn btn-danger btn-block"
+                      v-on:click="resetData()"
+                    >
                       Reset All
                     </button>
                   </div>
@@ -352,7 +406,10 @@ export default {
       this.Dark();
       document
         .querySelector("html")
-        .style.setProperty("--primary-rgb", this.hex2rgb(eventData.target.value));
+        .style.setProperty(
+          "--primary-rgb",
+          this.hex2rgb(eventData.target.value)
+        );
       localStorage.setItem("darkcolor", this.hex2rgb(eventData.target.value));
       localStorage.setItem("Dynamicdarkprimarycolor", true);
       localStorage.removeItem("Dynamiclightprimarycolor");
@@ -363,11 +420,17 @@ export default {
       this.LightTheme();
       document
         .querySelector("html")
-        .style.setProperty("--primary-rgb", this.hex2rgb(eventData.target.value));
+        .style.setProperty(
+          "--primary-rgb",
+          this.hex2rgb(eventData.target.value)
+        );
       localStorage.setItem("lightcolor", this.hex2rgb(eventData.target.value));
       localStorage.setItem("Dynamiclightprimarycolor", true);
       localStorage.removeItem("Dynamicdarkprimarycolor");
-      localStorage.removeItem("darkcolor", this.hex2rgb(eventData.target.value));
+      localStorage.removeItem(
+        "darkcolor",
+        this.hex2rgb(eventData.target.value)
+      );
     },
     hex2rgb(hex) {
       let r = parseInt(hex.slice(1, 3), 16),
@@ -485,8 +548,12 @@ export default {
       document
         .querySelector(".main-menu")
         .classList.add("main-sidebar", "main-sidebar-sticky", "side-menu");
-      document.querySelector(".main-menu").classList.remove("main-navbar", "hor-menu");
-      document.querySelector(".main-container-1").classList.add("main-sidebar-header");
+      document
+        .querySelector(".main-menu")
+        .classList.remove("main-navbar", "hor-menu");
+      document
+        .querySelector(".main-container-1")
+        .classList.add("main-sidebar-header");
       document.querySelector(".main-body-1").classList.add("main-sidebar-body");
       document
         .querySelector("body")
@@ -510,7 +577,9 @@ export default {
       document.querySelector(".main-header").classList.add("hor-header");
       document.querySelector(".main-header").classList.remove("sticky-pin");
       document.querySelector(".main-container-1").classList.add("container");
-      document.querySelector(".main-menu").classList.add("main-navbar", "hor-menu");
+      document
+        .querySelector(".main-menu")
+        .classList.add("main-navbar", "hor-menu");
       document
         .querySelectorAll(".main-container")
         .forEach((e) => e.classList.add("container"));
@@ -524,11 +593,15 @@ export default {
       document.body.classList.remove("main-sidebar-hide");
       document.querySelector(".main-header").classList.remove("sticky");
       document.querySelector(".main-content").classList.remove("side-content");
-      document.querySelector(".main-container-1").classList.remove("main-sidebar-header");
+      document
+        .querySelector(".main-container-1")
+        .classList.remove("main-sidebar-header");
       document
         .querySelector(".main-menu")
         .classList.remove("main-sidebar", "main-sidebar-sticky", "side-menu");
-      document.querySelector(".main-body-1").classList.remove("main-sidebar-body");
+      document
+        .querySelector(".main-body-1")
+        .classList.remove("main-sidebar-body");
       document
         .querySelectorAll(".main-container")
         .forEach((e) => e.classList.remove("container-fluid"));
@@ -548,7 +621,9 @@ export default {
         document.querySelector(".main-content").classList.add("hor-content");
       document.querySelector(".main-header").classList.add("hor-header");
       document.querySelector(".main-header").classList.remove("sticky-pin");
-      document.querySelector(".main-menu").classList.add("main-navbar", "hor-menu");
+      document
+        .querySelector(".main-menu")
+        .classList.add("main-navbar", "hor-menu");
       document.querySelector(".main-container-1").classList.add("container");
       document
         .querySelectorAll(".main-container")
@@ -561,8 +636,12 @@ export default {
       document
         .querySelector(".main-menu")
         .classList.remove("main-sidebar", "main-sidebar-sticky", "side-menu");
-      document.querySelector(".main-container-1").classList.remove("main-sidebar-header");
-      document.querySelector(".main-body-1").classList.remove("main-sidebar-body");
+      document
+        .querySelector(".main-container-1")
+        .classList.remove("main-sidebar-header");
+      document
+        .querySelector(".main-body-1")
+        .classList.remove("main-sidebar-body");
       document.body.classList.remove("default-menu");
       document
         .querySelectorAll(".main-container")
@@ -609,7 +688,8 @@ export default {
       let menuWidth = document.querySelector(".hor-menu");
       let menuItems = document.querySelector(".menu-nav");
       let mainSidemenuWidth = document.querySelector(".main-sidemenu");
-      let menuContainerWidth = menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
+      let menuContainerWidth =
+        menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
       let marginLeftValue = Math.ceil(
         Number(window.getComputedStyle(menuItems).marginLeft.split("px")[0])
       );
@@ -617,13 +697,18 @@ export default {
         Number(window.getComputedStyle(menuItems).marginRight.split("px")[0])
       );
       let check =
-        menuItems.scrollWidth + (0 - menuWidth?.offsetWidth) + menuContainerWidth;
+        menuItems.scrollWidth +
+        (0 - menuWidth?.offsetWidth) +
+        menuContainerWidth;
       if (document.querySelector(".main-body")?.classList.contains("ltr")) {
         menuItems.style.marginRight = 0;
       } else {
         menuItems.style.marginLeft = 0;
       }
-      if (menuItems.scrollWidth - 2 < menuWidth?.offsetWidth - menuContainerWidth) {
+      if (
+        menuItems.scrollWidth - 2 <
+        menuWidth?.offsetWidth - menuContainerWidth
+      ) {
         document.querySelector(".slide-left")?.classList.add("d-none");
         document.querySelector(".slide-right")?.classList.add("d-none");
         document.querySelector(".slide-leftRTL")?.classList.add("d-none");
@@ -635,7 +720,10 @@ export default {
         document.querySelector(".slide-left")?.classList.remove("d-none");
         document.querySelector(".slide-leftRTL")?.classList.remove("d-none");
       }
-      if (menuItems.scrollWidth - 2 > menuWidth?.offsetWidth - menuContainerWidth) {
+      if (
+        menuItems.scrollWidth - 2 >
+        menuWidth?.offsetWidth - menuContainerWidth
+      ) {
         document.querySelector(".slide-left")?.classList.remove("d-none");
         document.querySelector(".slide-right")?.classList.remove("d-none");
         document.querySelector(".slide-leftRTL")?.classList.remove("d-none");
@@ -695,12 +783,12 @@ export default {
       let li = document.querySelectorAll(".menu-icon");
       document.querySelector("#myonoffswitch19").checked = true; //LTR
       document.querySelector("#myonoffswitch01").checked = true; //VERTICALMENU
-      document.querySelector("#myonoffswitch1").checked = true; //LIGHT THEME
+      document.querySelector("#myonoffswitch2").checked = true; //DARK THEME
       document.querySelector("#myonoffswitch5").checked = true; //DARK MENU
-      document.querySelector("#myonoffswitch6").checked = true; //LIGHT HEADER
+      document.querySelector("#myonoffswitch8").checked = true; //DARK HEADER
       document.querySelector("#myonoffswitch9").checked = true; //FULL WIDTH
       document.querySelector("#myonoffswitch11").checked = true; //FIXED LAYOUTPOSTION
-      document.body.classList.remove("dark-theme");
+      document.body.classList.add("dark-theme");
       let mainContainer = document.querySelectorAll(".main-container");
       mainContainer.forEach((e) => {
         e.classList.remove("container");
@@ -713,7 +801,9 @@ export default {
       document
         .querySelector(".main-menu")
         .classList.add("main-sidebar", "main-sidebar-sticky", "side-menu");
-      document.querySelector(".main-container-1").classList.add("main-sidebar-header");
+      document
+        .querySelector(".main-container-1")
+        .classList.add("main-sidebar-header");
       document.querySelector(".main-body-1").classList.add("main-sidebar-body");
       document.body.classList.add("dark-menu");
       document.body.classList.remove("rtl");
@@ -724,9 +814,11 @@ export default {
       document.querySelector(".main-content").classList.remove("hor-content");
       document.querySelector(".main-header").classList.remove("hor-header");
       document.querySelector(".main-container-1").classList.remove("container");
-      document.querySelector(".main-menu").classList.remove("main-navbar", "hor-menu");
+      document
+        .querySelector(".main-menu")
+        .classList.remove("main-navbar", "hor-menu");
       document.body.classList.remove("color-menu");
-      document.body.classList.remove("header-dark");
+      document.body.classList.add("header-dark");
       document.body.classList.remove("color-header");
       document.body.classList.remove("layout-boxed");
       document.body.classList.remove("icontext-menu");
@@ -743,15 +835,17 @@ export default {
     },
 
     localStorageBackUp() {
-      //LightthemeLocalbackup
-      if (localStorage.getItem("SpruhaLighttheme")) {
+      // Always set dark theme as default
+      this.Dark();
+      document.querySelector("#myonoffswitch2").checked = true;
+
+      // Only apply light theme if explicitly saved by user
+      if (
+        localStorage.getItem("SpruhaLighttheme") &&
+        !localStorage.getItem("Spruhadark")
+      ) {
         this.LightTheme();
         document.querySelector("#myonoffswitch1").checked = true;
-      }
-      //dynamicdark
-      if (localStorage.getItem("Spruhadark")) {
-        this.Dark();
-        document.querySelector("#myonoffswitch2").checked = true;
       }
 
       //dynamiclightcolor
@@ -828,13 +922,19 @@ export default {
         document.querySelector("#myonoffswitch2").checked = true;
         document
           .querySelector("html")
-          .style.setProperty("--primary-rgb", localStorage.getItem("darkcolor"));
+          .style.setProperty(
+            "--primary-rgb",
+            localStorage.getItem("darkcolor")
+          );
       }
       if (localStorage.getItem("lightcolor")) {
         this.LightTheme();
         document
           .querySelector("html")
-          .style.setProperty("--primary-rgb", localStorage.getItem("lightcolor"));
+          .style.setProperty(
+            "--primary-rgb",
+            localStorage.getItem("lightcolor")
+          );
       }
     },
     //horizontal-arrows
@@ -867,7 +967,8 @@ export default {
         let menuWidth = document.querySelector(".hor-menu");
         let menuItems = document.querySelector(".menu-nav");
         let mainSidemenuWidth = document.querySelector(".main-body-1");
-        let menuContainerWidth = menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
+        let menuContainerWidth =
+          menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
         let marginLeftValue = Math.ceil(
           Number(window.getComputedStyle(menuItems).marginLeft.split("px")[0])
         );
@@ -875,9 +976,14 @@ export default {
           Number(window.getComputedStyle(menuItems).marginRight.split("px")[0])
         );
         let check =
-          menuItems.scrollWidth + (0 - menuWidth?.offsetWidth) + menuContainerWidth;
+          menuItems.scrollWidth +
+          (0 - menuWidth?.offsetWidth) +
+          menuContainerWidth;
 
-        if (menuWidth?.offsetWidth - menuContainerWidth > menuItems.scrollWidth) {
+        if (
+          menuWidth?.offsetWidth - menuContainerWidth >
+          menuItems.scrollWidth
+        ) {
           document.querySelector(".slide-left")?.classList.add("d-none");
           document.querySelector(".slide-right")?.classList.add("d-none");
           menuItems.style.marginRight = 0;
@@ -921,14 +1027,17 @@ export default {
         let menuWidth = document.querySelector(".hor-menu");
         let menuItems = document.querySelector(".menu-nav");
         let mainSidemenuWidth = document.querySelector(".main-body-1");
-        let menuContainerWidth = menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
+        let menuContainerWidth =
+          menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
         let marginLeftValue =
           Math.ceil(
             Number(window.getComputedStyle(menuItems).marginLeft.split("px")[0])
           ) + 100;
         let marginRightValue =
           Math.ceil(
-            Number(window.getComputedStyle(menuItems).marginRight.split("px")[0])
+            Number(
+              window.getComputedStyle(menuItems).marginRight.split("px")[0]
+            )
           ) + 100;
 
         if (document.querySelector("html").getAttribute("dir") === "rtl") {
@@ -960,9 +1069,14 @@ export default {
           if (marginLeftValue < 0) {
             menuItems.style.marginLeft =
               Number(menuItems.style.marginLeft.split("px")[0]) + 100 + "px";
-            if (menuWidth?.offsetWidth - menuContainerWidth < menuItems.scrollWidth) {
+            if (
+              menuWidth?.offsetWidth - menuContainerWidth <
+              menuItems.scrollWidth
+            ) {
               document.querySelector(".slide-left")?.classList.remove("d-none");
-              document.querySelector(".slide-right")?.classList.remove("d-none");
+              document
+                .querySelector(".slide-right")
+                ?.classList.remove("d-none");
             }
           } else {
             document.querySelector(".slide-left")?.classList.add("d-none");
@@ -989,17 +1103,22 @@ export default {
         let menuWidth = document.querySelector(".hor-menu");
         let menuItems = document.querySelector(".menu-nav");
         let mainSidemenuWidth = document.querySelector(".main-body-1");
-        let menuContainerWidth = menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
+        let menuContainerWidth =
+          menuWidth?.offsetWidth - mainSidemenuWidth?.offsetWidth;
         let marginLeftValue =
           Math.ceil(
             Number(window.getComputedStyle(menuItems).marginLeft.split("px")[0])
           ) - 100;
         let marginRightValue =
           Math.ceil(
-            Number(window.getComputedStyle(menuItems).marginRight.split("px")[0])
+            Number(
+              window.getComputedStyle(menuItems).marginRight.split("px")[0]
+            )
           ) - 100;
         let check =
-          menuItems.scrollWidth + (0 - menuWidth?.offsetWidth) + menuContainerWidth;
+          menuItems.scrollWidth +
+          (0 - menuWidth?.offsetWidth) +
+          menuContainerWidth;
 
         if (document.querySelector("html").getAttribute("dir") === "rtl") {
           if (marginRightValue > -check) {

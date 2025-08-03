@@ -2,7 +2,10 @@
   <div class="page main-signin-wrapper">
     <div class="d-flex header-setting-icon demo-icon fa-spin">
       <a class="nav-link icon" href="javascript:;">
-        <i class="fe fe-settings settings-icon" v-on:click="Switcherbutton()"></i>
+        <i
+          class="fe fe-settings settings-icon"
+          v-on:click="Switcherbutton()"
+        ></i>
       </a>
     </div>
 
@@ -16,7 +19,7 @@
             >
               <div class="mt-4 pt-5 p-2 pos-absolute">
                 <img
-                  src="../../../assets/img/logo.png"
+                  src="../../../assets/icons/logo.png"
                   class="header-brand-img mb-4"
                   alt="logo"
                 />
@@ -28,7 +31,8 @@
                 />
                 <h5 class="mt-4 text-white">Reset Your Password</h5>
                 <span class="tx-white-6 tx-13 mb-5 mt-xl-0"
-                  >Signup to create, discover and connect with the global community</span
+                  >Signup to create, discover and connect with the global
+                  community</span
                 >
               </div>
             </div>
@@ -37,12 +41,12 @@
                 <div class="row row-sm">
                   <div class="card-body mt-2 mb-2">
                     <img
-                      src="../../../assets/img/logo.png"
+                      src="../../../assets/icons/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo-light"
                       alt="logo"
                     />
                     <img
-                      src="../../../assets/img/logo.png"
+                      src="../../../assets/icons/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo"
                       alt="logo"
                     />

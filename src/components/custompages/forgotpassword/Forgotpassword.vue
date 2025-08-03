@@ -2,7 +2,10 @@
   <div class="page main-signin-wrapper">
     <div class="d-flex header-setting-icon demo-icon fa-spin">
       <a class="nav-link icon" href="javascript:;">
-        <i class="fe fe-settings settings-icon" v-on:click="Switcherbutton()"></i>
+        <i
+          class="fe fe-settings settings-icon"
+          v-on:click="Switcherbutton()"
+        ></i>
       </a>
     </div>
     <!-- Row -->
@@ -15,7 +18,7 @@
             >
               <div class="mt-3 pt-3 p-2 pos-absolute">
                 <img
-                  src="../../../assets/img/logo.png"
+                  src="../../../assets/icons/logo.png"
                   class="header-brand-img"
                   alt="logo"
                 />
@@ -36,12 +39,12 @@
                 <div class="row row-sm">
                   <div class="card-body mt-2 mb-2">
                     <img
-                      src="../../../assets/img/logo.png"
+                      src="../../../assets/icons/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo-light"
                       alt="logo"
                     />
                     <img
-                      src="../../../assets/img/logo.png"
+                      src="../../../assets/icons/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo"
                       alt="logo"
                     />
