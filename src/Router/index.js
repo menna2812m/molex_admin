@@ -287,7 +287,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory("/"),
   routes,
 });
 
@@ -300,10 +300,10 @@ router.beforeEach((to) => {
 router.beforeEach((to, from, next) => {
   const loggedInUserData = localStorage.getItem("authlocal");
   if (loggedInUserData && to.name == "SignIn") {
-    next("dashboard");
+    next("/dashboard");
   } else {
     if (!localStorage.getItem("authlocal") && to.name !== "SignIn") {
-      next("Signin"); // Redirect to SignIn if token is not present and the current route is not SignIn
+      next("SignIn"); // Redirect to SignIn if token is not present and the current route is not SignIn
     } else {
       next(); // Allow the navigation to proceed
     }

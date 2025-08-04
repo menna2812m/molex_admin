@@ -13,7 +13,7 @@
               >
                 <img
                   src="../../../assets/icons/logo.png"
-                  class="header-brand-img"
+                  class="header-brand-img mb-4"
                   alt="logo"
                 />
                 <div class="clearfix"></div>
@@ -34,12 +34,12 @@
                   <div class="card-body mt-2 mb-2">
                     <img
                       src="../../../assets/icons/logo.png"
-                      class="d-lg-none header-brand-img text-start float-start error-logo-light"
+                      class="d-lg-none header-brand-img text-start float-start error-logo-light mb-4"
                       alt="logo"
                     />
                     <img
                       src="../../../assets/icons/logo.png"
-                      class="d-lg-none header-brand-img text-start float-start error-logo"
+                      class="d-lg-none header-brand-img text-start float-start error-logo mb-4"
                       alt="logo"
                     />
                     <div class="clearfix"></div>

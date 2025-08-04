@@ -16,21 +16,12 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 160000,
-    outDir: "dist",
-    assetsDir: "assets",
-    esbuild: false,
-    // Additional optimizations for production
-    minify: "false",
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ["vue"],
+          vendor: ["vue", "vue-router"],
         },
       },
     },
-  },
-  // Production-specific settings
-  define: {
-    __VUE_PROD_DEVTOOLS__: false,
   },
 });
