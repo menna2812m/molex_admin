@@ -8,6 +8,10 @@ import Themepage from "../Shared/Layouts/Themepage.vue";
 const routes = [
   {
     path: `${import.meta.env.BASE_URL}`,
+    redirect: `${import.meta.env.BASE_URL}dashboard`,
+  },
+  {
+    path: `${import.meta.env.BASE_URL}`,
     children: [
       {
         path: "signin",
@@ -287,7 +291,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory("/"),
+  history: createWebHistory(import.meta.env.BASE_URL || "/"),
   routes,
 });
 
