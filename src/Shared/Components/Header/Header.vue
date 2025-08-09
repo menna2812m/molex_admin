@@ -56,13 +56,16 @@
         </div>
       </div>
       <div class="d-flex align-items-center">
-        <!-- <ThemeToggle class="me-3" /> -->
-        <div class="avatar-select">
+        <ThemeToggle class="me-3" />
+        <div class="avatar-select d-flex gap-1">
           <i
             data-v-fe05682f=""
             class="mdi mdi-account-plus icon_color icon_color_2"
           ></i>
-          <button @click="toggleDropdown" class="twobtn bg-white text-white">
+          <button
+            @click="toggleDropdown"
+            class="twobtn bg-transparent text-primary"
+          >
             مدير المتجر <i class="fas fa-caret-down ms-1"></i>
           </button>
 
@@ -173,17 +176,7 @@ export default {
   top: 100%;
   border-top: 0;
 }
-.dropend {
-  position: absolute;
-  width: 150px;
-  border-radius: 3px;
-  left: 32px;
-  top: 48px;
 
-  a {
-    cursor: pointer;
-  }
-}
 .search {
   width: 100%;
   position: relative;

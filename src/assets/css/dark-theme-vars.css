@@ -16,6 +16,23 @@
   --primary05: rgba(253, 96, 31, 0.5);
   --primary07: rgba(253, 96, 31, 0.7);
   --primary08: rgba(253, 96, 31, 0.8);
+  --indigo: $indigo;
+  --purple: $purple;
+  --pink: #f1388b;
+  --orange: $orange;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: $white;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
 }
 
 /* Dark theme specific overrides */
@@ -56,8 +73,8 @@ body.dark-theme {
 
 .dark-theme .dropdown-menu,
 .dropend {
-  background-color: var(--dark-theme) !important;
-  border-color: var(--dark-border) !important;
+  background-color: var(--dark-theme);
+  border-color: var(--dark-border);
 }
 
 .dark-theme .dropdown-item {

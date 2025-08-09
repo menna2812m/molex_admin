@@ -12172,9 +12172,9 @@ body.dark-theme {
   background: var(--dark-theme) !important;
 }
 
-.dark-theme .bg-white {
+/* .dark-theme .bg-white {
   background-color: var(--dark-theme) !important;
-}
+} */
 
 .dark-theme .box-shadow {
   box-shadow: 0 8px 16px 0 var(--dark-body);
@@ -13514,8 +13514,8 @@ body.dark-theme {
 
 @media (min-width: 992px) {
   .dark-theme .main-sidebar-header .sidemenu-logo {
-    border-right-color: var(--dark-border) !important;
-    border-left-color: var(--dark-border) !important;
+    border-right-color: var(--primary-bg-color) !important;
+    border-left-color: var(--primary-bg-color) !important;
   }
 
   .dark-theme.horizontalmenu
@@ -19555,7 +19555,7 @@ table.dataTable > thead .sorting_desc_disabled:before {
 @media (min-width: 992px) {
   .main-sidebar-header .sidemenu-logo {
     border-right: 0;
-    border-left: 1px solid var(--dark-border);
+    border-left: 1px solid var(--primary-bg-color);
   }
 }
 
@@ -30712,7 +30712,7 @@ width: 70%;  /* height: 65px; */
   left: 0;
   bottom: 0;
   box-shadow: none;
-  background: var(--dark-theme);
+  background: var(--primary-bg-color);
 }
 
 .main-sidebar-body .nav-item.active .nav-link:before {
@@ -31424,7 +31424,7 @@ width: 70%;  /* height: 65px; */
     position: fixed;
     z-index: 9999;
     width: 240px;
-    background: var(--dark-theme);
+    background: var(--primary-bg-color);
     transition: all 0.3s;
     top: 0;
   }
@@ -31437,7 +31437,7 @@ width: 70%;  /* height: 65px; */
     position: fixed;
     z-index: 999;
     width: 81px !important;
-    background: var(--dark-theme);
+    background: var(--primary-bg-color);
   }
 
   .main-sidebar-hide.main-sidebar-open .sidemenu-logo {
@@ -31541,7 +31541,7 @@ width: 70%;  /* height: 65px; */
   }
 
   .main-sidebar-header .sidemenu-logo {
-    border-right: 1px solid var(--dark-border);
+    border-right: 1px solid var(--primary-bg-color);
   }
 }
 
@@ -75083,4 +75083,22 @@ textarea {
 .vgt-wrap__footer .footer__row-count::after {
   left: 0;
   right: auto !important;
+}
+.dropend {
+  position: absolute;
+  width: 150px;
+  border-radius: 3px;
+  left: 32px;
+  top: 48px;
+}
+
+.dropend a {
+  cursor: pointer;
+}
+
+/* Light theme styles */
+.light-theme .dropend,
+body:not(.dark-theme) .dropend {
+  background-color: #fff;
+  border-color: #e8e8f7;
 }

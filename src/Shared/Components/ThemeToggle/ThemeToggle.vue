@@ -53,8 +53,8 @@ export default {
       document.body.classList.remove("header-dark");
       document.body.classList.remove("color-menu");
       document.body.classList.remove("color-header");
-      document.body.classList.add("light-menu");
-      document.body.classList.add("header-light");
+      // document.body.classList.add("light-menu");
+      // document.body.classList.add("header-light");
       localStorage.setItem("SpruhaLighttheme", true);
       localStorage.removeItem("Spruhadark");
     },
