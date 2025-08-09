@@ -72,6 +72,7 @@
       <b-modal id="add-page" v-model="ShowModel" hide-footer>
         <div class="mt-4 pos-relative" style="z-index: 5555">
           <h6 style="color: #febcd5" class="text-center">إضافة دور جديد</h6>
+
           <form @submit.prevent="add">
             <div class="row">
               <div class="col-12 mb-3">
@@ -83,6 +84,14 @@
                   class="form-control"
                   v-model="formData.name"
                 />
+              </div>
+              <div class="col-12 mb-3">
+                <input
+                  type="checkbox"
+                  v-model="selectAll"
+                  @change="handleSelectAll"
+                />
+                <label class="ms-1">تحديد الكل</label>
               </div>
               <div class="col-6" v-for="(item, key) in permissions" :key="key">
                 <div class="pb-3">
@@ -109,7 +118,11 @@
             </div>
             <div class="text-center">
               <button class="fs-15 btn-save mx-1" type="submit">إضافة</button>
-              <button class="fs-15 btn-cancel mx-1" @click="ShowModel = false">
+              <button
+                class="fs-15 btn-cancel mx-1"
+                type="button"
+                @click="closeModal"
+              >
                 الغاء
               </button>
             </div>
@@ -136,6 +149,7 @@ export default {
       },
       permissions: [],
       perminlocal: localStorage.getItem("permissions"),
+      selectAll: false,
     };
   },
   methods: {
@@ -162,9 +176,45 @@ export default {
       }
     },
     async add() {
-      let res = await crudDataService.create(`roles`, this.formData);
-      this.getroles();
-      this.ShowModel = false;
+      // Ensure permissions is an array and not empty
+      if (!this.formData.name.trim() && this.formData.permission != []) {
+        this.$swal.fire({
+          title: "خطأ",
+          text: "يرجى إدخال اسم الدور",
+          icon: "error",
+          confirmButtonText: "تم",
+        });
+        return;
+      }
+
+      // Prepare the data to send
+      const roleData = {
+        name: this.formData.name.trim(),
+        permission: this.formData.permission || [],
+      };
+
+      try {
+        let res = await crudDataService.create(`roles`, roleData);
+        this.$swal.fire({
+          title: "تم الإضافة بنجاح!",
+          icon: "success",
+          confirmButtonText: "تم",
+        });
+        this.getroles();
+        this.ShowModel = false;
+        // Reset form
+        this.formData.name = "";
+        this.formData.permission = [];
+        this.selectAll = false;
+      } catch (error) {
+        console.error("Error creating role:", error);
+        this.$swal.fire({
+          title: "خطأ",
+          text: "حدث خطأ أثناء إضافة الدور",
+          icon: "error",
+          confirmButtonText: "تم",
+        });
+      }
     },
     del(data, index, name) {
       this.$swal
@@ -188,10 +238,64 @@ export default {
           }
         });
     },
+    handleSelectAll() {
+      if (this.selectAll) {
+        this.formData.permission = this.allPermissionNames;
+      } else {
+        this.formData.permission = [];
+      }
+    },
+    closeModal() {
+      this.ShowModel = false;
+      this.resetForm();
+    },
+    resetForm() {
+      this.formData.name = "";
+      this.formData.permission = [];
+      this.selectAll = false;
+    },
   },
-  mounted() {
+  watch: {
+    selectAll(val) {
+      if (val) {
+        // When selecting all, set all permissions
+        this.formData.permission = [...this.allPermissionNames];
+      } else {
+        // When deselecting all, clear permissions
+        this.formData.permission = [];
+      }
+    },
+
+    "formData.permission": {
+      handler(val) {
+        if (this.allPermissionNames.length > 0) {
+          this.selectAll = val.length === this.allPermissionNames.length;
+        }
+      },
+      deep: true,
+    },
+  },
+  computed: {
+    allPermissionNames() {
+      if (!this.permissions || typeof this.permissions !== "object") {
+        return [];
+      }
+
+      // Convert object to array of permission names
+      const result = Object.values(this.permissions).flatMap((group) => {
+        return Array.isArray(group.permissions)
+          ? group.permissions.map((perm) => {
+              return perm.name;
+            })
+          : [];
+      });
+
+      return result;
+    },
+  },
+  async mounted() {
+    await this.getpermission(); // Wait for permissions to load
     this.getroles();
-    this.getpermission();
   },
 };
 </script>

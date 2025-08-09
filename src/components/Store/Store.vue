@@ -434,7 +434,7 @@
                   <input
                     type="file"
                     @change="editFilevideo"
-                    accept="*/*"
+                    accept="video/*"
                     class="form-control"
                   />
                 </div>
