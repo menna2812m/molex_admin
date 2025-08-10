@@ -18,9 +18,16 @@
             <div class="col-lg-6 col-xl-5 d-none d-lg-block bg-primary details">
               <div class="mt-4 pt-4 px-5 ms-3 pos-absolute">
                 <img
-                  src="../../../assets/icons/logo.png"
+                  src="../../../assets/img/logo.png"
                   class="header-brand-img mb-4"
                   alt="logo"
+                  v-if="isDark"
+                />
+                <img
+                  src="../../../assets/img/logo-dark.png"
+                  class="header-brand-img mb-4"
+                  alt="logo"
+                  v-if="!isDark"
                 />
                 <div class="clearfix"></div>
                 <img
@@ -39,14 +46,21 @@
                 <div class="row row-sm">
                   <div class="card-body main-profile-overview mt-3 mb-3">
                     <img
-                      src="../../../assets/icons/logo.png"
+                      src="../../../assets/img/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo-light"
                       alt="logo"
                     />
                     <img
-                      src="../../../assets/icons/logo.png"
+                      src="../../../assets/img/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo"
                       alt="logo"
+                      v-if="isDark"
+                    />
+                    <img
+                      src="../../../assets/img/logo-dark.png"
+                      class="d-lg-none header-brand-img text-start float-start mb-4 error-logo"
+                      alt="logo"
+                      v-if="!isDark"
                     />
                     <div class="clearfix"></div>
                     <h5 class="text-start mb-2">Lockscreen</h5>
@@ -100,7 +114,11 @@
 </template>
 
 <script>
+import { themeMixin } from "../../../mixins/themeMixin";
+
 export default {
+  mixins: [themeMixin],
+
   methods: {
     Switcherbutton() {
       return this.$store.commit("Switcherbutton");

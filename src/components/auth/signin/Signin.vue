@@ -12,9 +12,16 @@
                 class="mt-2 p-2 d-flex justify-content-between flex-column align-items-center"
               >
                 <img
-                  src="../../../assets/icons/logo.png"
+                  src="../../../assets/img/logo.png"
                   class="header-brand-img mb-4"
                   alt="logo"
+                  v-if="isDark"
+                />
+                <img
+                  src="../../../assets/img/logo-dark.png"
+                  class="header-brand-img mb-4"
+                  alt="logo"
+                  v-if="!isDark"
                 />
                 <div class="clearfix"></div>
                 <img
@@ -33,14 +40,21 @@
                 <div class="row row-sm">
                   <div class="card-body mt-2 mb-2">
                     <img
-                      src="../../../assets/icons/logo.png"
+                      src="../../../assets/img/logo.png"
                       class="d-lg-none header-brand-img text-start float-start error-logo-light mb-4"
                       alt="logo"
                     />
                     <img
-                      src="../../../assets/icons/logo.png"
+                      src="../../../assets/img/logo.png"
                       class="d-lg-none header-brand-img text-start float-start error-logo mb-4"
                       alt="logo"
+                      v-if="isDark"
+                    />
+                    <img
+                      src="../../../assets/img/logo-dark.png"
+                      class="d-lg-none header-brand-img text-start float-start error-logo mb-4"
+                      alt="logo"
+                      v-if="!isDark"
                     />
                     <div class="clearfix"></div>
                     <form action="#" @submit.prevent="handleLogin()">
@@ -88,7 +102,10 @@
 <script>
 import { error } from "jquery";
 import crudDataService from "../../../Services/crudDataService.js";
+import { themeMixin } from "../../../mixins/themeMixin.js";
 export default {
+  mixins: [themeMixin],
+
   data() {
     return {
       errorvalidation: "",

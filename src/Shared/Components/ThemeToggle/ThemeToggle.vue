@@ -17,46 +17,84 @@ export default {
   data() {
     return {
       isDark: false,
+      unsubscribe: null,
     };
   },
   mounted() {
     this.checkCurrentTheme();
+    this.setupThemeListener();
+  },
+  beforeUnmount() {
+    this.removeThemeListener();
   },
   methods: {
     checkCurrentTheme() {
-      this.isDark = document.body.classList.contains("dark-theme");
-    },
-    toggleTheme() {
-      if (this.isDark) {
-        this.setLightTheme();
+      // Check if themeManager is available
+      console.log(this.$themeManager);
+
+      if (this.$themeManager) {
+        this.isDark = this.$themeManager.isDarkTheme();
       } else {
-        this.setDarkTheme();
+        // Fallback to direct DOM check
+        this.isDark = document.body.classList.contains("dark-theme");
+      }
+    },
+
+    setupThemeListener() {
+      // Use themeManager subscription instead of event bus
+      if (
+        this.$themeManager &&
+        typeof this.$themeManager.subscribe === "function"
+      ) {
+        this.unsubscribe = this.$themeManager.subscribe((theme) => {
+          this.isDark = theme.isDark;
+        });
+      } else {
+        console.warn("Theme manager not available, using fallback approach");
+        this.setupFallbackListener();
+      }
+    },
+
+    setupFallbackListener() {
+      // Fallback: Watch localStorage changes
+      this.storageListener = (e) => {
+        if (e.key === "Spruhadark" || e.key === "SpruhaLighttheme") {
+          this.checkCurrentTheme();
+        }
+      };
+      window.addEventListener("storage", this.storageListener);
+    },
+
+    removeThemeListener() {
+      // Remove theme manager subscription
+      if (this.unsubscribe && typeof this.unsubscribe === "function") {
+        this.unsubscribe();
+        this.unsubscribe = null;
+      }
+
+      // Remove fallback listener
+      if (this.storageListener) {
+        window.removeEventListener("storage", this.storageListener);
+        this.storageListener = null;
+      }
+    },
+
+    toggleTheme() {
+      if (
+        this.$themeManager &&
+        typeof this.$themeManager.toggleTheme === "function"
+      ) {
+        // Use global theme manager
+        this.$themeManager.toggleTheme();
+      } else {
+        // Fallback to original toggle logic
+        if (this.isDark) {
+          this.setLightTheme();
+        } else {
+          this.setDarkTheme();
+        }
       }
       this.checkCurrentTheme();
-    },
-    setDarkTheme() {
-      document.body.classList.add("dark-theme");
-      document.body.classList.remove("light-theme");
-      document.body.classList.remove("light-menu");
-      document.body.classList.remove("header-light");
-      document.body.classList.remove("color-menu");
-      document.body.classList.remove("color-header");
-      document.body.classList.add("dark-menu");
-      document.body.classList.add("header-dark");
-      localStorage.setItem("Spruhadark", true);
-      localStorage.removeItem("SpruhaLighttheme");
-    },
-    setLightTheme() {
-      document.body.classList.add("light-theme");
-      document.body.classList.remove("dark-theme");
-      document.body.classList.remove("dark-menu");
-      document.body.classList.remove("header-dark");
-      document.body.classList.remove("color-menu");
-      document.body.classList.remove("color-header");
-      // document.body.classList.add("light-menu");
-      // document.body.classList.add("header-light");
-      localStorage.setItem("SpruhaLighttheme", true);
-      localStorage.removeItem("Spruhadark");
     },
   },
 };

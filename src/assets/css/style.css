@@ -5658,8 +5658,7 @@ a.close.disabled {
   flex: 1 1 auto;
   padding: 1rem;
   padding-top: 0;
-      height: 653px;
-    overflow: scroll;
+      
 }
 
 .modal-footer {
@@ -75103,4 +75102,7 @@ textarea {
 body:not(.dark-theme) .dropend {
   background-color: #fff;
   border-color: #e8e8f7;
+}
+.bg-primary-05 {
+  background-color: var(--primary-bg-color) !important;
 }

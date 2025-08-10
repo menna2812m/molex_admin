@@ -18,9 +18,16 @@
             >
               <div class="mt-3 pt-3 p-2 pos-absolute">
                 <img
-                  src="../../../assets/icons/logo.png"
+                  src="../../../assets/img/logo.png"
                   class="header-brand-img"
                   alt="logo"
+                  v-if="isDark"
+                />
+                <img
+                  src="../../../assets/img/logo-dark.png"
+                  class="header-brand-img"
+                  alt="logo"
+                  v-if="!isDark"
                 />
                 <div class="clearfix"></div>
                 <img
@@ -39,14 +46,21 @@
                 <div class="row row-sm">
                   <div class="card-body mt-2 mb-2">
                     <img
-                      src="../../../assets/icons/logo.png"
+                      src="../../../assets/img/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo-light"
                       alt="logo"
                     />
                     <img
-                      src="../../../assets/icons/logo.png"
+                      src="../../../assets/img/logo.png"
                       class="d-lg-none header-brand-img text-start float-start mb-4 error-logo"
                       alt="logo"
+                      v-if="isDark"
+                    />
+                    <img
+                      src="../../../assets/img/logo-dark.png"
+                      class="d-lg-none header-brand-img text-start float-start mb-4 error-logo"
+                      alt="logo"
+                      v-if="!isDark"
                     />
                     <div class="clearfix"></div>
                     <h5 class="text-start mb-2">Forgot Password</h5>
@@ -87,7 +101,11 @@
 </template>
 
 <script>
+import { themeMixin } from "../../../mixins/themeMixin";
+
 export default {
+  mixins: [themeMixin],
+
   methods: {
     Switcherbutton() {
       return this.$store.commit("Switcherbutton");

@@ -12,14 +12,16 @@
         <div class="hor-logo">
           <router-link class="main-logo" :to="`${url}admin`">
             <img
-              src="../../../../src/assets/icons/logo.png"
+              src="../../../../src/assets/img/logo-dark.png"
               class="header-brand-img desktop-logo"
               alt="logo"
+              v-if="!isDark"
             />
             <img
-              src="../../../../src/assets/icons/logo.png"
+              src="../../../../src/assets/img/logo.png"
               class="header-brand-img desktop-logo-dark"
               alt="logo"
+              v-if="isDark"
             />
           </router-link>
         </div>

@@ -637,7 +637,6 @@ export default {
     },
     async edit(data) {
       this.ShowModeledit = true;
-      console.log(data);
       this.id = data.id;
       this.formDataupdate.name = data.name;
       this.formDataupdate.store_phone = data.phone;
@@ -678,15 +677,12 @@ export default {
           // this.ShowModeledit = false;
 
           const errorData = error?.data?.errors || {};
-          console.log(error);
 
           const errorMessages = Object.values(errorData)
             .flat()
             .filter((msg) => typeof msg === "string");
 
           if (errorMessages.length > 0) {
-            console.log(errorMessages[0]);
-
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
@@ -799,7 +795,6 @@ export default {
       }));
     },
     view(id) {
-      console.log(id);
       this.$router.push({ name: "SingleStore", params: { id } });
     },
     async stores() {
@@ -810,11 +805,9 @@ export default {
         this.last = res.data.data.last_page;
         if (res.data && res.data.data && res.data.data.data) {
           this.rows = res.data.data.data.map((stores) => {
-            console.log(stores);
             return { ...stores };
           });
         }
-        console.log(this.myList);
       } catch (error) {
         console.error("Failed to fetch data:", error);
         // Handle error
@@ -894,15 +887,12 @@ export default {
           // this.ShowModel = false;
 
           const errorData = error?.data?.errors || {};
-          console.log(error);
 
           const errorMessages = Object.values(errorData)
             .flat()
             .filter((msg) => typeof msg === "string");
 
           if (errorMessages.length > 0) {
-            console.log(errorMessages[0]);
-
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,

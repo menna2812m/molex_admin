@@ -65,6 +65,7 @@ app.use(PerfectScrollbar, {
 });
 
 import VueHtmlToPaper from "vue-html-to-paper";
+import { themeManager } from "./utils/eventBus";
 app.use(VueHtmlToPaper);
 const store = createStore({
   state() {
@@ -91,30 +92,32 @@ app.use(VueSweetalert2);
 app.use(Lightbox);
 app.use(BootstrapVue3);
 
-// Initialize dark theme by default
-const initializeDarkTheme = () => {
-  // Force dark theme as default regardless of saved preferences
-  document.body.classList.add("dark-theme");
-  document.body.classList.remove("light-theme");
-  document.body.classList.remove("light-menu");
-  document.body.classList.remove("header-light");
-  document.body.classList.remove("color-menu");
-  document.body.classList.remove("color-header");
-  document.body.classList.add("dark-menu");
-  document.body.classList.add("header-dark");
+// // Initialize dark theme by default
+// const initializeDarkTheme = () => {
+//   // Force dark theme as default regardless of saved preferences
+//   document.body.classList.add("dark-theme");
+//   document.body.classList.remove("light-theme");
+//   document.body.classList.remove("light-menu");
+//   document.body.classList.remove("header-light");
+//   document.body.classList.remove("color-menu");
+//   document.body.classList.remove("color-header");
+//   document.body.classList.add("dark-menu");
+//   document.body.classList.add("header-dark");
 
-  // Set the primary color to #fd601f
-  document
-    .querySelector("html")
-    .style.setProperty("--primary-rgb", "253, 96, 31");
+//   // Set the primary color to #fd601f
+//   document
+//     .querySelector("html")
+//     .style.setProperty("--primary-rgb", "253, 96, 31");
 
-  // Always save dark theme preference
-  localStorage.setItem("Spruhadark", true);
-  localStorage.removeItem("SpruhaLighttheme");
-};
+//   // Always save dark theme preference
+//   localStorage.setItem("Spruhadark", true);
+//   localStorage.removeItem("SpruhaLighttheme");
+// };
 
-// Initialize theme before mounting
-initializeDarkTheme();
+// // Initialize theme before mounting
+// initializeDarkTheme();
+
+app.config.globalProperties.$themeManager = themeManager;
 
 app.mount("#app");
 app.use(VueGoodTablePlugin);

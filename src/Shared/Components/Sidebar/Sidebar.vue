@@ -20,9 +20,16 @@
                 v-if="logo"
               /> -->
               <img
-                src="../../../../src/assets/icons/logo.png"
+                src="../../../../src/assets/img/logo.png"
                 class="header-brand-img desktop-logo p-2"
                 alt="logo"
+                v-if="isDark"
+              />
+              <img
+                src="../../../../src/assets/img/logo-dark.png"
+                class="header-brand-img desktop-logo p-2"
+                alt="logo"
+                v-if="!isDark"
               />
             </router-link>
           </div>
@@ -39,9 +46,16 @@
                 v-if="logo"
               /> -->
               <img
-                src="../../../../src/assets/icons/logo.png"
+                src="../../../../src/assets/img/logo.png"
                 class="header-brand-img desktop-logo"
                 alt="logo"
+                v-if="isDark"
+              />
+              <img
+                src="../../../../src/assets/img/logo-dark.png"
+                class="header-brand-img desktop-logo"
+                alt="logo"
+                v-if="!isDark"
               />
             </div>
             <!-- <div class="d-flex  align-items-center ps-3">
@@ -300,6 +314,7 @@
 import crudDataService from "../../../Services/crudDataService";
 import NotificationUpdater from "../../../components/Contact/Contact.vue";
 import { ref, onMounted, onUnmounted } from "vue";
+import { themeMixin } from "../../../mixins/themeMixin";
 // import Switcher from "../Switcher/Switcher.vue";
 //MenuStart
 const menu_items = [
@@ -650,6 +665,8 @@ const menu_items = [
 //MenuEnd
 export default {
   name: "Sidebar",
+  mixins: [themeMixin],
+
   components: {
     NotificationUpdater,
   },
@@ -706,6 +723,7 @@ export default {
         }
       });
     },
+
     async getContact() {
       const res = await crudDataService.getAll("contacts");
       this.items = res.data.data.data;
@@ -879,6 +897,8 @@ export default {
     this.getContact();
     this.getlogo();
   },
+
+  beforeUnmount() {},
 };
 </script>
 

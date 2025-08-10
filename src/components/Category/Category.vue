@@ -221,7 +221,6 @@ export default {
   methods: {
     async toggleactive(id) {
       let res = await crudDataService.create(`categories/${id}/toggle`, "");
-      console.log(res.data);
 
       const toast = useToast();
       if (res.data.status) {
@@ -232,11 +231,9 @@ export default {
       }
     },
     view(id) {
-      console.log(id);
       this.$router.push({ name: "ViewCategory", params: { id } });
     },
     handleCustomEvent(data) {
-      console.log("Event received with data:", data);
       this.rows = data;
     },
     async getcategories() {
@@ -245,7 +242,6 @@ export default {
         let res = await crudDataService.getAll("categories");
         if (res.data && res.data.data && res.data.data.data) {
           this.rows = res.data.data.data.map((category) => {
-            console.log(category);
             return { ...category };
           });
         } else {
@@ -260,7 +256,6 @@ export default {
     },
 
     onFileSelected(event) {
-      console.log(event);
       if (event.target) {
         this.changeedit = false;
 
@@ -277,7 +272,6 @@ export default {
       }
     },
     async edit(data) {
-      console.log(data);
       this.id = data.id;
       this.ShowModelEdit = true;
       this.formData.name.ar = data.name.ar;
@@ -309,15 +303,12 @@ export default {
         .catch((error) => {
           // this.ShowModeledit = false;
           const errorData = error?.data?.errors || {};
-          console.log(error);
 
           const errorMessages = Object.values(errorData)
             .flat()
             .filter((msg) => typeof msg === "string");
 
           if (errorMessages.length > 0) {
-            console.log(errorMessages[0]);
-
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
