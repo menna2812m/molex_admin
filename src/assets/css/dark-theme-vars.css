@@ -125,3 +125,8 @@ body.dark-theme {
 .dark-theme .bg-primary-05 {
   background-color: var(--primary05) !important;
 }
+.dark-theme .pure-material-progress-circular {
+ 
+  color: var(--dark-theme);
+
+}

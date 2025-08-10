@@ -248,18 +248,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.dropend {
-  background: #fff;
-  position: absolute;
-  width: 150px;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
-  border-radius: 3px;
-  a {
-    cursor: pointer;
-  }
-}
-</style>
+<style scoped lang="scss"></style>
 <style lang="scss">
 input::file-selector-button {
   background-image: linear-gradient(to right, #fd601f, #fd601f) !important;

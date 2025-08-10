@@ -494,7 +494,6 @@ export default {
         "add-users-to-group",
         this.addData
       );
-      console.log(res);
       this.ShowModelAddgroup = false;
       this.isDropendOpen = false;
       this.getAllCustomer();
@@ -613,15 +612,6 @@ export default {
   left: 5px;
   border: 1px solid #e8e8f7;
   margin: 2px;
-  border-radius: 3px;
-  a {
-    cursor: pointer;
-  }
-}
-.dropend {
-  position: absolute;
-  left: 55%;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
   border-radius: 3px;
   a {
     cursor: pointer;

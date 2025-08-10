@@ -51,15 +51,26 @@
         <div class="mt-2 pos-relative" style="z-index: 5555">
           <form @submit.prevent="add">
             <div class="row">
-              <div class="col-12 mb-2">
-                <label>الاسم</label>
+              <div class="col-6 mb-2">
+                <label> الاسم عربي</label>
                 <input
                   type="text"
                   name=""
                   id=""
-                  placeholder="اسم المجموعة "
+                  placeholder="اسم المجموعة عربي"
                   class="form-control"
                   v-model="formData.name.ar"
+                />
+              </div>
+              <div class="col-6 mb-2">
+                <label>الاسم انجليزي</label>
+                <input
+                  type="text"
+                  name=""
+                  id=""
+                  placeholder="اسم المجموعة انجليزي"
+                  class="form-control"
+                  v-model="formData.name.en"
                 />
               </div>
               <div
@@ -105,7 +116,18 @@
               </div>
             </div>
             <div class="text-center">
-              <button class="fs-15 btn-save mx-1" type="submit">اضافة</button>
+              <button
+                :disabled="isLoading"
+                class="fs-15 btn-save mx-1"
+                type="submit"
+              >
+                <progress
+                  class="pure-material-progress-circular pure-material-progress-circular--sm"
+                  v-if="isLoading"
+                />
+
+                <span v-if="!isLoading">اضافة</span>
+              </button>
               <button class="fs-15 btn-cancel mx-1" @click="ShowModel = false">
                 الغاء
               </button>
@@ -121,6 +143,7 @@
 import Multiselect from "@vueform/multiselect";
 
 import crudDataService from "../../Services/crudDataService.js";
+import { useToast } from "vue-toastification";
 export default {
   components: {
     Multiselect,
@@ -131,9 +154,11 @@ export default {
       items: [],
       conditions: [],
       imageUrl: null,
+      isLoading: false,
       formData: {
         name: {
           ar: "",
+          en: "",
         },
         image: "",
         condition: [],
@@ -168,15 +193,45 @@ export default {
       }
     },
     async add() {
-      this.ShowModel = false;
-      console.log(this.formData);
-      let res = await crudDataService.create(`groups`, this.formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      this.getallgroups();
+      this.isLoading = true;
+      const toast = useToast();
+
+      try {
+        const res = await crudDataService.create(`groups`, this.formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        if (res.status === 200 || res.status === 201) {
+          this.$swal.fire({
+            title: "تم الإضافة بنجاح!",
+            icon: "success",
+            confirmButtonText: "تم",
+          });
+
+          this.ShowModel = false;
+          this.getallgroups();
+        } else {
+          // Handle unexpected status codes
+          toast.error(res.data?.errors || "حدث خطأ غير متوقع", {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      } catch (error) {
+        let errorMsg =
+          error.response?.data?.errors ||
+          error.response?.data?.message ||
+          "تعذر الاتصال بالخادم";
+
+        toast.error(errorMsg, {
+          position: "top-center",
+          timeout: 5000,
+        });
+      } finally {
+        this.isLoading = false;
+      }
     },
+
     del(data, index, name) {
       this.$swal
         .fire({
@@ -231,15 +286,7 @@ export default {
     cursor: pointer;
   }
 }
-.dropend {
-  position: absolute;
-  left: 39%;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
-  border-radius: 3px;
-  a {
-    cursor: pointer;
-  }
-}
+
 input::file-selector-button {
   background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
