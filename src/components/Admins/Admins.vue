@@ -97,7 +97,12 @@
       </section>
     </section>
     <teleport to="body">
-      <b-modal id="add-page" v-model="ShowModel" hide-footer>
+      <b-modal
+        id="add-page"
+        v-model="ShowModel"
+        hide-footer
+        modal-class="admins-model"
+      >
         <div class="mt-4 pt-1 pos-relative" style="z-index: 5555">
           <h6 style="color: #febcd5" class="text-center">إضافة مسئول جديد</h6>
           <form @submit.prevent="add">
@@ -304,6 +309,16 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.admins-model {
+  &.fade .modal-dialog {
+    transform: none !important;
+  }
+  &.show .modal-dialog {
+    transform: none !important;
+  }
+}
+</style>
 <style>
 .border-item.table-responsive .table > :not(caption) > * > * {
   border-bottom: none !important;

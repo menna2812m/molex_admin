@@ -99,6 +99,7 @@
         v-model="ShowModelEdit"
         hide-footer
         title="تعديل القسم"
+        modal-class="category-model"
       >
         <div class="row">
           <div class="col-lg-12">
@@ -371,6 +372,16 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.category-model {
+  &.fade .modal-dialog {
+    transform: none !important;
+  }
+  &.show .modal-dialog {
+    transform: none !important;
+  }
+}
+</style>
 <style lang="scss">
 .imagetable {
   width: 200px !important;
