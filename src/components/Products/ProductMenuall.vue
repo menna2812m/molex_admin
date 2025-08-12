@@ -386,7 +386,7 @@
                   :options="Selectcategories"
                   placeholder="اختر القسم "
                   v-model="formData.categories_ids"
-                  mode="multiple"
+                  mode="tags"
                   :close-on-select="false"
                   group-values="options"
                   group-label="name"

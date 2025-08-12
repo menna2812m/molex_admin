@@ -1,7 +1,10 @@
 <template>
   <section>
-    <button @click="ShowModel = true" class="twobtn btn-add" style="width: 150px; padding: 7px;"
-    v-if="perminlocal.includes('cart_reminders-store')"
+    <button
+      @click="ShowModel = true"
+      class="twobtn btn-add"
+      style="width: 150px; padding: 7px"
+      v-if="perminlocal.includes('cart_reminders-store')"
     >
       تفعيل خصم مؤقت
     </button>
@@ -11,10 +14,10 @@
           <img src="../../assets/img/Interse.png" alt="img2" />
         </div>
         <div class="mt-5 pos-relative" style="z-index: 5555">
-          <h6 style="color: #febcd5" class="text-center">تفعيل خصم مؤقت  </h6>
+          <h6 style="color: #febcd5" class="text-center">تفعيل خصم مؤقت</h6>
           <form @submit.prevent="add()">
             <div class="row">
-                   <div class="col-12">
+              <div class="col-12">
                 <h6 class="fw-semibold">شروط التذكر</h6>
                 <p class="text-muted fs-10">
                   سيتم ارسال رسالة بعد ترك العميل للمتجر لفترة محدوده وتجاوز سلة
@@ -28,7 +31,7 @@
                   :options="myList"
                   placeholder=" اختر المستخدمين  "
                   v-model="formData.user_ids"
-                  mode="multiple"
+                  mode="tags"
                   :close-on-select="false"
                 />
               </div>
@@ -143,7 +146,9 @@
             </div>
             <div class="text-center">
               <button class="fs-15 btn-save mx-1">حفظ</button>
-              <button class="fs-15 btn-cancel mx-1" @click="ShowModel=false">الغاء</button>
+              <button class="fs-15 btn-cancel mx-1" @click="ShowModel = false">
+                الغاء
+              </button>
             </div>
           </form>
         </div>
@@ -170,7 +175,7 @@ export default {
   },
   data() {
     return {
-      myList:[],
+      myList: [],
       ShowModel: false,
       discount_type: [
         { value: "fixed", name: "ثابتة" },
@@ -190,10 +195,9 @@ export default {
         discount_valid_for_hours: "",
         // cart_left_days: "",
         // total_cart: "",
-        user_ids:[]
+        user_ids: [],
       },
       perminlocal: localStorage.getItem("permissions"),
-
     };
   },
   methods: {
@@ -204,48 +208,52 @@ export default {
         name: item.first_name,
       }));
     },
-    async add(){
+    async add() {
       const toast = useToast();
 
-      let res = await crudDataService.create("cart_reminders",this.formData).then((response)=>{
-        this.formData.is_free_shipping= true,
-        this.formData.is_cart_discounted= true,
-        this.formData.discount_type= '',
-        this.formData.discount_value= '',
-        this.formData.discount_end_date= '',
-        this.formData.send_channel= '',
-        this.formData.message= '',
-        this.formData.subject= '',
-        this.formData.discount_valid_for_hours= '',
-        this.formData.user_ids= ''
-      }).catch ((error) => {
-            // this.ShowModel = false;
-        
-        const errorData = error?.data?.errors || {};
-        console.log(error);
-        
-        const errorMessages = Object.values(errorData).flat().filter((msg) => typeof msg === "string");
+      let res = await crudDataService
+        .create("cart_reminders", this.formData)
+        .then((response) => {
+          (this.formData.is_free_shipping = true),
+            (this.formData.is_cart_discounted = true),
+            (this.formData.discount_type = ""),
+            (this.formData.discount_value = ""),
+            (this.formData.discount_end_date = ""),
+            (this.formData.send_channel = ""),
+            (this.formData.message = ""),
+            (this.formData.subject = ""),
+            (this.formData.discount_valid_for_hours = ""),
+            (this.formData.user_ids = "");
+        })
+        .catch((error) => {
+          // this.ShowModel = false;
 
-        if (errorMessages.length > 0) {
-          console.log(errorMessages[0]);
-          
+          const errorData = error?.data?.errors || {};
+          console.log(error);
+
+          const errorMessages = Object.values(errorData)
+            .flat()
+            .filter((msg) => typeof msg === "string");
+
+          if (errorMessages.length > 0) {
+            console.log(errorMessages[0]);
+
             toast.error(errorMessages[0], {
               position: "top-center",
               timeout: 5000,
             });
-         
-        } else {
-          toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-            position: "top-center",
-            timeout: 5000,
-          });
-        }
-      })
-    }
+          } else {
+            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
+              position: "top-center",
+              timeout: 5000,
+            });
+          }
+        });
+    },
   },
-  mounted(){
-      this.getcarts()
-    }
+  mounted() {
+    this.getcarts();
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -265,23 +273,23 @@ export default {
 <style lang="scss">
 .modal {
   overflow: auto;
-  
-  & .multiselect-placeholder ,
-    & ::placeholder {
-  font-size: 12px;
-}
+
+  & .multiselect-placeholder,
+  & ::placeholder {
+    font-size: 12px;
+  }
 }
 .dp__menu_index {
-    z-index: 999999999 !important;
+  z-index: 999999999 !important;
 }
-.dp__input_icon{
-    margin-right: auto !important;
+.dp__input_icon {
+  margin-right: auto !important;
 }
-.dp__action_buttons{
-    text-align: left;
-    .dp__action.dp__cancel{
-        display: none;
-    }
+.dp__action_buttons {
+  text-align: left;
+  .dp__action.dp__cancel {
+    display: none;
+  }
 }
 .imgtoadd {
   background: #fff;
@@ -309,6 +317,6 @@ export default {
   background-color: #fe7eae;
 }
 .modal .ck-content {
-    height: 160px !important;
+  height: 160px !important;
 }
 </style>

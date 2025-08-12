@@ -68,7 +68,7 @@
                     :options="Selectcategories"
                     placeholder="اختر القسم "
                     v-model="formData.categories_ids"
-                    mode="multiple"
+                    mode="tags"
                     :close-on-select="true"
                     group-values="options"
                     group-label="name"
@@ -340,7 +340,6 @@ export default {
         acc.push(category, ...category.options);
         return acc;
       }, []);
-
     },
 
     async add() {

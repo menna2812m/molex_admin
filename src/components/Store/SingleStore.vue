@@ -8,35 +8,40 @@
           >
             <h4 class="mb-0">المتجر</h4>
             <h4 class="px-2">اسم المتجر : {{ onestore.name }}</h4>
-                   
           </div>
           <div class="row align-items-center justify-content-center pt-3">
-              <div class="row pb-2">
-                <h4>تفاصيل التاجر </h4>
-                <div class="col-lg-2 text-center">
-                  <!-- <img
+            <div class="row pb-2">
+              <h4>تفاصيل التاجر</h4>
+              <div class="col-lg-2 text-center">
+                <!-- <img
                     :src="onestore.image"
                     alt="img"
                     class="mx-auto"
                     style="width: 80px; height: 80px; border-radius: 50%"
                   /> -->
-                </div>
-                <div class="col-lg-9 " v-for="vendor in onestore.vendors" :key="vendor.id">
-                  <div>
-                    <h5 class="px-2">اسم التاجر :
-                     <span class="text-muted">{{ vendor.name }}</span> 
-                    </h5>
-                    <h5 class="px-2">البريد الالكتروني : 
-                      <a :href="'mailto:'+vendor.email" class="text-muted">{{ vendor.email }}</a>
-                      </h5>
-
-                  </div>
-            
+              </div>
+              <div
+                class="col-lg-9"
+                v-for="vendor in onestore.vendors"
+                :key="vendor.id"
+              >
+                <div>
+                  <h5 class="px-2">
+                    اسم التاجر :
+                    <span class="text-muted">{{ vendor.name }}</span>
+                  </h5>
+                  <h5 class="px-2">
+                    البريد الالكتروني :
+                    <a :href="'mailto:' + vendor.email" class="text-muted">{{
+                      vendor.email
+                    }}</a>
+                  </h5>
                 </div>
               </div>
+            </div>
           </div>
           <div>
-            <button @click="ShowModel = true" class="btn-add  m-2">
+            <button @click="ShowModel = true" class="btn-add m-2">
               <i class="fe fe-plus"></i>
               إضافة منتج جديد
             </button>
@@ -65,7 +70,6 @@
                   />
                 </span>
                 <span v-if="props.column.field == 'actions'">
-                
                   <button
                     class="btn btn-primary me-2"
                     @click="edit(props.row)"
@@ -101,7 +105,7 @@
                 </span>
               </template>
             </vue-good-table>
-           
+
             <teleport to="body">
               <b-modal
                 id="add-page"
@@ -110,7 +114,6 @@
                 class="add"
                 title="إضافة منتج"
               >
-              
                 <div class="row pos-relative" style="z-index: 5555">
                   <div class="col-lg-12">
                     <form ref="anyName" @submit.prevent="add">
@@ -167,7 +170,7 @@
                             :options="Selectcategories"
                             placeholder="اختر القسم "
                             v-model="formData.categories_ids"
-                            mode="multiple"
+                            mode="tags"
                             :close-on-select="true"
                             group-values="options"
                             group-label="name"
@@ -317,226 +320,233 @@
               </b-modal>
             </teleport>
             <teleport to="body">
-      <b-modal
-        id="add-page"
-        v-model="ShowModelEdit"
-        hide-footer
-        class="edit"
-        title="تعديل منتج "
-      >
-        <div class="row pos-relative" style="z-index: 5555">
-          <div class="col-lg-12">
-            <div class="row">
-              <div class="col-md-6 mt-1">
-                <label for=""> الإسم عربي </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.name.ar"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for="">الإسم انجليزي</label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.name.en"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for="">الوصف عربي</label>
-                <ckeditor
-                  :editor="editor"
-                  v-model="formEdit.description.ar"
-                  :editorConfigs="editorConfigs"
-                ></ckeditor>
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for="">الوصف انجليزي</label>
-                <ckeditor
-                  :editor="editor"
-                  v-model="formEdit.description.en"
-                  :editorConfigs="editorConfigs"
-                ></ckeditor>
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> اختر العلامة التجارية </label>
-                <Multiselect
-                  label="name"
-                  :searchable="true"
-                  :options="Selectbrand"
-                  placeholder="اختر العلامة التجارية"
-                  v-model="formEdit.brand_id"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> اختر القسم </label>
-                <Multiselect
-                  label="name"
-                  :searchable="true"
-                  :options="Selectcategories"
-                  placeholder="اختر القسم "
-                  v-model="formEdit.categories_ids"
-                  mode="multiple"
-                  :close-on-select="false"
-                  group-values="options"
-                  group-label="name"
-                  class="itteemm"
-                >
-                  <template v-slot:option="{ option }">
-                    <!-- Check if the option is a main category or a sub-category -->
-                    <div
-                      :style="getOptionStyle(option)"
-                      style="
-                        padding: 10px;
-                        width: 100%;
-                        text-align: right;
-                        margin-bottom: 2px;
-                      "
-                    >
-                      {{ option.name }}
+              <b-modal
+                id="add-page"
+                v-model="ShowModelEdit"
+                hide-footer
+                class="edit"
+                title="تعديل منتج "
+              >
+                <div class="row pos-relative" style="z-index: 5555">
+                  <div class="col-lg-12">
+                    <div class="row">
+                      <div class="col-md-6 mt-1">
+                        <label for=""> الإسم عربي </label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.name.ar"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for="">الإسم انجليزي</label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.name.en"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for="">الوصف عربي</label>
+                        <ckeditor
+                          :editor="editor"
+                          v-model="formEdit.description.ar"
+                          :editorConfigs="editorConfigs"
+                        ></ckeditor>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for="">الوصف انجليزي</label>
+                        <ckeditor
+                          :editor="editor"
+                          v-model="formEdit.description.en"
+                          :editorConfigs="editorConfigs"
+                        ></ckeditor>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> اختر العلامة التجارية </label>
+                        <Multiselect
+                          label="name"
+                          :searchable="true"
+                          :options="Selectbrand"
+                          placeholder="اختر العلامة التجارية"
+                          v-model="formEdit.brand_id"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> اختر القسم </label>
+                        <Multiselect
+                          label="name"
+                          :searchable="true"
+                          :options="Selectcategories"
+                          placeholder="اختر القسم "
+                          v-model="formEdit.categories_ids"
+                          mode="tags"
+                          :close-on-select="false"
+                          group-values="options"
+                          group-label="name"
+                          class="itteemm"
+                        >
+                          <template v-slot:option="{ option }">
+                            <!-- Check if the option is a main category or a sub-category -->
+                            <div
+                              :style="getOptionStyle(option)"
+                              style="
+                                padding: 10px;
+                                width: 100%;
+                                text-align: right;
+                                margin-bottom: 2px;
+                              "
+                            >
+                              {{ option.name }}
+                            </div>
+                          </template>
+                        </Multiselect>
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> السعر الأساسي</label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.base_price"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> لينك seo </label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.seo_url"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> عنوان seo </label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.seo_title"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> وصف seo </label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.seo_description"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> باركود </label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.barcode"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> كمية </label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.quantity"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> السعر </label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.price"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> سعر الكلفة </label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.cost_price"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> السعر بعد الخصم</label>
+                        <input
+                          type="text"
+                          placeholder=""
+                          v-model="formEdit.discounted_price"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-1">
+                        <label for=""> تاريخ انتهاء الخصم </label>
+                        <input
+                          type="date"
+                          placeholder=""
+                          v-model="formEdit.discount_end_date"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-12 mt-3">
+                        <label for="">الصوره</label>
+                        <div class="form-group">
+                          <input
+                            type="file"
+                            @change="handleFileedit"
+                            accept=".pdf, image/jpeg, image/png"
+                            class="form-control"
+                            multiple
+                          />
+                          <div class="d-flex flex-wrap mt-2">
+                            <div
+                              v-for="(url, index) in imageedit"
+                              :key="index"
+                              class="d-flex"
+                            >
+                              <img
+                                :src="url.path"
+                                alt="Preview Image"
+                                style="
+                                  width: 200px;
+                                  height: 200px;
+                                  object-fit: fill;
+                                "
+                                class="m-1"
+                              />
+                              <span
+                                class="si si-close text-red"
+                                @click="removeimage(index)"
+                                style="
+                                  margin-right: -30px;
+                                  background: #fff;
+                                  padding: 5px;
+                                  height: max-content;
+                                  margin-top: 5px;
+                                "
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </template>
-                </Multiselect>
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> السعر الأساسي</label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.base_price"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> لينك seo </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.seo_url"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> عنوان seo </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.seo_title"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> وصف seo </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.seo_description"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> باركود </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.barcode"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> كمية </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.quantity"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> السعر </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.price"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> سعر الكلفة </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.cost_price"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> السعر بعد الخصم</label>
-                <input
-                  type="text"
-                  placeholder=""
-                  v-model="formEdit.discounted_price"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-6 mt-1">
-                <label for=""> تاريخ انتهاء الخصم </label>
-                <input
-                  type="date"
-                  placeholder=""
-                  v-model="formEdit.discount_end_date"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-md-12 mt-3">
-                <label for="">الصوره</label>
-                <div class="form-group">
-                  <input
-                    type="file"
-                    @change="handleFileedit"
-                    accept=".pdf, image/jpeg, image/png"
-                    class="form-control"
-                    multiple
-                  />
-                  <div class="d-flex flex-wrap mt-2">
-                    <div
-                      v-for="(url, index) in imageedit"
-                      :key="index"
-                      class="d-flex"
+
+                    <button
+                      class="btn btn-primary m-auto d-block"
+                      @click="update"
                     >
-                      <img
-                        :src="url.path"
-                        alt="Preview Image"
-                        style="width: 200px; height: 200px; object-fit: fill"
-                        class="m-1"
-                      />
-                      <span
-                        class="si si-close text-red"
-                        @click="removeimage(index)"
-                        style="
-                          margin-right: -30px;
-                          background: #fff;
-                          padding: 5px;
-                          height: max-content;
-                          margin-top: 5px;
-                        "
-                      ></span>
-                    </div>
+                      تعديل
+                    </button>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <button class="btn btn-primary m-auto d-block" @click="update">
-              تعديل
-            </button>
-          </div>
-        </div>
-      </b-modal>
-    </teleport>
+              </b-modal>
+            </teleport>
           </div>
         </div>
       </div>
@@ -598,7 +608,7 @@ export default {
       imageUrl: [],
       imageedit: [],
       ShowModel: false,
-      ShowModelEdit:false,
+      ShowModelEdit: false,
       formData: {
         name: {
           ar: "",
@@ -650,7 +660,7 @@ export default {
         images: [],
         brand_id: "",
       },
-      id:null
+      id: null,
     };
   },
   methods: {
@@ -661,14 +671,14 @@ export default {
       );
       this.onestore = res.data.data;
       this.rows = res.data.data.products.map((product) => {
-            return { ...product };
-          });
+        return { ...product };
+      });
       this.Selectcategories = res.data.data.categories.map((ele) => ({
         value: ele.id,
         name: ele.name.ar,
       }));
     },
- 
+
     getOptionStyle(option) {
       return {
         background: option.options ? "#d6d8dddb" : "",
@@ -715,37 +725,34 @@ export default {
       }));
     },
     async add() {
-      let res = await crudDataService.create(
-        `stores/${this.$route.params.id}/products`,
-        this.formData,
-        {
+      let res = await crudDataService
+        .create(`stores/${this.$route.params.id}/products`, this.formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
-      ).then(()=>{
-        this.ShowModel = false;
-      this.formData.name.ar = "";
-      this.formData.name.en = "";
-      this.formData.description.ar = "";
-      this.formData.description.en = "";
-      this.formData.barcode = "";
-      this.formData.base_price = "";
-      this.formData.seo_url = "";
-      this.formData.seo_title = "";
-      this.formData.seo_description = "";
-      this.formData.quantity = "";
-      this.formData.price = "";
-      this.formData.cost_price = "";
-      this.formData.discounted_price = "";
-      this.formData.discount_end_date = "";
-      this.formData.categories_ids = [];
-      this.formData.brand_id = "";
-      this.formData.images = "";
-      this.categories_ids = [];
-      (this.formData.brand_id = ""), (this.imageUrl = "");
-  
-      })
+        })
+        .then(() => {
+          this.ShowModel = false;
+          this.formData.name.ar = "";
+          this.formData.name.en = "";
+          this.formData.description.ar = "";
+          this.formData.description.en = "";
+          this.formData.barcode = "";
+          this.formData.base_price = "";
+          this.formData.seo_url = "";
+          this.formData.seo_title = "";
+          this.formData.seo_description = "";
+          this.formData.quantity = "";
+          this.formData.price = "";
+          this.formData.cost_price = "";
+          this.formData.discounted_price = "";
+          this.formData.discount_end_date = "";
+          this.formData.categories_ids = [];
+          this.formData.brand_id = "";
+          this.formData.images = "";
+          this.categories_ids = [];
+          (this.formData.brand_id = ""), (this.imageUrl = "");
+        });
     },
     async edit(data) {
       this.id = data.id;
@@ -774,7 +781,7 @@ export default {
     },
     async update() {
       console.log(this.formEdit);
-      
+
       let res = await crudDataService.create(
         `stores/${this.$route.params.id}/products/${this.id}?_method=put`,
         this.formEdit,
@@ -803,9 +810,11 @@ export default {
               icon: "success",
               confirmButtonText: "تم", // ✅ Custom OK button text
             });
-            crudDataService.delete(`stores/${this.$route.params.id}/products`, `${data}`).then(() => {
-              this.rows.splice(index, 1);
-            });
+            crudDataService
+              .delete(`stores/${this.$route.params.id}/products`, `${data}`)
+              .then(() => {
+                this.rows.splice(index, 1);
+              });
           }
         });
     },
