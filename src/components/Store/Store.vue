@@ -240,7 +240,7 @@
                 />
               </div>
               <div class="col-12 mb-2">
-                <label> القسم </label>
+                <label> القسم </label>dddd
                 <Multiselect
                   label="name"
                   :searchable="true"
@@ -953,7 +953,12 @@ export default {
 </style>
 <style lang="scss">
 .modal {
-  overflow: auto;
+  .modal-content {
+    overflow: hidden;
+  }
+  .modal-body {
+    overflow-y: auto;
+  }
 
   & .multiselect-placeholder,
   & ::placeholder {

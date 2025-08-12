@@ -907,3 +907,25 @@ textarea.form-control.parsley-error {
 .vti__dropdown-list.below {
   top: 38px !important;
 }
+.modal {
+  overflow: hidden !important;
+}
+.modal .modal-dialog {
+  height: auto;
+  max-height: 90vh;
+  transform: translate(0, -15%) !important;
+  position: relative;
+}
+
+.modal .modal-content {
+  height: fit-content;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.modal .modal-body {
+  overflow-y: auto;
+  padding: 1rem;
+}

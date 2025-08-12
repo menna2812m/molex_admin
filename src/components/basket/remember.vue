@@ -299,7 +299,12 @@ export default {
 </style>
 <style lang="scss">
 .modal {
-  overflow: auto;
+  .modal-content {
+    overflow: unset;
+  }
+  .modal-body {
+    overflow-y: unset;
+  }
 
   & .multiselect-placeholder,
   & ::placeholder {

@@ -299,7 +299,15 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss">
+.modal {
+  .modal-content {
+    overflow: hidden;
+  }
+  .modal-body {
+    overflow-y: auto;
+  }
+}
 .border-item.table-responsive .table > :not(caption) > * > * {
   border-bottom: none !important;
 }
