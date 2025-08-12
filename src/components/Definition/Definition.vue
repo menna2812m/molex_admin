@@ -74,12 +74,22 @@
     </section>
 
     <teleport to="body">
-      <b-modal id="add-page" v-model="ShowModel" hide-footer>
+      <b-modal
+        id="add-page"
+        v-model="ShowModel"
+        hide-footer
+        modal-class="definition-isolated-modal"
+        body-class="definition-isolated-body"
+      >
         <div class="imgtoadd">
           <img src="../../assets/img/23.png" alt="img2" />
         </div>
-        <div class="mt-4 pt-1 pos-relative" style="z-index: 5555">
-          <h6 style="color: #febcd5" class="text-center">إنشاء صفحة</h6>
+        <h6 style="color: #febcd5" class="text-right">إنشاء صفحة</h6>
+
+        <div
+          class="mt-4 pt-1 pos-relative definition-isolated-body--content"
+          style="z-index: 5555"
+        >
           <form @submit.prevent="add">
             <div class="row">
               <div class="col-12 mb-3">
@@ -156,7 +166,13 @@
             </div>
             <div class="text-center">
               <button class="fs-15 btn-save mx-1" type="submit">حفظ</button>
-              <button class="fs-15 btn-cancel mx-1">الغاء</button>
+              <button
+                class="fs-15 btn-cancel mx-1"
+                @click="() => (ShowModel = false)"
+                type="button"
+              >
+                الغاء
+              </button>
             </div>
           </form>
         </div>
@@ -304,8 +320,25 @@ export default {
 
   right: 0;
 }
-.modal .modal-header {
-  display: none;
+.definition-isolated-modal {
+  .modal-content {
+    overflow: unset;
+  }
+  .definition-isolated-body {
+    overflow-y: unset;
+    &--content {
+      height: 82vh;
+      overflow-y: auto;
+      padding-bottom: 21px;
+    }
+  }
+
+  &.fade .modal-dialog {
+    transform: translate(0, -7%);
+  }
+  .modal-header {
+    display: none;
+  }
 }
 .imgtoadd {
   background: #fff;
@@ -314,8 +347,9 @@ export default {
   position: absolute;
   right: 40%;
   border-radius: 50%;
-  top: -50px;
+  top: -32px;
   text-align: center;
+  z-index: 10000;
   img {
     width: 90%;
     height: 90%;
@@ -323,7 +357,7 @@ export default {
   }
 }
 @media (min-width: 576px) {
-  .modal-dialog {
+  .definition-isolated-modal .modal-dialog {
     margin: 5.75rem auto;
   }
 }

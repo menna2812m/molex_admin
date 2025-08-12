@@ -778,8 +778,6 @@ export default {
 </style>
 <style lang="scss">
 .modal {
-  overflow: auto;
-
   & .multiselect-placeholder,
   & ::placeholder {
     font-size: 12px;

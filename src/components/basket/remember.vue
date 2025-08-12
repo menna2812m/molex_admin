@@ -12,7 +12,12 @@
       اضافة تذكير
     </button>
     <teleport to="body">
-      <b-modal id="add" v-model="ShowModel" hide-footer>
+      <b-modal
+        id="add"
+        v-model="ShowModel"
+        hide-footer
+        modal-class="reminder-isolated-modal"
+      >
         <div class="imgtoadd">
           <img src="../../assets/img/Interse.png" alt="img2" />
         </div>
@@ -298,7 +303,7 @@ export default {
 }
 </style>
 <style lang="scss">
-.modal {
+.reminder-isolated-modal {
   .modal-content {
     overflow: unset;
   }
@@ -329,7 +334,7 @@ export default {
   }
 }
 @media (min-width: 576px) {
-  .modal-dialog {
+  .reminder-isolated-modal .modal-dialog {
     max-width: 620px;
     margin: 8.75rem auto;
   }

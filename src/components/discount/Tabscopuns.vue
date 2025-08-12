@@ -71,7 +71,7 @@
                   />
                 </div>
               </div>
-        
+
               <div class="col-md-6">
                 <div class="mt-1">
                   <label>نهاية التاريخ</label>
@@ -145,8 +145,6 @@
                   ></textarea>
                 </div>
               </div>
-
-           
 
               <div class="col-md-12">
                 <div class="mt-1 d-flex align-items-center">
@@ -267,7 +265,7 @@ export default {
         comission_type: "",
         comission_value: "",
         notes: "",
-        is_active:"",
+        is_active: "",
         couponables: [],
       },
       comission_type: [
@@ -280,37 +278,37 @@ export default {
   methods: {
     async getcoupons() {
       let res = await crudDataService.getAll("coupons");
-      this.$emit('customEvent',res.data.data.data);
+      this.$emit("customEvent", res.data.data.data);
     },
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
     async add() {
-      let res = await crudDataService.create(`coupons`, this.formData).then((response)=>{
-        this.ShowModel=false;
-      this.getcoupons()
-        this.formData.code= "",
-        this.formData.discount_type= "",
-        this.formData.discount_value= "",
-        this.formData.start_date= "",
-        this.formData.end_date= "",
-        this.formData.max_usage_per_user= "",
-        this.formData.max_usage= "",
-        this.formData.minimum_price_without_vat= "",
-        this.formData.max_discounted_price= "",
-        this.formData.max_discounted_price_visibility= "",
-        this.formData.is_free_shipping= "",
-        this.formData.discounted_items_excluded= "",
-        this.formData.is_affiliated= "",
-        this.formData.name= "",
-        this.formData.notes= "",
-        this.formData.is_active= "",
-        this.formData.couponables= "",
-        this.formData.comission_type= "",
-        this.formData.comission_value= ""
-      })
-     
-      
+      let res = await crudDataService
+        .create(`coupons`, this.formData)
+        .then((response) => {
+          this.ShowModel = false;
+          this.getcoupons();
+          (this.formData.code = ""),
+            (this.formData.discount_type = ""),
+            (this.formData.discount_value = ""),
+            (this.formData.start_date = ""),
+            (this.formData.end_date = ""),
+            (this.formData.max_usage_per_user = ""),
+            (this.formData.max_usage = ""),
+            (this.formData.minimum_price_without_vat = ""),
+            (this.formData.max_discounted_price = ""),
+            (this.formData.max_discounted_price_visibility = ""),
+            (this.formData.is_free_shipping = ""),
+            (this.formData.discounted_items_excluded = ""),
+            (this.formData.is_affiliated = ""),
+            (this.formData.name = ""),
+            (this.formData.notes = ""),
+            (this.formData.is_active = ""),
+            (this.formData.couponables = ""),
+            (this.formData.comission_type = ""),
+            (this.formData.comission_value = "");
+        });
     },
   },
 };
@@ -332,8 +330,6 @@ export default {
 </style>
 <style lang="scss">
 .modal {
-  overflow: auto;
-  
   & .multiselect-placeholder,
   & ::placeholder {
     font-size: 12px;

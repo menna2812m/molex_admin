@@ -913,7 +913,7 @@ textarea.form-control.parsley-error {
 .modal .modal-dialog {
   height: auto;
   max-height: 90vh;
-  transform: translate(0, -15%) !important;
+  transform: translate(0, -15%);
   position: relative;
 }
 

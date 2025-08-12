@@ -54,22 +54,26 @@
           </div>
         </div>
       </div>
-      <section
-        class="position-relative"
-        style="height: 100vh; display: grid; place-items: center"
-        v-else
-      >
-        <div
-          style="background: #fd601f; padding: 30px; font-size: 20px"
-          class="w-50 text-center text-white rounded-10"
-        >
-          لا يوجد ادوار حتي الان
-        </div>
-      </section>
     </section>
-
+    <section
+      class="position-relative"
+      style="height: 100vh; display: grid; place-items: center"
+      v-if="items.length == 0 && !loading"
+    >
+      <div
+        style="background: #fd601f; padding: 30px; font-size: 20px"
+        class="w-50 text-center text-white rounded-10"
+      >
+        لا يوجد ادوار حتي الان
+      </div>
+    </section>
     <teleport to="body">
-      <b-modal id="add-page" v-model="ShowModel" hide-footer>
+      <b-modal
+        id="add-page"
+        v-model="ShowModel"
+        hide-footer
+        modal-class="roles-model"
+      >
         <div class="mt-4 pos-relative" style="z-index: 5555">
           <h6 style="color: #febcd5" class="text-center">إضافة دور جديد</h6>
 
@@ -154,6 +158,7 @@ export default {
   },
   methods: {
     async getpermission() {
+      this.loading = true;
       const res = await crudDataService.getAll("permissions");
       this.permissions = res.data.data;
     },
@@ -300,14 +305,16 @@ export default {
 };
 </script>
 <style lang="scss">
-.modal {
-  .modal-content {
-    overflow: hidden;
+.roles-model {
+  &.fade .modal-dialog {
+    transform: none !important;
   }
-  .modal-body {
-    overflow-y: auto;
+  &.show .modal-dialog {
+    transform: none !important;
   }
 }
+</style>
+<style lang="scss" scoped>
 .border-item.table-responsive .table > :not(caption) > * > * {
   border-bottom: none !important;
 }

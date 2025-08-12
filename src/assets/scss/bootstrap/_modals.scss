@@ -50,7 +50,8 @@
       opacity: 0;
     }
 
-    &.show ~ .modal-backdrop, .modal-dialog {
+    &.show ~ .modal-backdrop,
+    .modal-dialog {
       transition: all 0.5s;
     }
 
@@ -221,7 +222,7 @@
 
     &.show {
       ~ .modal-backdrop {
-        opacity: .96;
+        opacity: 0.96;
       }
 
       .modal-dialog {
@@ -231,7 +232,6 @@
     }
   }
 }
-
 
 .close {
   float: right;
@@ -259,7 +259,7 @@ a.close.disabled {
   pointer-events: none;
 }
 
-.modal-open  {
+.modal-open {
   .select2-container--open {
     z-index: 9999;
   }
@@ -297,7 +297,7 @@ a.close.disabled {
 .modal {
   &.fade .modal-dialog {
     transition: transform 0.3s ease-out;
-    transform: translate(0, -50px);
+    transform: translate(0, -15%);
   }
 
   &.show .modal-dialog {
@@ -320,7 +320,8 @@ a.close.disabled {
     overflow: hidden;
   }
 
-  .modal-header, .modal-footer {
+  .modal-header,
+  .modal-footer {
     flex-shrink: 0;
   }
 
@@ -420,11 +421,11 @@ a.close.disabled {
 
   > {
     :not(:first-child) {
-      margin-left: .25rem;
+      margin-left: 0.25rem;
     }
 
     :not(:last-child) {
-      margin-right: .25rem;
+      margin-right: 0.25rem;
     }
   }
 }
@@ -465,7 +466,8 @@ a.close.disabled {
 }
 
 @media (min-width: 992px) {
-  .modal-lg, .modal-xl {
+  .modal-lg,
+  .modal-xl {
     max-width: 800px;
   }
 }
@@ -489,7 +491,9 @@ a.close.disabled {
 }
 
 input {
-  &[type="submit"].btn-block, &[type="reset"].btn-block, &[type="button"].btn-block {
+  &[type="submit"].btn-block,
+  &[type="reset"].btn-block,
+  &[type="button"].btn-block {
     width: 100%;
   }
 }
@@ -512,7 +516,6 @@ input {
   background-color: #0a0a0a;
 }
 
-
 .modal-content {
   position: relative;
   display: flex;
@@ -532,7 +535,7 @@ input {
     font-size: 28px;
     padding: 0;
     margin: 0;
-    line-height: .5;
+    line-height: 0.5;
   }
 }
 

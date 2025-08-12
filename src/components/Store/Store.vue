@@ -953,13 +953,6 @@ export default {
 </style>
 <style lang="scss">
 .modal {
-  .modal-content {
-    overflow: hidden;
-  }
-  .modal-body {
-    overflow-y: auto;
-  }
-
   & .multiselect-placeholder,
   & ::placeholder {
     font-size: 12px;
