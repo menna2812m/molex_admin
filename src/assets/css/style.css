@@ -25426,7 +25426,9 @@ table.dataTable > thead .sorting_desc_disabled:before {
 .modal-header .btn-close {
   margin: -0.5rem auto -0.5rem -0.5rem;
 }
-
+.Vue-Toastification__container {
+  z-index: 99999 !important;
+}
 @media only screen and (min-width: 600px) {
   .Vue-Toastification__container.top-left .Vue-Toastification__toast,
   .Vue-Toastification__container.bottom-left .Vue-Toastification__toast {
@@ -74959,7 +74961,7 @@ textarea {
 }
 .light-theme .pure-material-progress-circular {
 
-  color: var(--primary-bg-border);
+  color: #fff;
 
 }
 

@@ -240,7 +240,7 @@
                 />
               </div>
               <div class="col-12 mb-2">
-                <label> القسم </label>dddd
+                <label> القسم </label>
                 <Multiselect
                   label="name"
                   :searchable="true"

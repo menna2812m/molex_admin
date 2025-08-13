@@ -6,11 +6,11 @@
     </button>
 
     <teleport to="body">
-      <b-modal id="add" v-model="ShowModel" hide-footer>
+      <b-modal id="add" v-model="ShowModel">
         <div class="imgtoadd">
           <img src="../../assets/img/1.png" alt="img2" />
         </div>
-        <div class="mt-5 pos-relative" style="z-index: 5555;">
+        <div class="mt-5 pos-relative" style="z-index: 5555">
           <h6 style="color: #febcd5" class="text-center">إنشاء عميل جديد</h6>
           <form @submit.prevent="add">
             <div class="row">
@@ -162,19 +162,21 @@ export default {
   },
   methods: {
     async add() {
-      const res = await crudDataService.create("users", this.formData).then((response)=>{
-        this.ShowModel= false
-        this.formData.email= "",
-        this.formData.fname= "",
-        this.formData.lname= "",
-        this.formData.phone= "",
-        this.formData.birth_date= "",
-        this.formData.gender= "",
-        this.formData.country_id= "",
-        this.formData.region_id= "",
-        this.formData.city_id= "",
-        this.formData.district_id= ""
-      })
+      const res = await crudDataService
+        .create("users", this.formData)
+        .then((response) => {
+          this.ShowModel = false;
+          (this.formData.email = ""),
+            (this.formData.fname = ""),
+            (this.formData.lname = ""),
+            (this.formData.phone = ""),
+            (this.formData.birth_date = ""),
+            (this.formData.gender = ""),
+            (this.formData.country_id = ""),
+            (this.formData.region_id = ""),
+            (this.formData.city_id = ""),
+            (this.formData.district_id = "");
+        });
     },
     async country() {
       const result = await axios.get(
