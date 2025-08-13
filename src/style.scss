@@ -941,3 +941,19 @@ textarea.form-control.parsley-error {
   border-color: #dc3545;
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 }
+
+// ✅ Multiselect error styles
+.multiselect.is-invalid {
+  border-color: #dc3545 !important;
+
+  .multiselect-wrapper {
+    border-color: #dc3545 !important;
+  }
+
+  .multiselect-input {
+    border-color: #dc3545 !important;
+  }
+}
+.ckeditor-error .ck.ck-editor {
+  border: 1px solid #dc3545 !important;
+}

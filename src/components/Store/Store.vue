@@ -1187,19 +1187,6 @@ export default {
   display: block;
   color: #14112d;
 }
-
-// ✅ Multiselect error styles
-.multiselect.is-invalid {
-  border-color: #dc3545 !important;
-
-  .multiselect-wrapper {
-    border-color: #dc3545 !important;
-  }
-
-  .multiselect-input {
-    border-color: #dc3545 !important;
-  }
-}
 </style>
 
 <style lang="scss">

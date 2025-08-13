@@ -13,12 +13,7 @@
             <div class="row pb-2">
               <h4>تفاصيل التاجر</h4>
               <div class="col-lg-2 text-center">
-                <!-- <img
-                    :src="onestore.image"
-                    alt="img"
-                    class="mx-auto"
-                    style="width: 80px; height: 80px; border-radius: 50%"
-                  /> -->
+                <!-- Store image placeholder -->
               </div>
               <div
                 class="col-lg-9"
@@ -85,27 +80,11 @@
                   >
                     <i class="fe fe-trash"></i>
                   </button>
-                  <!-- <label
-                    class="custom-switch justify-content-center"
-                    v-if="perminlocal.includes('products-toggle')"
-                  >
-                    <input
-                      type="checkbox"
-                      name="custom-switch-checkbox"
-                      class="custom-switch-input"
-                      :checked="props.row.is_active"
-                      @change="toggleactive(props.row.id)"
-                    />
-                    <span class="custom-switch-description"> </span>
-                    <span
-                      class="custom-switch-indicator"
-                      style="background: #9fa8b8"
-                    ></span>
-                  </label> -->
                 </span>
               </template>
             </vue-good-table>
 
+            <!-- Add Product Modal -->
             <teleport to="body">
               <b-modal
                 id="add-page"
@@ -118,41 +97,90 @@
                   <div class="col-lg-12">
                     <form ref="anyName" @submit.prevent="add">
                       <div class="row">
-                        <div class="col-md-6 mt-1">
+                        <!-- Arabic Name -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> الإسم عربي </label>
                           <input
                             type="text"
                             placeholder=""
                             v-model="formData.name.ar"
                             class="form-control"
+                            :class="{ 'is-invalid': hasFieldError('name.ar') }"
+                            @input="clearFieldError('name.ar')"
                           />
+                          <div
+                            v-if="hasFieldError('name.ar')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("name.ar") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- English Name -->
+                        <div class="col-md-6 mt-3">
                           <label for="">الإسم انجليزي</label>
                           <input
                             type="text"
                             placeholder=""
                             v-model="formData.name.en"
                             class="form-control"
+                            :class="{ 'is-invalid': hasFieldError('name.en') }"
+                            @input="clearFieldError('name.en')"
                           />
+                          <div
+                            v-if="hasFieldError('name.en')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("name.en") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- Arabic Description -->
+                        <div
+                          class="col-md-6 mt-3"
+                          :class="{
+                            'ckeditor-error': hasFieldError('description.en'),
+                          }"
+                        >
                           <label for="">الوصف عربي</label>
                           <ckeditor
                             :editor="editor"
                             v-model="formData.description.ar"
                             :editorConfigs="editorConfigs"
+                            @input="clearFieldError('description.ar')"
                           ></ckeditor>
+                          <div
+                            v-if="hasFieldError('description.ar')"
+                            class="text-danger small mt-1"
+                          >
+                            {{ getFieldError("description.ar") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- English Description -->
+                        <div
+                          class="col-md-6 mt-3"
+                          :class="{
+                            'ckeditor-error': hasFieldError('description.en'),
+                          }"
+                        >
                           <label for="">الوصف انجليزي</label>
                           <ckeditor
                             :editor="editor"
                             v-model="formData.description.en"
                             :editorConfigs="editorConfigs"
+                            @input="clearFieldError('description.en')"
                           ></ckeditor>
+                          <div
+                            v-if="hasFieldError('description.en')"
+                            class="text-danger small mt-1"
+                          >
+                            {{ getFieldError("description.en") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- Brand Selection -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> اختر العلامة التجارية </label>
                           <Multiselect
                             label="name"
@@ -160,9 +188,19 @@
                             :options="Selectbrand"
                             placeholder="اختر العلامة التجارية"
                             v-model="formData.brand_id"
+                            :class="{ 'is-invalid': hasFieldError('brand_id') }"
+                            @select="clearFieldError('brand_id')"
                           />
+                          <div
+                            v-if="hasFieldError('brand_id')"
+                            class="text-danger small mt-1"
+                          >
+                            {{ getFieldError("brand_id") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- Categories Selection -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> اختر القسم </label>
                           <Multiselect
                             label="name"
@@ -175,6 +213,10 @@
                             group-values="options"
                             group-label="name"
                             class="itteemm"
+                            :class="{
+                              'is-invalid': hasFieldError('categories_ids'),
+                            }"
+                            @select="clearFieldError('categories_ids')"
                           >
                             <template v-slot:option="{ option }">
                               <div
@@ -188,101 +230,223 @@
                               >
                                 {{ option.name }}
                               </div>
-                            </template></Multiselect
+                            </template>
+                          </Multiselect>
+                          <div
+                            v-if="hasFieldError('categories_ids')"
+                            class="text-danger small mt-1"
                           >
+                            {{ getFieldError("categories_ids") }}
+                          </div>
                         </div>
 
-                        <div class="col-md-6 mt-1">
+                        <!-- Base Price -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> السعر الأساسي</label>
                           <input
-                            type="text"
+                            type="number"
+                            step="0.01"
                             placeholder=""
                             v-model="formData.base_price"
                             class="form-control"
+                            :class="{
+                              'is-invalid': hasFieldError('base_price'),
+                            }"
+                            @input="clearFieldError('base_price')"
                           />
+                          <div
+                            v-if="hasFieldError('base_price')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("base_price") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- SEO URL -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> لينك seo </label>
                           <input
                             type="text"
                             placeholder=""
                             v-model="formData.seo_url"
                             class="form-control"
+                            :class="{ 'is-invalid': hasFieldError('seo_url') }"
+                            @input="clearFieldError('seo_url')"
                           />
+                          <div
+                            v-if="hasFieldError('seo_url')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("seo_url") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- SEO Title -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> عنوان seo </label>
                           <input
                             type="text"
                             placeholder=""
                             v-model="formData.seo_title"
                             class="form-control"
+                            :class="{
+                              'is-invalid': hasFieldError('seo_title'),
+                            }"
+                            @input="clearFieldError('seo_title')"
                           />
+                          <div
+                            v-if="hasFieldError('seo_title')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("seo_title") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- SEO Description -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> وصف seo </label>
                           <input
                             type="text"
                             placeholder=""
                             v-model="formData.seo_description"
                             class="form-control"
+                            :class="{
+                              'is-invalid': hasFieldError('seo_description'),
+                            }"
+                            @input="clearFieldError('seo_description')"
                           />
+                          <div
+                            v-if="hasFieldError('seo_description')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("seo_description") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- Barcode -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> باركود </label>
                           <input
                             type="text"
                             placeholder=""
                             v-model="formData.barcode"
                             class="form-control"
+                            :class="{ 'is-invalid': hasFieldError('barcode') }"
+                            @input="clearFieldError('barcode')"
                           />
+                          <div
+                            v-if="hasFieldError('barcode')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("barcode") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- Quantity -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> كمية </label>
                           <input
-                            type="text"
+                            type="number"
                             placeholder=""
                             v-model="formData.quantity"
                             class="form-control"
+                            :class="{ 'is-invalid': hasFieldError('quantity') }"
+                            @input="clearFieldError('quantity')"
                           />
+                          <div
+                            v-if="hasFieldError('quantity')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("quantity") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- Price -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> السعر </label>
                           <input
-                            type="text"
+                            type="number"
+                            step="0.01"
                             placeholder=""
                             v-model="formData.price"
                             class="form-control"
+                            :class="{ 'is-invalid': hasFieldError('price') }"
+                            @input="clearFieldError('price')"
                           />
+                          <div
+                            v-if="hasFieldError('price')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("price") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- Cost Price -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> سعر الكلفة </label>
                           <input
-                            type="text"
+                            type="number"
+                            step="0.01"
                             placeholder=""
                             v-model="formData.cost_price"
                             class="form-control"
+                            :class="{
+                              'is-invalid': hasFieldError('cost_price'),
+                            }"
+                            @input="clearFieldError('cost_price')"
                           />
+                          <div
+                            v-if="hasFieldError('cost_price')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("cost_price") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- Discounted Price -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> السعر بعد الخصم</label>
                           <input
-                            type="text"
+                            type="number"
+                            step="0.01"
                             placeholder=""
                             v-model="formData.discounted_price"
                             class="form-control"
+                            :class="{
+                              'is-invalid': hasFieldError('discounted_price'),
+                            }"
+                            @input="clearFieldError('discounted_price')"
                           />
+                          <div
+                            v-if="hasFieldError('discounted_price')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("discounted_price") }}
+                          </div>
                         </div>
-                        <div class="col-md-6 mt-1">
+
+                        <!-- Discount End Date -->
+                        <div class="col-md-6 mt-3">
                           <label for=""> تاريخ انتهاء الخصم </label>
                           <input
                             type="date"
                             placeholder=""
                             v-model="formData.discount_end_date"
                             class="form-control"
+                            :class="{
+                              'is-invalid': hasFieldError('discount_end_date'),
+                            }"
+                            @input="clearFieldError('discount_end_date')"
                           />
+                          <div
+                            v-if="hasFieldError('discount_end_date')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("discount_end_date") }}
+                          </div>
                         </div>
 
+                        <!-- Images -->
                         <div class="col-md-12 mt-3">
                           <label for="">الصوره</label>
                           <div class="form-group">
@@ -291,8 +455,15 @@
                               @change="handleFileChange"
                               accept=".pdf, image/jpeg, image/png"
                               class="form-control"
+                              :class="{ 'is-invalid': hasFieldError('images') }"
                               multiple
                             />
+                            <div
+                              v-if="hasFieldError('images')"
+                              class="invalid-feedback"
+                            >
+                              {{ getFieldError("images") }}
+                            </div>
                             <div class="d-flex flex-wrap mt-2">
                               <img
                                 :src="url.path"
@@ -311,17 +482,23 @@
                         </div>
                       </div>
 
-                      <button class="btn btn-primary m-auto d-block">
-                        إضافة
+                      <button
+                        class="btn btn-primary m-auto d-block"
+                        :disabled="isSubmitting"
+                      >
+                        <span v-if="isSubmitting">جاري الإضافة...</span>
+                        <span v-else>إضافة</span>
                       </button>
                     </form>
                   </div>
                 </div>
               </b-modal>
             </teleport>
+
+            <!-- Edit Product Modal -->
             <teleport to="body">
               <b-modal
-                id="add-page"
+                id="edit-page"
                 v-model="ShowModelEdit"
                 hide-footer
                 class="edit"
@@ -330,6 +507,7 @@
                 <div class="row pos-relative" style="z-index: 5555">
                   <div class="col-lg-12">
                     <div class="row">
+                      <!-- Arabic Name -->
                       <div class="col-md-6 mt-1">
                         <label for=""> الإسم عربي </label>
                         <input
@@ -337,8 +515,18 @@
                           placeholder=""
                           v-model="formEdit.name.ar"
                           class="form-control"
+                          :class="{ 'is-invalid': hasFieldError('name.ar') }"
+                          @input="clearFieldError('name.ar')"
                         />
+                        <div
+                          v-if="hasFieldError('name.ar')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("name.ar") }}
+                        </div>
                       </div>
+
+                      <!-- English Name -->
                       <div class="col-md-6 mt-1">
                         <label for="">الإسم انجليزي</label>
                         <input
@@ -346,24 +534,66 @@
                           placeholder=""
                           v-model="formEdit.name.en"
                           class="form-control"
+                          :class="{ 'is-invalid': hasFieldError('name.en') }"
+                          @input="clearFieldError('name.en')"
                         />
+                        <div
+                          v-if="hasFieldError('name.en')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("name.en") }}
+                        </div>
                       </div>
+
+                      <!-- Arabic Description -->
                       <div class="col-md-6 mt-1">
                         <label for="">الوصف عربي</label>
-                        <ckeditor
-                          :editor="editor"
-                          v-model="formEdit.description.ar"
-                          :editorConfigs="editorConfigs"
-                        ></ckeditor>
+                        <div
+                          class="ckeditor-wrapper"
+                          :class="{
+                            'ckeditor-error': hasFieldError('description.ar'),
+                          }"
+                        >
+                          <ckeditor
+                            :editor="editor"
+                            v-model="formEdit.description.ar"
+                            :editorConfigs="editorConfigs"
+                            @input="clearFieldError('description.ar')"
+                          ></ckeditor>
+                        </div>
+                        <div
+                          v-if="hasFieldError('description.ar')"
+                          class="text-danger small mt-1"
+                        >
+                          {{ getFieldError("description.ar") }}
+                        </div>
                       </div>
+
+                      <!-- English Description -->
                       <div class="col-md-6 mt-1">
                         <label for="">الوصف انجليزي</label>
-                        <ckeditor
-                          :editor="editor"
-                          v-model="formEdit.description.en"
-                          :editorConfigs="editorConfigs"
-                        ></ckeditor>
+                        <div
+                          class="ckeditor-wrapper"
+                          :class="{
+                            'ckeditor-error': hasFieldError('description.en'),
+                          }"
+                        >
+                          <ckeditor
+                            :editor="editor"
+                            v-model="formEdit.description.en"
+                            :editorConfigs="editorConfigs"
+                            @input="clearFieldError('description.en')"
+                          ></ckeditor>
+                        </div>
+                        <div
+                          v-if="hasFieldError('description.en')"
+                          class="text-danger small mt-1"
+                        >
+                          {{ getFieldError("description.en") }}
+                        </div>
                       </div>
+
+                      <!-- Brand Selection -->
                       <div class="col-md-6 mt-1">
                         <label for=""> اختر العلامة التجارية </label>
                         <Multiselect
@@ -372,8 +602,18 @@
                           :options="Selectbrand"
                           placeholder="اختر العلامة التجارية"
                           v-model="formEdit.brand_id"
+                          :class="{ 'is-invalid': hasFieldError('brand_id') }"
+                          @select="clearFieldError('brand_id')"
                         />
+                        <div
+                          v-if="hasFieldError('brand_id')"
+                          class="text-danger small mt-1"
+                        >
+                          {{ getFieldError("brand_id") }}
+                        </div>
                       </div>
+
+                      <!-- Categories Selection -->
                       <div class="col-md-6 mt-1">
                         <label for=""> اختر القسم </label>
                         <Multiselect
@@ -387,9 +627,12 @@
                           group-values="options"
                           group-label="name"
                           class="itteemm"
+                          :class="{
+                            'is-invalid': hasFieldError('categories_ids'),
+                          }"
+                          @select="clearFieldError('categories_ids')"
                         >
                           <template v-slot:option="{ option }">
-                            <!-- Check if the option is a main category or a sub-category -->
                             <div
                               :style="getOptionStyle(option)"
                               style="
@@ -403,16 +646,35 @@
                             </div>
                           </template>
                         </Multiselect>
+                        <div
+                          v-if="hasFieldError('categories_ids')"
+                          class="text-danger small mt-1"
+                        >
+                          {{ getFieldError("categories_ids") }}
+                        </div>
                       </div>
+
+                      <!-- Base Price -->
                       <div class="col-md-6 mt-1">
                         <label for=""> السعر الأساسي</label>
                         <input
-                          type="text"
+                          type="number"
+                          step="0.01"
                           placeholder=""
                           v-model="formEdit.base_price"
                           class="form-control"
+                          :class="{ 'is-invalid': hasFieldError('base_price') }"
+                          @input="clearFieldError('base_price')"
                         />
+                        <div
+                          v-if="hasFieldError('base_price')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("base_price") }}
+                        </div>
                       </div>
+
+                      <!-- SEO URL -->
                       <div class="col-md-6 mt-1">
                         <label for=""> لينك seo </label>
                         <input
@@ -420,8 +682,18 @@
                           placeholder=""
                           v-model="formEdit.seo_url"
                           class="form-control"
+                          :class="{ 'is-invalid': hasFieldError('seo_url') }"
+                          @input="clearFieldError('seo_url')"
                         />
+                        <div
+                          v-if="hasFieldError('seo_url')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("seo_url") }}
+                        </div>
                       </div>
+
+                      <!-- SEO Title -->
                       <div class="col-md-6 mt-1">
                         <label for=""> عنوان seo </label>
                         <input
@@ -429,8 +701,18 @@
                           placeholder=""
                           v-model="formEdit.seo_title"
                           class="form-control"
+                          :class="{ 'is-invalid': hasFieldError('seo_title') }"
+                          @input="clearFieldError('seo_title')"
                         />
+                        <div
+                          v-if="hasFieldError('seo_title')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("seo_title") }}
+                        </div>
                       </div>
+
+                      <!-- SEO Description -->
                       <div class="col-md-6 mt-1">
                         <label for=""> وصف seo </label>
                         <input
@@ -438,8 +720,20 @@
                           placeholder=""
                           v-model="formEdit.seo_description"
                           class="form-control"
+                          :class="{
+                            'is-invalid': hasFieldError('seo_description'),
+                          }"
+                          @input="clearFieldError('seo_description')"
                         />
+                        <div
+                          v-if="hasFieldError('seo_description')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("seo_description") }}
+                        </div>
                       </div>
+
+                      <!-- Barcode -->
                       <div class="col-md-6 mt-1">
                         <label for=""> باركود </label>
                         <input
@@ -447,44 +741,99 @@
                           placeholder=""
                           v-model="formEdit.barcode"
                           class="form-control"
+                          :class="{ 'is-invalid': hasFieldError('barcode') }"
+                          @input="clearFieldError('barcode')"
                         />
+                        <div
+                          v-if="hasFieldError('barcode')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("barcode") }}
+                        </div>
                       </div>
+
+                      <!-- Quantity -->
                       <div class="col-md-6 mt-1">
                         <label for=""> كمية </label>
                         <input
-                          type="text"
+                          type="number"
                           placeholder=""
                           v-model="formEdit.quantity"
                           class="form-control"
+                          :class="{ 'is-invalid': hasFieldError('quantity') }"
+                          @input="clearFieldError('quantity')"
                         />
+                        <div
+                          v-if="hasFieldError('quantity')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("quantity") }}
+                        </div>
                       </div>
+
+                      <!-- Price -->
                       <div class="col-md-6 mt-1">
                         <label for=""> السعر </label>
                         <input
-                          type="text"
+                          type="number"
+                          step="0.01"
                           placeholder=""
                           v-model="formEdit.price"
                           class="form-control"
+                          :class="{ 'is-invalid': hasFieldError('price') }"
+                          @input="clearFieldError('price')"
                         />
+                        <div
+                          v-if="hasFieldError('price')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("price") }}
+                        </div>
                       </div>
+
+                      <!-- Cost Price -->
                       <div class="col-md-6 mt-1">
                         <label for=""> سعر الكلفة </label>
                         <input
-                          type="text"
+                          type="number"
+                          step="0.01"
                           placeholder=""
                           v-model="formEdit.cost_price"
                           class="form-control"
+                          :class="{ 'is-invalid': hasFieldError('cost_price') }"
+                          @input="clearFieldError('cost_price')"
                         />
+                        <div
+                          v-if="hasFieldError('cost_price')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("cost_price") }}
+                        </div>
                       </div>
+
+                      <!-- Discounted Price -->
                       <div class="col-md-6 mt-1">
                         <label for=""> السعر بعد الخصم</label>
                         <input
-                          type="text"
+                          type="number"
+                          step="0.01"
                           placeholder=""
                           v-model="formEdit.discounted_price"
                           class="form-control"
+                          :class="{
+                            'is-invalid': hasFieldError('discounted_price'),
+                          }"
+                          @input="clearFieldError('discounted_price')"
                         />
+                        <div
+                          v-if="hasFieldError('discounted_price')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("discounted_price") }}
+                        </div>
                       </div>
+
+                      <!-- Discount End Date -->
                       <div class="col-md-6 mt-1">
                         <label for=""> تاريخ انتهاء الخصم </label>
                         <input
@@ -492,8 +841,20 @@
                           placeholder=""
                           v-model="formEdit.discount_end_date"
                           class="form-control"
+                          :class="{
+                            'is-invalid': hasFieldError('discount_end_date'),
+                          }"
+                          @input="clearFieldError('discount_end_date')"
                         />
+                        <div
+                          v-if="hasFieldError('discount_end_date')"
+                          class="invalid-feedback"
+                        >
+                          {{ getFieldError("discount_end_date") }}
+                        </div>
                       </div>
+
+                      <!-- Images -->
                       <div class="col-md-12 mt-3">
                         <label for="">الصوره</label>
                         <div class="form-group">
@@ -502,13 +863,20 @@
                             @change="handleFileedit"
                             accept=".pdf, image/jpeg, image/png"
                             class="form-control"
+                            :class="{ 'is-invalid': hasFieldError('images') }"
                             multiple
                           />
+                          <div
+                            v-if="hasFieldError('images')"
+                            class="invalid-feedback"
+                          >
+                            {{ getFieldError("images") }}
+                          </div>
                           <div class="d-flex flex-wrap mt-2">
                             <div
                               v-for="(url, index) in imageedit"
                               :key="index"
-                              class="d-flex"
+                              class="d-flex position-relative"
                             >
                               <img
                                 :src="url.path"
@@ -521,14 +889,13 @@
                                 class="m-1"
                               />
                               <span
-                                class="si si-close text-red"
+                                class="si si-close text-danger bg-white rounded-circle p-1 position-absolute"
                                 @click="removeimage(index)"
                                 style="
-                                  margin-right: -30px;
-                                  background: #fff;
-                                  padding: 5px;
-                                  height: max-content;
-                                  margin-top: 5px;
+                                  top: 5px;
+                                  right: 10px;
+                                  cursor: pointer;
+                                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
                                 "
                               ></span>
                             </div>
@@ -538,10 +905,12 @@
                     </div>
 
                     <button
-                      class="btn btn-primary m-auto d-block"
+                      class="btn btn-primary m-auto d-block mt-3"
                       @click="update"
+                      :disabled="isSubmitting"
                     >
-                      تعديل
+                      <span v-if="isSubmitting">جاري التعديل...</span>
+                      <span v-else>تعديل</span>
                     </button>
                   </div>
                 </div>
@@ -567,18 +936,42 @@ import { reactive } from "vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import crudDataService from "../../Services/crudDataService.js";
 import Multiselect from "@vueform/multiselect";
+import { FormErrorMixin } from "../../mixins/FormErrorMixin.js"; // Import the mixin
+import { useToast } from "vue-toastification"; // Assuming you're using vue-toastification
 
 export default {
   components: {
     Multiselect,
   },
+  mixins: [FormErrorMixin], // Apply the mixin
   setup() {
     const editorConfigs = reactive({});
-    return { editor: ClassicEditor, editorConfigs };
+    const toast = useToast(); // Initialize toast
+    return { editor: ClassicEditor, editorConfigs, toast };
   },
   data() {
     return {
+      isSubmitting: false,
       perminlocal: localStorage.getItem("permissions"),
+      // Define fields to watch for automatic error clearing
+      watchedFields: [
+        "formData.name.ar",
+        "formData.name.en",
+        "formData.description.ar",
+        "formData.description.en",
+        "formData.brand_id",
+        "formData.categories_ids",
+        "formData.base_price",
+        "formData.price",
+        "formData.quantity",
+        "formData.cost_price",
+        "formData.discounted_price",
+        "formData.barcode",
+        "formData.seo_url",
+        "formData.seo_title",
+        "formData.seo_description",
+        "formData.discount_end_date",
+      ],
       columns: [
         {
           label: "الصوره",
@@ -612,14 +1005,10 @@ export default {
       formData: {
         name: {
           ar: "",
-        },
-        name: {
           en: "",
         },
         description: {
           ar: "",
-        },
-        description: {
           en: "",
         },
         base_price: "",
@@ -634,14 +1023,13 @@ export default {
         discount_end_date: "",
         categories_ids: [],
         images: [],
-        subcategories: [],
+        brand_id: "",
       },
       formEdit: {
         name: {
           ar: "",
           en: "",
         },
-
         description: {
           ar: "",
           en: "",
@@ -665,18 +1053,22 @@ export default {
   },
   methods: {
     async getstore() {
-      const res = await crudDataService.get(
-        "stores",
-        `${this.$route.params.id}`
-      );
-      this.onestore = res.data.data;
-      this.rows = res.data.data.products.map((product) => {
-        return { ...product };
-      });
-      this.Selectcategories = res.data.data.categories.map((ele) => ({
-        value: ele.id,
-        name: ele.name.ar,
-      }));
+      try {
+        const res = await crudDataService.get(
+          "stores",
+          `${this.$route.params.id}`
+        );
+        this.onestore = res.data.data;
+        this.rows = res.data.data.products.map((product) => {
+          return { ...product };
+        });
+        this.Selectcategories = res.data.data.categories.map((ele) => ({
+          value: ele.id,
+          name: ele.name.ar,
+        }));
+      } catch (error) {
+        this.handleApiErrors(error, this.toast);
+      }
     },
 
     getOptionStyle(option) {
@@ -684,27 +1076,44 @@ export default {
         background: option.options ? "#d6d8dddb" : "",
       };
     },
+
     handleFileChange(event) {
       const files = event.target.files;
       this.formData.images = [];
+      this.imageUrl = [];
+
+      // Clear any existing file errors
+      this.clearFieldError("images");
+
       Array.from(files).forEach((file) => {
+        // Validate file size (example: max 2MB)
+        if (file.size > 2 * 1024 * 1024) {
+          this.setFieldErrors({
+            images: ["حجم الملف يجب أن يكون أقل من 2 ميجابايت"],
+          });
+          return;
+        }
+
         this.formData.images.push(file);
         const reader = new FileReader();
         reader.onload = (e) => {
           this.imageUrl.push({
             path: e.target.result,
             thumbnail: e.target.result,
-          }); // Add the image URL for preview
+          });
         };
         reader.readAsDataURL(file);
       });
     },
+
     removeimage(index) {
       this.imageedit.splice(index, 1);
     },
+
     handleFileedit(event) {
       const files = event.target.files;
       this.formEdit.images = [];
+
       Array.from(files).forEach((file) => {
         this.formEdit.images.push(file);
         const reader = new FileReader();
@@ -717,48 +1126,101 @@ export default {
         reader.readAsDataURL(file);
       });
     },
+
     async getbrands() {
-      const res = await crudDataService.getAll("brands");
-      this.Selectbrand = res.data.data.data.map((ele) => ({
-        value: ele.id,
-        name: ele.name,
-      }));
+      try {
+        const res = await crudDataService.getAll("brands");
+        this.Selectbrand = res.data.data.data.map((ele) => ({
+          value: ele.id,
+          name: ele.name,
+        }));
+      } catch (error) {
+        this.handleApiErrors(error, this.toast);
+      }
     },
+
+    // Validation rules for the form
+    getValidationRules() {
+      return {
+        "name.ar": { required: true, label: "الاسم بالعربية" },
+        "name.en": { required: true, label: "الاسم بالإنجليزية" },
+        "description.ar": { required: true, label: "الوصف بالعربي" },
+        "description.en": { required: true, label: "الوصف بالإنجليزية" },
+        base_price: { required: true, label: "السعر الأساسي" },
+        price: { required: true, label: "السعر" },
+        quantity: { required: true, label: "الكمية" },
+        brand_id: { required: true, label: "العلامة التجارية" },
+        categories_ids: { required: true, label: "الأقسام" },
+        images: { required: true, label: "الصورة" },
+      };
+    },
+
     async add() {
-      let res = await crudDataService
-        .create(`stores/${this.$route.params.id}/products`, this.formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          this.ShowModel = false;
-          this.formData.name.ar = "";
-          this.formData.name.en = "";
-          this.formData.description.ar = "";
-          this.formData.description.en = "";
-          this.formData.barcode = "";
-          this.formData.base_price = "";
-          this.formData.seo_url = "";
-          this.formData.seo_title = "";
-          this.formData.seo_description = "";
-          this.formData.quantity = "";
-          this.formData.price = "";
-          this.formData.cost_price = "";
-          this.formData.discounted_price = "";
-          this.formData.discount_end_date = "";
-          this.formData.categories_ids = [];
-          this.formData.brand_id = "";
-          this.formData.images = "";
-          this.categories_ids = [];
-          (this.formData.brand_id = ""), (this.imageUrl = "");
+      // Clear previous errors
+      this.clearAllErrors();
+
+      // Validate form
+      if (!this.validateForm(this.getValidationRules())) {
+        return;
+      }
+
+      this.isSubmitting = true;
+
+      try {
+        await crudDataService.create(
+          `stores/${this.$route.params.id}/products`,
+          this.formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        // Success
+        this.ShowModel = false;
+        this.resetFormData();
+        this.getstore();
+
+        this.toast.success("تم إضافة المنتج بنجاح", {
+          position: "top-right",
+          timeout: 3000,
         });
+      } catch (error) {
+        this.handleApiErrors(error, this.toast);
+      } finally {
+        this.isSubmitting = false;
+      }
     },
+
+    resetFormData() {
+      this.formData = {
+        name: { ar: "", en: "" },
+        description: { ar: "", en: "" },
+        base_price: "",
+        seo_url: "",
+        seo_title: "",
+        seo_description: "",
+        barcode: "",
+        quantity: "",
+        price: "",
+        cost_price: "",
+        discounted_price: "",
+        discount_end_date: "",
+        categories_ids: [],
+        images: [],
+        brand_id: "",
+      };
+      this.imageUrl = [];
+      this.clearAllErrors();
+    },
+
     async edit(data) {
+      this.clearAllErrors();
       this.id = data.id;
-      // let res = await crudDataService.getAll(`products/${this.id}/variants`);
-      // this.variant = res.data.data;
       this.ShowModelEdit = true;
+
+      // Populate edit form
       this.formEdit.name.ar = data.name.ar;
       this.formEdit.description.ar = data.description.ar;
       this.formEdit.brand_id = data.brand ? data.brand.id : "";
@@ -779,21 +1241,36 @@ export default {
       );
       this.imageedit = data.images;
     },
-    async update() {
-      console.log(this.formEdit);
 
-      let res = await crudDataService.create(
-        `stores/${this.$route.params.id}/products/${this.id}?_method=put`,
-        this.formEdit,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      this.ShowModelEdit = false;
-      this.getstore();
+    async update() {
+      this.clearAllErrors();
+      this.isSubmitting = true;
+
+      try {
+        await crudDataService.create(
+          `stores/${this.$route.params.id}/products/${this.id}?_method=put`,
+          this.formEdit,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        this.ShowModelEdit = false;
+        this.getstore();
+
+        this.toast.success("تم تعديل المنتج بنجاح", {
+          position: "top-right",
+          timeout: 3000,
+        });
+      } catch (error) {
+        this.handleApiErrors(error, this.toast);
+      } finally {
+        this.isSubmitting = false;
+      }
     },
+
     del(data, index, name) {
       this.$swal
         .fire({
@@ -803,22 +1280,25 @@ export default {
           confirmButtonText: "نعم",
         })
         .then((result) => {
-          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
             this.$swal.fire({
               title: "تم الحذف بنجاح!",
               icon: "success",
-              confirmButtonText: "تم", // ✅ Custom OK button text
+              confirmButtonText: "تم",
             });
             crudDataService
               .delete(`stores/${this.$route.params.id}/products`, `${data}`)
               .then(() => {
                 this.rows.splice(index, 1);
+              })
+              .catch((error) => {
+                this.handleApiErrors(error, this.toast);
               });
           }
         });
     },
   },
+
   computed: {
     filteredColumns() {
       if (
@@ -831,6 +1311,7 @@ export default {
       return this.columns;
     },
   },
+
   mounted() {
     this.getstore();
     this.getbrands();
@@ -849,23 +1330,27 @@ export default {
     cursor: pointer;
   }
 }
+
+// Loading state for buttons
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 </style>
+
 <style lang="scss">
 .multiselect-caret {
   margin: 0 var(--ms-px, 0.875rem) 0 var(--ms-px, 0.875rem);
 }
+
 .multiselect-multiple-label,
 .multiselect-placeholder,
 .multiselect-single-label {
   left: auto;
-
   padding-right: 9px;
-
   right: 0;
 }
-.modal .modal-header {
-  display: none;
-}
+
 .imgtoadd {
   background: #fff;
   width: 100px;
@@ -881,6 +1366,7 @@ export default {
     object-fit: cover;
   }
 }
+
 @media (min-width: 576px) {
   .modal-dialog {
     margin: 8.75rem auto;
