@@ -228,10 +228,8 @@
                 class="btn btn-primary m-auto d-block"
                 :disabled="isLoading"
               >
-                <progress
-                  class="pure-material-progress-circular pure-material-progress-circular--sm"
-                  v-if="isLoading"
-                />
+                <span v-if="isLoading">جاري الحفظ...</span>
+
                 <span v-if="!isLoading"> تعديل </span>
               </button>
             </form>
@@ -543,18 +541,5 @@ table.vgt-table td {
 
 .custom-switch-input:checked ~ .custom-switch-indicator {
   background: #fb99bf !important;
-}
-
-// ✅ تنسيق رسائل الخطأ
-.invalid-feedback {
-  display: block;
-  color: #dc3545;
-  font-size: 0.875em;
-  margin-top: 0.25rem;
-}
-
-.form-control.is-invalid {
-  border-color: #dc3545;
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 }
 </style>

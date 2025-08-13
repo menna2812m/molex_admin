@@ -30,7 +30,6 @@ export const FormErrorMixin = {
     // ✅ تعيين أخطاء من استجابة API
     setFieldErrors(errors) {
       this.fieldErrors = errors || {};
-      console.log("Field Errors Set:", this.fieldErrors);
     },
 
     // ✅ فحص وجود خطأ لحقل معين

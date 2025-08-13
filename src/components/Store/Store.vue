@@ -1,7 +1,13 @@
 <template>
   <section>
     <button
-      @click="ShowModel = true"
+      @click="
+        () => {
+          ShowModel = true;
+          clearAllErrors();
+          resetFormData();
+        }
+      "
       class="btn-add me-0 mb-4"
       v-if="perminlocal.includes('stores-index')"
     >
@@ -133,7 +139,12 @@
                     type="text"
                     class="form-control"
                     v-model="formData.name"
+                    @input="clearFieldError('name')"
+                    :class="{ 'is-invalid': hasFieldError('name') }"
                   />
+                  <div v-if="hasFieldError('name')" class="invalid-feedback">
+                    {{ getFieldError("name") }}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6 mb-2">
@@ -143,7 +154,15 @@
                     type="text"
                     class="form-control"
                     v-model="formData.store_phone"
+                    @input="clearFieldError('store_phone')"
+                    :class="{ 'is-invalid': hasFieldError('store_phone') }"
                   />
+                  <div
+                    v-if="hasFieldError('store_phone')"
+                    class="invalid-feedback"
+                  >
+                    {{ getFieldError("store_phone") }}
+                  </div>
                 </div>
               </div>
               <div class="col-12 mb-2">
@@ -154,7 +173,11 @@
                     @change="onFileSelected"
                     accept=".pdf, image/jpeg, image/png"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('image') }"
                   />
+                  <div v-if="hasFieldError('image')" class="invalid-feedback">
+                    {{ getFieldError("image") }}
+                  </div>
                 </div>
                 <img
                   :src="imageUrl"
@@ -170,9 +193,13 @@
                   <input
                     type="file"
                     @change="onFilevideo"
-                    accept="*/*"
+                    accept="video/*"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('video') }"
                   />
+                  <div v-if="hasFieldError('video')" class="invalid-feedback">
+                    {{ getFieldError("video") }}
+                  </div>
                 </div>
 
                 <video
@@ -192,7 +219,14 @@
                   placeholder="اختر البلد"
                   v-model="formData.country_id"
                   @change="changecountry"
+                  :class="{ 'is-invalid': hasFieldError('country_id') }"
                 />
+                <div
+                  v-if="hasFieldError('country_id')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("country_id") }}
+                </div>
               </div>
               <div class="col-6 mb-2">
                 <label> الاقليم </label>
@@ -203,7 +237,11 @@
                   placeholder="اختر الاقليم "
                   v-model="formData.region_id"
                   @change="changecities($event, regions)"
+                  :class="{ 'is-invalid': hasFieldError('region_id') }"
                 />
+                <div v-if="hasFieldError('region_id')" class="invalid-feedback">
+                  {{ getFieldError("region_id") }}
+                </div>
               </div>
               <div class="col-6 mb-2">
                 <label> المدينة </label>
@@ -214,7 +252,11 @@
                   placeholder="اختر المدينة "
                   v-model="formData.city_id"
                   @change="district($event, cities)"
+                  :class="{ 'is-invalid': hasFieldError('city_id') }"
                 />
+                <div v-if="hasFieldError('city_id')" class="invalid-feedback">
+                  {{ getFieldError("city_id") }}
+                </div>
               </div>
               <div class="col-6 mb-2">
                 <label> المنطقة </label>
@@ -224,7 +266,14 @@
                   :options="districta"
                   placeholder="اختر المنطقة "
                   v-model="formData.district_id"
+                  :class="{ 'is-invalid': hasFieldError('district_id') }"
                 />
+                <div
+                  v-if="hasFieldError('district_id')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("district_id") }}
+                </div>
               </div>
               <div class="col-6 mb-2">
                 <label> الماركة </label>
@@ -237,7 +286,14 @@
                   group-values="options"
                   group-label="name"
                   @change="addbrands($event)"
+                  :class="{ 'is-invalid': hasFieldError('brands_ids') }"
                 />
+                <div
+                  v-if="hasFieldError('brands_ids')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("brands_ids") }}
+                </div>
               </div>
               <div class="col-12 mb-2">
                 <label> القسم </label>
@@ -250,7 +306,14 @@
                   group-values="options"
                   group-label="name"
                   @change="addcategories($event)"
+                  :class="{ 'is-invalid': hasFieldError('categories_ids') }"
                 />
+                <div
+                  v-if="hasFieldError('categories_ids')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("categories_ids") }}
+                </div>
               </div>
               <div class="col-12">
                 <p>بيانات مالك المتجر</p>
@@ -262,7 +325,12 @@
                     type="text"
                     class="form-control"
                     v-model="formData.fname"
+                    @input="clearFieldError('fname')"
+                    :class="{ 'is-invalid': hasFieldError('fname') }"
                   />
+                  <div v-if="hasFieldError('fname')" class="invalid-feedback">
+                    {{ getFieldError("fname") }}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
@@ -272,7 +340,12 @@
                     type="text"
                     class="form-control"
                     v-model="formData.lname"
+                    @input="clearFieldError('lname')"
+                    :class="{ 'is-invalid': hasFieldError('lname') }"
                   />
+                  <div v-if="hasFieldError('lname')" class="invalid-feedback">
+                    {{ getFieldError("lname") }}
+                  </div>
                 </div>
               </div>
               <div class="col-12">
@@ -282,7 +355,12 @@
                     type="email"
                     class="form-control"
                     v-model="formData.email"
+                    @input="clearFieldError('email')"
+                    :class="{ 'is-invalid': hasFieldError('email') }"
                   />
+                  <div v-if="hasFieldError('email')" class="invalid-feedback">
+                    {{ getFieldError("email") }}
+                  </div>
                 </div>
               </div>
               <div class="col-12">
@@ -293,7 +371,12 @@
                     autocomplete="one-time-code"
                     class="form-control"
                     v-model="formData.phone"
+                    @input="clearFieldError('phone')"
+                    :class="{ 'is-invalid': hasFieldError('phone') }"
                   />
+                  <div v-if="hasFieldError('phone')" class="invalid-feedback">
+                    {{ getFieldError("phone") }}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
@@ -305,6 +388,8 @@
                       v-model="formData.password"
                       autocomplete="one-time-code"
                       :type="passwordVisible ? 'text' : 'password'"
+                      @input="clearFieldError('password')"
+                      :class="{ 'is-invalid': hasFieldError('password') }"
                     />
                     <i
                       @click="togglePasswordVisibility"
@@ -319,6 +404,12 @@
                     >
                     </i>
                   </div>
+                  <div
+                    v-if="hasFieldError('password')"
+                    class="invalid-feedback"
+                  >
+                    {{ getFieldError("password") }}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
@@ -330,6 +421,10 @@
                       class="form-control"
                       autocomplete="one-time-code"
                       v-model="formData.password_confirmation"
+                      @input="clearFieldError('password_confirmation')"
+                      :class="{
+                        'is-invalid': hasFieldError('password_confirmation'),
+                      }"
                     />
                     <i
                       @click="togglePassword"
@@ -346,40 +441,28 @@
                     >
                     </i>
                   </div>
+                  <div
+                    v-if="hasFieldError('password_confirmation')"
+                    class="invalid-feedback"
+                  >
+                    {{ getFieldError("password_confirmation") }}
+                  </div>
                 </div>
               </div>
-              <!-- <div class="col-md-6">
-                <div class="mt-1">
-                  <label> تاريخ الميلاد</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    v-model="formData.birth_date"
-                  />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <label> النوع </label>
-
-                <Multiselect
-                  label="name"
-                  :searchable="true"
-                  :options="gender"
-                  placeholder="اختر النوع "
-                  v-model="formData.gender"
-                />
-              </div> -->
             </div>
-            <div class="text-red">
-              {{ errormessage ? errormessage : "" }}
-            </div>
-            <button class="btn btn-primary m-auto d-block mt-3" type="submit">
-              اضافة
+            <button
+              class="btn btn-primary m-auto d-block mt-3"
+              type="submit"
+              :disabled="isLoading"
+            >
+              <span v-if="isLoading">جاري الحفظ...</span>
+              <span v-else>اضافة</span>
             </button>
           </form>
         </div>
       </b-modal>
     </teleport>
+
     <teleport to="body">
       <b-modal
         id="add-page"
@@ -397,7 +480,12 @@
                     type="text"
                     class="form-control"
                     v-model="formDataupdate.name"
+                    @input="clearFieldError('name')"
+                    :class="{ 'is-invalid': hasFieldError('name') }"
                   />
+                  <div v-if="hasFieldError('name')" class="invalid-feedback">
+                    {{ getFieldError("name") }}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6 mb-2">
@@ -407,7 +495,15 @@
                     type="text"
                     class="form-control"
                     v-model="formDataupdate.store_phone"
+                    @input="clearFieldError('store_phone')"
+                    :class="{ 'is-invalid': hasFieldError('store_phone') }"
                   />
+                  <div
+                    v-if="hasFieldError('store_phone')"
+                    class="invalid-feedback"
+                  >
+                    {{ getFieldError("store_phone") }}
+                  </div>
                 </div>
               </div>
               <div class="col-12 mb-2">
@@ -418,7 +514,11 @@
                     @change="editFileSelected"
                     accept=".pdf, image/jpeg, image/png"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('image') }"
                   />
+                  <div v-if="hasFieldError('image')" class="invalid-feedback">
+                    {{ getFieldError("image") }}
+                  </div>
                 </div>
                 <img
                   :src="imageUrl"
@@ -436,7 +536,11 @@
                     @change="editFilevideo"
                     accept="video/*"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('video') }"
                   />
+                  <div v-if="hasFieldError('video')" class="invalid-feedback">
+                    {{ getFieldError("video") }}
+                  </div>
                 </div>
 
                 <video
@@ -456,7 +560,14 @@
                   placeholder="اختر البلد"
                   v-model="formDataupdate.country_id"
                   @change="changecountry"
+                  :class="{ 'is-invalid': hasFieldError('country_id') }"
                 />
+                <div
+                  v-if="hasFieldError('country_id')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("country_id") }}
+                </div>
               </div>
               <div class="col-6 mb-2">
                 <label> الاقليم </label>
@@ -467,7 +578,11 @@
                   placeholder="اختر الاقليم "
                   v-model="formDataupdate.region_id"
                   @change="changecities($event, regions)"
+                  :class="{ 'is-invalid': hasFieldError('region_id') }"
                 />
+                <div v-if="hasFieldError('region_id')" class="invalid-feedback">
+                  {{ getFieldError("region_id") }}
+                </div>
               </div>
               <div class="col-6 mb-2">
                 <label> المدينة </label>
@@ -478,7 +593,11 @@
                   placeholder="اختر المدينة "
                   v-model="formDataupdate.city_id"
                   @change="district($event, cities)"
+                  :class="{ 'is-invalid': hasFieldError('city_id') }"
                 />
+                <div v-if="hasFieldError('city_id')" class="invalid-feedback">
+                  {{ getFieldError("city_id") }}
+                </div>
               </div>
               <div class="col-6 mb-2">
                 <label> المنطقة </label>
@@ -488,7 +607,14 @@
                   :options="districta"
                   placeholder="اختر المنطقة "
                   v-model="formDataupdate.district_id"
+                  :class="{ 'is-invalid': hasFieldError('district_id') }"
                 />
+                <div
+                  v-if="hasFieldError('district_id')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("district_id") }}
+                </div>
               </div>
               <div class="col-6 mb-2">
                 <label> الماركة </label>
@@ -501,7 +627,14 @@
                   group-values="options"
                   group-label="name"
                   @change="addbrands($event)"
+                  :class="{ 'is-invalid': hasFieldError('brands_ids') }"
                 />
+                <div
+                  v-if="hasFieldError('brands_ids')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("brands_ids") }}
+                </div>
               </div>
               <div class="col-12 mb-2">
                 <label> القسم </label>
@@ -514,11 +647,23 @@
                   group-values="options"
                   group-label="name"
                   @change="addcategories($event)"
+                  :class="{ 'is-invalid': hasFieldError('categories_ids') }"
                 />
+                <div
+                  v-if="hasFieldError('categories_ids')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("categories_ids") }}
+                </div>
               </div>
             </div>
-            <button class="btn btn-primary m-auto d-block mt-3" type="submit">
-              تعديل
+            <button
+              class="btn btn-primary m-auto d-block mt-3"
+              type="submit"
+              :disabled="isLoadingUpdate"
+            >
+              <span v-if="isLoadingUpdate">جاري التحديث...</span>
+              <span v-else>تعديل</span>
             </button>
           </form>
         </div>
@@ -532,10 +677,16 @@ import moment from "moment";
 import { useToast } from "vue-toastification";
 import Multiselect from "@vueform/multiselect";
 import crudDataService from "../../Services/crudDataService.js";
+import { FormErrorMixin } from "../../mixins/FormErrorMixin.js"; // ✅ Import FormErrorMixin
+
 export default {
   components: {
     Multiselect,
   },
+
+  // ✅ Use the mixin
+  mixins: [FormErrorMixin],
+
   data() {
     return {
       errormessage: "",
@@ -586,6 +737,8 @@ export default {
         district_id: "",
         brands_ids: "",
         categories_ids: "",
+        password: "",
+        password_confirmation: "",
       },
       formDataupdate: {
         name: "",
@@ -604,6 +757,8 @@ export default {
         { value: "female", name: "انثي" },
       ],
       loading: false,
+      isLoading: false, // ✅ Add loading state for add form
+      isLoadingUpdate: false, // ✅ Add loading state for update form
       perminlocal: localStorage.getItem("permissions"),
       passwordVisible: false,
       passwordconfVisible: false,
@@ -616,8 +771,23 @@ export default {
       allcategory: [],
       imageUrl: "",
       videoUrl: "",
+
+      // ✅ Define watched fields for automatic error clearing
+      watchedFields: [
+        "formData.name",
+        "formData.store_phone",
+        "formData.fname",
+        "formData.lname",
+        "formData.email",
+        "formData.phone",
+        "formData.password",
+        "formData.password_confirmation",
+        "formDataupdate.name",
+        "formDataupdate.store_phone",
+      ],
     };
   },
+
   methods: {
     async toggleactive(id) {
       let res = await crudDataService.create(`stores/${id}/toggle`, "");
@@ -629,15 +799,22 @@ export default {
         });
       }
     },
+
     togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;
     },
+
     togglePassword() {
       this.passwordconfVisible = !this.passwordconfVisible;
     },
+
     async edit(data) {
       this.ShowModeledit = true;
       this.id = data.id;
+
+      // ✅ Clear all previous errors when opening edit modal
+      this.clearAllErrors();
+
       this.formDataupdate.name = data.name;
       this.formDataupdate.store_phone = data.phone;
       this.formDataupdate.country_id = 1;
@@ -653,50 +830,43 @@ export default {
       this.imageUrl = data.image;
       this.videoUrl = data.video;
     },
+
     async update() {
       const toast = useToast();
+      this.isLoadingUpdate = true; // ✅ Start loading
 
-      let res = await crudDataService
-        .create(`stores/${this.id}?_method=put`, this.formDataupdate, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          this.stores();
-          this.ShowModeledit = false;
-          const toast = useToast();
-          toast.success(res.data.message, {
-            position: "top-center",
-            timeout: 5000,
-          });
-          this.imageUrl = [];
-          this.videoUrl = [];
-        })
-        .catch((error) => {
-          // this.ShowModeledit = false;
+      // ✅ Clear previous errors
+      this.clearAllErrors();
 
-          const errorData = error?.data?.errors || {};
-
-          const errorMessages = Object.values(errorData)
-            .flat()
-            .filter((msg) => typeof msg === "string");
-
-          if (errorMessages.length > 0) {
-            toast.error(errorMessages[0], {
-              position: "top-center",
-              timeout: 5000,
-            });
-          } else {
-            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-              position: "top-center",
-              timeout: 5000,
-            });
+      try {
+        const res = await crudDataService.create(
+          `stores/${this.id}?_method=put`,
+          this.formDataupdate,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-          this.imageUrl = [];
-          this.videoUrl = [];
+        );
+
+        this.stores();
+        this.ShowModeledit = false;
+
+        toast.success(res.data.message, {
+          position: "top-center",
+          timeout: 5000,
         });
+
+        this.imageUrl = "";
+        this.videoUrl = "";
+      } catch (error) {
+        // ✅ Use mixin's error handling method
+        this.handleApiErrors(error, toast);
+      } finally {
+        this.isLoadingUpdate = false; // ✅ End loading
+      }
     },
+
     async country() {
       const result = await crudDataService.getAll("countries");
       this.countries = result.data.data;
@@ -705,7 +875,10 @@ export default {
         name: country.name,
       }));
     },
+
     changecountry() {
+      this.clearFieldError("country_id");
+
       this.countries.find((country) => {
         this.regions = country.regions?.map((reg) => ({
           value: reg.id,
@@ -715,7 +888,12 @@ export default {
       });
       this.changecities();
     },
+
     changecities(events, regions) {
+      this.clearFieldError("city_id");
+      this.clearFieldError("region_id");
+      this.clearFieldError("district_id");
+
       this.regions?.forEach((ele) => {
         if (
           events === ele.value ||
@@ -730,6 +908,7 @@ export default {
       });
       this.district();
     },
+
     district(events, dis) {
       this.cities.forEach((ele) => {
         if (events === ele.value || this.formDataupdate.city_id === ele.value) {
@@ -740,7 +919,11 @@ export default {
         }
       });
     },
+
     onFileSelected(event) {
+      // ✅ Clear image error when file is selected
+      this.clearFieldError("image");
+
       this.formData.image = event.target.files[0];
       const reader = new FileReader();
       reader.onload = () => {
@@ -748,7 +931,11 @@ export default {
       };
       reader.readAsDataURL(this.formData.image);
     },
+
     editFileSelected(event) {
+      // ✅ Clear image error when file is selected
+      this.clearFieldError("image");
+
       this.formDataupdate.image = event.target.files[0];
       const reader = new FileReader();
       reader.onload = () => {
@@ -756,7 +943,11 @@ export default {
       };
       reader.readAsDataURL(this.formDataupdate.image);
     },
+
     editFilevideo(event) {
+      // ✅ Clear video error when file is selected
+      this.clearFieldError("video");
+
       this.formDataupdate.video = event.target.files[0];
       const reader = new FileReader();
       reader.onload = () => {
@@ -764,7 +955,11 @@ export default {
       };
       reader.readAsDataURL(this.formDataupdate.video);
     },
+
     onFilevideo(event) {
+      // ✅ Clear video error when file is selected
+      this.clearFieldError("video");
+
       this.formData.video = event.target.files[0];
       const reader = new FileReader();
       reader.onload = () => {
@@ -772,14 +967,21 @@ export default {
       };
       reader.readAsDataURL(this.formData.video);
     },
+
     addbrands(e) {
       this.formData.brands_ids = e;
       this.formDataupdate.brands_ids = e;
+      // ✅ Clear brands error when selection changes
+      this.clearFieldError("brands_ids");
     },
+
     addcategories(e) {
       this.formDataupdate.categories_ids = e;
       this.formData.categories_ids = e;
+      // ✅ Clear categories error when selection changes
+      this.clearFieldError("categories_ids");
     },
+
     async brands() {
       let res = await crudDataService.getAll("brands");
       this.allbrands = res.data.data.data.map((bran) => ({
@@ -787,6 +989,7 @@ export default {
         name: bran.name,
       }));
     },
+
     async categories() {
       let res = await crudDataService.getAll("categories");
       this.allcategory = res.data.data.data.map((cat) => ({
@@ -794,11 +997,13 @@ export default {
         name: cat.name,
       }));
     },
+
     view(id) {
       this.$router.push({ name: "SingleStore", params: { id } });
     },
+
     async stores() {
-      this.loading = true; // Start loading
+      this.loading = true;
       try {
         let res = await crudDataService.getAll("stores");
         this.myList = res.data.data.data;
@@ -810,18 +1015,20 @@ export default {
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);
-        // Handle error
       } finally {
-        this.loading = false; // End loading regardless of success or failure
+        this.loading = false;
       }
     },
+
     async paginag(p) {
       let res = await crudDataService.getAll(`stores?page=${this.page}`);
       this.myList = res.data.data.data;
     },
+
     singleoffer(id) {
       this.$router.push({ name: "SingleOffer", params: { id } });
     },
+
     del(data, index, name) {
       this.$swal
         .fire({
@@ -831,12 +1038,11 @@ export default {
           confirmButtonText: "نعم",
         })
         .then((result) => {
-          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
             this.$swal.fire({
               title: "تم الحذف بنجاح!",
               icon: "success",
-              confirmButtonText: "تم", // ✅ Custom OK button text
+              confirmButtonText: "تم",
             });
             crudDataService.delete("stores", `${data}`).then(() => {
               this.stores();
@@ -845,67 +1051,97 @@ export default {
           }
         });
     },
+
+    // ✅ Reset form data helper method
+    resetFormData() {
+      this.formData = {
+        email: "",
+        name: "",
+        fname: "",
+        lname: "",
+        phone: "",
+        store_phone: "",
+        image: "",
+        video: "",
+        country_id: "",
+        region_id: "",
+        city_id: "",
+        district_id: "",
+        brands_ids: "",
+        categories_ids: "",
+        password: "",
+        password_confirmation: "",
+      };
+      this.imageUrl = "";
+      this.videoUrl = "";
+    },
+
     async add() {
       const toast = useToast();
+      this.isLoading = true; // ✅ Start loading
 
-      let res = await crudDataService
-        .create(`stores`, this.formData, {
+      // ✅ Clear previous errors
+      this.clearAllErrors();
+
+      // ✅ Optional local validation
+      const validationRules = {
+        name: { required: true, label: "اسم المتجر" },
+        store_phone: { required: true, label: "رقم هاتف المتجر" },
+        fname: { required: true, label: "الاسم الأول" },
+        lname: { required: true, label: "الاسم الثاني" },
+        email: { required: true, email: true, label: "البريد الإلكتروني" },
+        phone: { required: true, label: "رقم الهاتف" },
+        password: { required: true, minLength: 6, label: "كلمة المرور" },
+        password_confirmation: { required: true, label: "تأكيد كلمة المرور" },
+        country_id: { required: true, label: "البلد" },
+        region_id: { required: true, label: "الأقليم" },
+        city_id: { required: true, label: "المدينة" },
+        image: { required: true, label: "الصورة" },
+        district_id: { required: true, label: "المنطقة" },
+        brands_ids: { required: true, label: "الماركة" },
+        categories_ids: { required: true, label: "القسم" },
+      };
+
+      // ✅ Check password confirmation match
+      if (this.formData.password !== this.formData.password_confirmation) {
+        this.setFieldErrors({
+          password_confirmation: [
+            "كلمة المرور وتأكيد كلمة المرور غير متطابقتين",
+          ],
+        });
+        this.isLoading = false;
+        return;
+      }
+
+      if (!this.validateForm(validationRules)) {
+        this.isLoading = false;
+        return;
+      }
+
+      try {
+        const response = await crudDataService.create(`stores`, this.formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        })
-        .then((response) => {
-          this.stores();
-          this.ShowModel = false;
-          this.formData.name = "";
-          this.formData.store_phone = "";
-          this.formData.image = "";
-          this.formData.video = "";
-          this.formData.country_id = "";
-          this.formData.region_id = "";
-          this.formData.city_id = "";
-          this.formData.district_id = "";
-          this.formData.categories_ids = "";
-          this.formData.brands_ids = "";
-          this.formData.fname = "";
-          this.formData.lname = "";
-          this.formData.email = "";
-          this.formData.phone = "";
-          this.formData.password = "";
-          this.formData.password_confirmation = "";
-          this.formData.birth_date = "";
-          this.formData.gender = "";
-          this.imageUrl = "";
-          this.videoUrl = "";
-          const toast = useToast();
-          toast.success(response.data.message, {
-            position: "top-center",
-            timeout: 5000,
-          });
-        })
-        .catch((error) => {
-          // this.ShowModel = false;
-
-          const errorData = error?.data?.errors || {};
-
-          const errorMessages = Object.values(errorData)
-            .flat()
-            .filter((msg) => typeof msg === "string");
-
-          if (errorMessages.length > 0) {
-            toast.error(errorMessages[0], {
-              position: "top-center",
-              timeout: 5000,
-            });
-          } else {
-            toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى.", {
-              position: "top-center",
-              timeout: 5000,
-            });
-          }
         });
+
+        this.stores();
+        this.ShowModel = false;
+        this.resetFormData(); // ✅ Use helper method to reset form
+
+        toast.success(response.data.message, {
+          position: "top-center",
+          timeout: 5000,
+        });
+      } catch (error) {
+        // ✅ Use mixin's error handling method
+        this.handleApiErrors(error, toast);
+      } finally {
+        this.isLoading = false; // ✅ End loading
+      }
     },
   },
+
   computed: {
     filteredColumns() {
       if (
@@ -918,6 +1154,7 @@ export default {
       return this.columns;
     },
   },
+
   mounted() {
     this.stores();
     this.country();
@@ -950,7 +1187,21 @@ export default {
   display: block;
   color: #14112d;
 }
+
+// ✅ Multiselect error styles
+.multiselect.is-invalid {
+  border-color: #dc3545 !important;
+
+  .multiselect-wrapper {
+    border-color: #dc3545 !important;
+  }
+
+  .multiselect-input {
+    border-color: #dc3545 !important;
+  }
+}
 </style>
+
 <style lang="scss">
 .modal {
   & .multiselect-placeholder,
@@ -958,6 +1209,7 @@ export default {
     font-size: 12px;
   }
 }
+
 .imgtoadd {
   background: #fff;
   width: 100px;
@@ -973,23 +1225,28 @@ export default {
     object-fit: cover;
   }
 }
+
 @media (min-width: 576px) {
   .modal-dialog {
     margin: 8.75rem auto;
   }
 }
+
 .dp__menu_index {
   z-index: 999999999 !important;
 }
+
 .dp__input_icon {
   margin-right: auto !important;
 }
+
 .dp__action_buttons {
   text-align: left;
   .dp__action.dp__cancel {
     display: none;
   }
 }
+
 input::file-selector-button {
   background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
