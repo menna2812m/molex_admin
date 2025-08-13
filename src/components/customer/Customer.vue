@@ -281,7 +281,11 @@
             <button class="fs-15 btn-save mx-1" type="submit" @click="add">
               حفظ
             </button>
-            <button class="fs-15 btn-cancel mx-1" @click="ShowModel = false">
+            <button
+              class="fs-15 btn-cancel mx-1"
+              @click="ShowModel = false"
+              type="button"
+            >
               الغاء
             </button>
           </div>
@@ -289,7 +293,12 @@
       </b-modal>
     </teleport>
     <teleport to="body">
-      <b-modal id="add" v-model="ShowModelAddgroup" hide-footer>
+      <b-modal
+        id="add"
+        v-model="ShowModelAddgroup"
+        hide-footer
+        modal-class="assign-group-isolated-modal"
+      >
         <div class="imgtoadd">
           <img src="../../assets/img/1.png" alt="img2" />
         </div>
@@ -321,6 +330,7 @@
             <button
               class="fs-15 btn-cancel mx-1"
               @click="ShowModelAddgroup = false"
+              type="button"
             >
               الغاء
             </button>
@@ -411,8 +421,6 @@ export default {
         this.last = res.data.data.last_page;
 
         this.myList.forEach((ele) => {
-          console.log(ele.country);
-
           this.loc = ele.country?.name;
         });
       } catch (error) {
@@ -524,7 +532,6 @@ export default {
       let res = await crudDataService.create("remove-users-from-group", {
         user_ids: this.addData.user_ids,
       });
-      console.log(res);
 
       this.getAllCustomer();
     },
@@ -619,6 +626,14 @@ export default {
 }
 </style>
 <style lang="scss">
+.assign-group-isolated-modal {
+  .modal-content {
+    overflow: unset;
+  }
+  .modal-body {
+    overflow-y: unset;
+  }
+}
 .multiselect-caret {
   margin: 0 var(--ms-px, 0.875rem) 0 var(--ms-px, 0.875rem);
 }
@@ -641,7 +656,7 @@ export default {
   position: absolute;
   right: 40%;
   border-radius: 50%;
-  top: -50px;
+  top: -65px;
   text-align: center;
   img {
     width: 90%;

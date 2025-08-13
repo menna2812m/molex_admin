@@ -40,6 +40,8 @@
         <h5 class="card-title mt-3">مجموعة جديدة</h5>
       </div>
     </div>
+
+    <!-- Add Group Modal -->
     <teleport to="body" class="overflow-auto">
       <b-modal
         id="add-page"
@@ -51,28 +53,39 @@
         <div class="mt-2 pos-relative" style="z-index: 5555">
           <form @submit.prevent="add">
             <div class="row">
+              <!-- Arabic Name -->
               <div class="col-6 mb-2">
                 <label> الاسم عربي</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
                   placeholder="اسم المجموعة عربي"
                   class="form-control"
                   v-model="formData.name.ar"
+                  :class="{ 'is-invalid': hasFieldError('name.ar') }"
+                  @input="clearFieldError('name.ar')"
                 />
+                <div v-if="hasFieldError('name.ar')" class="invalid-feedback">
+                  {{ getFieldError("name.ar") }}
+                </div>
               </div>
+
+              <!-- English Name -->
               <div class="col-6 mb-2">
                 <label>الاسم انجليزي</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
                   placeholder="اسم المجموعة انجليزي"
                   class="form-control"
                   v-model="formData.name.en"
+                  :class="{ 'is-invalid': hasFieldError('name.en') }"
+                  @input="clearFieldError('name.en')"
                 />
+                <div v-if="hasFieldError('name.en')" class="invalid-feedback">
+                  {{ getFieldError("name.en") }}
+                </div>
               </div>
+
+              <!-- Dynamic Conditions -->
               <div
                 class="col-md-6 mb-2"
                 v-for="(con, ii) in formData.condition"
@@ -82,26 +95,52 @@
                   {{ con.title }}
                 </label>
 
-                <Multiselect
-                  v-if="Array.isArray(con.values)"
-                  class="mb-1"
-                  label="name"
-                  :searchable="true"
-                  :options="con.values"
-                  placeholder="النوع"
-                  v-model="con.values"
-                />
-                <input
-                  v-else
-                  :type="con.values"
-                  name=""
-                  id=""
-                  :placeholder="con.values"
-                  class="form-control"
-                  v-model="con.values"
-                />
+                <!-- Multi-select for array values -->
+                <div v-if="Array.isArray(con.values)">
+                  <Multiselect
+                    class="mb-1"
+                    label="name"
+                    :searchable="true"
+                    :options="con.values"
+                    placeholder="النوع"
+                    v-model="con.selectedValue"
+                    :class="{
+                      'is-invalid': hasFieldError(
+                        `condition.${ii}.selectedValue`
+                      ),
+                    }"
+                    @select="clearFieldError(`condition.${ii}.selectedValue`)"
+                  />
+                  <div
+                    v-if="hasFieldError(`condition.${ii}.selectedValue`)"
+                    class="text-danger small mt-1"
+                  >
+                    {{ getFieldError(`condition.${ii}.selectedValue`) }}
+                  </div>
+                </div>
+
+                <!-- Input for other types -->
+                <div v-else>
+                  <input
+                    :type="getInputType(con.values)"
+                    :placeholder="con.placeholder || con.values"
+                    class="form-control"
+                    v-model="con.inputValue"
+                    :class="{
+                      'is-invalid': hasFieldError(`condition.${ii}.inputValue`),
+                    }"
+                    @input="clearFieldError(`condition.${ii}.inputValue`)"
+                  />
+                  <div
+                    v-if="hasFieldError(`condition.${ii}.inputValue`)"
+                    class="invalid-feedback"
+                  >
+                    {{ getFieldError(`condition.${ii}.inputValue`) }}
+                  </div>
+                </div>
               </div>
 
+              <!-- Image Upload -->
               <div class="col-12 mb-2">
                 <label>الصوره</label>
                 <div class="form-group">
@@ -110,25 +149,41 @@
                     @change="onFileSelected"
                     accept=".pdf, image/jpeg, image/png"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('image') }"
                   />
-                  <img :src="imageUrl" alt="صورة" />
+                  <div v-if="hasFieldError('image')" class="invalid-feedback">
+                    {{ getFieldError("image") }}
+                  </div>
+                  <div v-if="imageUrl" class="mt-2">
+                    <img
+                      :src="imageUrl"
+                      alt="صورة"
+                      style="
+                        max-width: 200px;
+                        max-height: 200px;
+                        object-fit: cover;
+                      "
+                      class="img-thumbnail"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+
             <div class="text-center">
               <button
-                :disabled="isLoading"
+                :disabled="isSubmitting"
                 class="fs-15 btn-save mx-1"
                 type="submit"
               >
-                <progress
-                  class="pure-material-progress-circular pure-material-progress-circular--sm"
-                  v-if="isLoading"
-                />
-
-                <span v-if="!isLoading">اضافة</span>
+                <span v-if="!isSubmitting">اضافة</span>
+                <span v-else>جاري الإضافة...</span>
               </button>
-              <button class="fs-15 btn-cancel mx-1" @click="ShowModel = false">
+              <button
+                class="fs-15 btn-cancel mx-1"
+                @click="closeModal"
+                type="button"
+              >
                 الغاء
               </button>
             </div>
@@ -141,20 +196,28 @@
 
 <script>
 import Multiselect from "@vueform/multiselect";
-
 import crudDataService from "../../Services/crudDataService.js";
 import { useToast } from "vue-toastification";
+import { FormErrorMixin } from "../../mixins/FormErrorMixin.js"; // Import the mixin
+
 export default {
   components: {
     Multiselect,
   },
+  mixins: [FormErrorMixin], // Apply the mixin
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
   data() {
     return {
+      isSubmitting: false,
+      // Define fields to watch for automatic error clearing
+      watchedFields: ["formData.name.ar", "formData.name.en", "formData.image"],
       ShowModel: false,
       items: [],
       conditions: [],
       imageUrl: null,
-      isLoading: false,
       formData: {
         name: {
           ar: "",
@@ -167,37 +230,188 @@ export default {
     };
   },
   methods: {
-    anyone(e) {
-      console.log(e);
+    // Validation rules for the form
+    getValidationRules() {
+      return {
+        "name.ar": { required: true, label: "الاسم بالعربية" },
+        "name.en": { required: true, label: "الاسم بالإنجليزية" },
+        image: { required: true, label: " الصورة" },
+        // Add more validation rules as needed
+      };
     },
+
+    // Get appropriate input type based on condition value
+    getInputType(value) {
+      if (typeof value === "string") {
+        if (value.includes("email")) return "email";
+        if (value.includes("number") || value.includes("age")) return "number";
+        if (value.includes("date")) return "date";
+        if (value.includes("tel") || value.includes("phone")) return "tel";
+      }
+      return "text";
+    },
+
+    // Validate file upload
+    validateImage(file) {
+      if (!file) return true; // Optional field
+
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+      const maxSize = 2 * 1024 * 1024; // 2MB
+
+      if (!allowedTypes.includes(file.type)) {
+        this.setFieldErrors({
+          image: ["يجب أن تكون الصورة من نوع JPG أو PNG"],
+        });
+        return false;
+      }
+
+      if (file.size > maxSize) {
+        this.setFieldErrors({
+          image: ["حجم الصورة يجب أن يكون أقل من 2 ميجابايت"],
+        });
+        return false;
+      }
+
+      return true;
+    },
+
+    // Validate dynamic conditions
+    validateConditions() {
+      let isValid = true;
+      const errors = {};
+
+      this.formData.condition.forEach((con, index) => {
+        if (con.required) {
+          const fieldKey = Array.isArray(con.values)
+            ? "selectedValue"
+            : "inputValue";
+          const value = con[fieldKey];
+
+          if (!value || (typeof value === "string" && value.trim() === "")) {
+            errors[`condition.${index}.${fieldKey}`] = [`${con.title} مطلوب`];
+            isValid = false;
+          }
+        }
+      });
+
+      if (!isValid) {
+        this.setFieldErrors(errors);
+      }
+
+      return isValid;
+    },
+
     onFileSelected(event) {
-      this.formData.image = event.target.files[0];
+      const file = event.target.files[0];
+
+      // Clear previous errors
+      this.clearFieldError("image");
+
+      if (!file) {
+        this.formData.image = "";
+        this.imageUrl = null;
+        return;
+      }
+
+      // Validate file
+      if (!this.validateImage(file)) {
+        event.target.value = ""; // Clear the input
+        return;
+      }
+
+      this.formData.image = file;
+
       const reader = new FileReader();
       reader.onload = () => {
         this.imageUrl = reader.result;
       };
-      reader.readAsDataURL(this.formData.image);
+      reader.readAsDataURL(file);
     },
+
     async condition() {
-      let res = await crudDataService.getAll("groups-conditions");
-      this.conditions = res.data.data;
-      this.formData.condition = this.conditions;
+      try {
+        const res = await crudDataService.getAll("groups-conditions");
+        this.conditions = res.data.data;
+
+        // Initialize condition data with proper structure
+        this.formData.condition = this.conditions.map((condition) => ({
+          ...condition,
+          selectedValue: Array.isArray(condition.values) ? null : "",
+          inputValue: Array.isArray(condition.values) ? "" : "",
+        }));
+      } catch (error) {
+        this.handleApiErrors(error, this.toast);
+      }
     },
+
     async getallgroups() {
-      let res = await crudDataService.getAll("groups");
-      this.items = res.data.data.data;
+      try {
+        const res = await crudDataService.getAll("groups");
+        this.items = res.data.data.data;
+      } catch (error) {
+        this.handleApiErrors(error, this.toast);
+      }
     },
+
     singlegroup(id) {
       if (this.perminlocal.includes("groups-show")) {
         this.$router.push({ name: "SingleGroup", params: { id } });
       }
     },
+
+    resetForm() {
+      this.formData = {
+        name: {
+          ar: "",
+          en: "",
+        },
+        image: "",
+        condition: [],
+      };
+      this.imageUrl = null;
+      this.clearAllErrors();
+
+      // Reinitialize conditions
+      this.condition();
+    },
+
+    closeModal() {
+      this.ShowModel = false;
+    },
+
     async add() {
-      this.isLoading = true;
-      const toast = useToast();
+      this.clearAllErrors();
+
+      // Validate basic form fields
+      if (!this.validateForm(this.getValidationRules())) {
+        return;
+      }
+
+      // Validate dynamic conditions
+      if (!this.validateConditions()) {
+        return;
+      }
+
+      // Validate image if provided
+      if (this.formData.image && !this.validateImage(this.formData.image)) {
+        return;
+      }
+
+      this.isSubmitting = true;
 
       try {
-        const res = await crudDataService.create(`groups`, this.formData, {
+        // Prepare form data for submission
+        const submitData = {
+          ...this.formData,
+          condition: this.formData.condition.map((con) => ({
+            ...con,
+            value: Array.isArray(con.values)
+              ? con.selectedValue
+              : con.inputValue,
+          })),
+        };
+
+        const res = await crudDataService.create(`groups`, submitData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
@@ -209,26 +423,18 @@ export default {
           });
 
           this.ShowModel = false;
+          this.resetForm();
           this.getallgroups();
-        } else {
-          // Handle unexpected status codes
-          toast.error(res.data?.errors || "حدث خطأ غير متوقع", {
+
+          this.toast.success("تم إضافة المجموعة بنجاح", {
             position: "top-center",
-            timeout: 5000,
+            timeout: 3000,
           });
         }
       } catch (error) {
-        let errorMsg =
-          error.response?.data?.errors ||
-          error.response?.data?.message ||
-          "تعذر الاتصال بالخادم";
-
-        toast.error(errorMsg, {
-          position: "top-center",
-          timeout: 5000,
-        });
+        this.handleApiErrors(error, this.toast);
       } finally {
-        this.isLoading = false;
+        this.isSubmitting = false;
       }
     },
 
@@ -239,24 +445,34 @@ export default {
           showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
+          icon: "warning",
         })
         .then((result) => {
-          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.$swal.fire({
-              title: "تم الحذف بنجاح!",
-              icon: "success",
-              confirmButtonText: "تم", // ✅ Custom OK button text
-            });
-            crudDataService.delete("groups", `${data}`).then(() => {
-              this.items.splice(index, 1);
-            });
+            crudDataService
+              .delete("groups", `${data}`)
+              .then(() => {
+                this.$swal.fire({
+                  title: "تم الحذف بنجاح!",
+                  icon: "success",
+                  confirmButtonText: "تم",
+                });
+                this.items.splice(index, 1);
+              })
+              .catch((error) => {
+                this.$swal.fire({
+                  title: "حدث خطأ أثناء الحذف!",
+                  text: error.data?.message || "حدث خطأ غير متوقع",
+                  icon: "error",
+                  confirmButtonText: "موافق",
+                });
+              });
           }
         });
     },
   },
+
   mounted() {
-    this.condition();
     this.getallgroups();
   },
 };
@@ -266,6 +482,7 @@ export default {
 .card {
   box-shadow: 0px 3px 3px 0px #e6edf0;
 }
+
 .icon_color {
   display: inline;
   padding: 12px;
@@ -289,5 +506,18 @@ export default {
 
 input::file-selector-button {
   background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
+}
+
+// Loading state for buttons
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+// Image preview styling
+.img-thumbnail {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
 }
 </style>
