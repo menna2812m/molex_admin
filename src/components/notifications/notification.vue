@@ -75,53 +75,93 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="mt-1">
-                  <label for="">العنوان عربي </label>
+                  <label for=""
+                    >العنوان عربي <span class="text-danger">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('title.ar') }"
                     v-model="formData.title.ar"
+                    @input="clearFieldError('title.ar')"
                   />
+                  <div
+                    class="invalid-feedback"
+                    v-if="hasFieldError('title.ar')"
+                  >
+                    {{ getFieldError("title.ar") }}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mt-1">
-                  <label for="">العنوان انجليزي </label>
+                  <label for=""
+                    >العنوان انجليزي <span class="text-danger">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('title.en') }"
                     v-model="formData.title.en"
+                    @input="clearFieldError('title.en')"
                   />
+                  <div
+                    class="invalid-feedback"
+                    v-if="hasFieldError('title.en')"
+                  >
+                    {{ getFieldError("title.en") }}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mt-1">
-                  <label for="">التفاصيل عربي</label>
+                  <label for=""
+                    >التفاصيل عربي <span class="text-danger">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('body.ar') }"
                     v-model="formData.body.ar"
+                    @input="clearFieldError('body.ar')"
                   />
+                  <div class="invalid-feedback" v-if="hasFieldError('body.ar')">
+                    {{ getFieldError("body.ar") }}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mt-1">
-                  <label for="">التفاصيل انجليزي</label>
+                  <label for=""
+                    >التفاصيل انجليزي <span class="text-danger">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('body.en') }"
                     v-model="formData.body.en"
+                    @input="clearFieldError('body.en')"
                   />
+                  <div class="invalid-feedback" v-if="hasFieldError('body.en')">
+                    {{ getFieldError("body.en") }}
+                  </div>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <div class="mt-1">
-                  <label for="">الصورة</label>
+                  <label for=""
+                    >الصورة <span class="text-danger">*</span></label
+                  >
                   <input
                     type="file"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('image') }"
                     @change="onFileSelected($event)"
                     accept=".pdf, image/jpeg, image/png"
                   />
+                  <div class="invalid-feedback" v-if="hasFieldError('image')">
+                    {{ getFieldError("image") }}
+                  </div>
                   <img
                     :src="imgurl"
                     style="width: 180px; height: 180px; object-fit: fill"
@@ -131,8 +171,16 @@
                 </div>
               </div>
             </div>
-            <button class="btn btn-primary m-auto mt-3 d-block" type="submit">
-              اضافة
+            <button
+              class="btn btn-primary m-auto mt-3 d-block"
+              type="submit"
+              :disabled="submitting"
+            >
+              <span
+                v-if="submitting"
+                class="spinner-border spinner-border-sm me-2"
+              ></span>
+              {{ submitting ? "جاري الإضافة..." : "اضافة" }}
             </button>
           </form>
         </div>
@@ -152,10 +200,14 @@
 <script>
 import Multiselect from "@vueform/multiselect";
 import crudDataService from "../../Services/crudDataService.js";
+import { FormErrorMixin } from "../../mixins/FormErrorMixin.js";
+import { useToast } from "vue-toastification";
+
 export default {
   components: {
     Multiselect,
   },
+  mixins: [FormErrorMixin],
   data() {
     return {
       page: 1,
@@ -164,6 +216,7 @@ export default {
       myList: [],
       id: null,
       imgurl: [],
+      submitting: false,
       formData: {
         title: {
           ar: "",
@@ -177,11 +230,24 @@ export default {
       },
       loading: false,
       perminlocal: localStorage.getItem("permissions"),
+      // Define fields to watch for auto error clearing
+      watchedFields: [
+        "formData.title.ar",
+        "formData.title.en",
+        "formData.body.ar",
+        "formData.body.en",
+      ],
     };
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   methods: {
     onFileSelected(event) {
       this.formData.image = event.target.files[0];
+      this.clearFieldError("image"); // Clear error when file is selected
+
       const reader = new FileReader();
       reader.onload = () => {
         this.imgurl = reader.result;
@@ -190,48 +256,118 @@ export default {
     },
 
     async notification() {
-      this.loading = true; // Start loading
+      this.loading = true;
       try {
         let res = await crudDataService.getAll("special-offer");
         this.myList = res.data.data.data;
         this.last = res.data.data.last_page;
       } catch (error) {
         console.error("Failed to fetch data:", error);
-        // Handle error
+        this.toast.error("فشل في تحميل البيانات");
       } finally {
-        this.loading = false; // End loading regardless of success or failure
+        this.loading = false;
       }
     },
+
     async paginag(p) {
       console.log(p);
-      let res = await crudDataService.getAll(`special-offer?page=${this.page}`);
-      this.myList = res.data.data.data;
+      try {
+        let res = await crudDataService.getAll(
+          `special-offer?page=${this.page}`
+        );
+        this.myList = res.data.data.data;
+      } catch (error) {
+        console.error("Pagination error:", error);
+        this.toast.error("فشل في تحميل الصفحة");
+      }
     },
+
+    validateFormData() {
+      const rules = {
+        "title.ar": {
+          required: true,
+          label: "العنوان بالعربية",
+          minLength: 3,
+        },
+        "title.en": {
+          required: true,
+          label: "العنوان بالإنجليزية",
+          minLength: 3,
+        },
+        "body.ar": {
+          required: true,
+          label: "التفاصيل بالعربية",
+          minLength: 10,
+        },
+        "body.en": {
+          required: true,
+          label: "التفاصيل بالإنجليزية",
+          minLength: 10,
+        },
+        image: {
+          required: true,
+          label: "الصورة",
+          maxSize: 2048, // 2MB
+        },
+      };
+
+      return this.validateForm(rules);
+    },
+
+    resetForm() {
+      this.formData = {
+        title: { ar: "", en: "" },
+        body: { ar: "", en: "" },
+        image: "",
+      };
+      this.imgurl = "";
+      this.clearAllErrors();
+    },
+
     async add() {
-      let res = await crudDataService
-        .create(`special-offer`, this.formData, {
+      // Clear previous errors
+      this.clearAllErrors();
+
+      // Client-side validation
+      if (!this.validateFormData()) {
+        return;
+      }
+
+      this.submitting = true;
+
+      try {
+        await crudDataService.create(`special-offer`, this.formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        })
-        .then((response) => {
-          this.notification();
-          this.ShowModel = false;
-          console.log(this.formData.image);
-          (this.formData.title.ar = ""),
-            (this.formData.title.en = ""),
-            (this.formData.body.ar = ""),
-            (this.formData.body.en = ""),
-            (this.imgurl = ""),
-            (this.formData.image = "");
-        })
-        .catch((error) => {
-          // this.ShowModel = false;
-
-          console.error(error);
         });
+
+        // Success
+        this.toast.success("تم إضافة الإشعار بنجاح");
+        this.notification(); // Refresh the list
+        this.ShowModel = false;
+        this.resetForm();
+      } catch (error) {
+        console.error("Add notification error:", error);
+        this.handleApiErrors(error, this.toast);
+      } finally {
+        this.submitting = false;
+      }
     },
   },
+
+  watch: {
+    ShowModel(newVal) {
+      if (newVal) {
+        // Clear errors when modal opens
+        this.clearAllErrors();
+      } else {
+        // Reset form when modal closes
+        this.resetForm();
+      }
+    },
+  },
+
   mounted() {
     this.notification();
   },
@@ -247,5 +383,11 @@ export default {
 }
 .table-responsive .table > :not(caption) > * > * {
   border-bottom: 0px solid #e8e8f7 !important;
+}
+
+// Loading button styling
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
 }
 </style>
