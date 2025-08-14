@@ -2,7 +2,7 @@
   <section class="mt-5">
     <button
       class="fs-15 btn-add mb-4"
-      @click="ShowModel = true"
+      @click="openAddModal"
       v-if="perminlocal.includes('pages-store')"
     >
       <i class="fe fe-plus"></i>
@@ -21,7 +21,7 @@
         <div class="card-body p-0">
           <ul class="list-unstyled mb-0">
             <li
-              class="w-100 p-3 border-bottom justify-content-between align-items-center"
+              class="w-100 p-3 border-bottom justify-content-between align-items-center d-flex"
               v-for="(page, i) in pages"
               :key="i"
             >
@@ -32,7 +32,7 @@
               >
                 {{ page.title }}
               </p>
-              <div class="d-flex align-center">
+              <div class="d-flex align-items-center">
                 <label
                   class="custom-switch justify-content-center"
                   v-if="perminlocal.includes('pages-toggle')"
@@ -44,7 +44,6 @@
                     v-model="page.is_published"
                     @change="publish(page.id)"
                   />
-
                   <span class="custom-switch-indicator ms-auto"></span>
                 </label>
                 <button
@@ -92,84 +91,157 @@
         >
           <form @submit.prevent="add">
             <div class="row">
+              <!-- عنوان الصفحة عربي -->
               <div class="col-12 mb-3">
-                <label> عنوان الصفحة عربي</label>
+                <label>عنوان الصفحة عربي</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
                   class="form-control"
+                  :class="{ 'is-invalid': hasFieldError('title.ar') }"
                   v-model="formData.title.ar"
+                  @input="clearFieldError('title.ar')"
+                  @focus="clearFieldError('title.ar')"
+                  placeholder="أدخل عنوان الصفحة باللغة العربية"
                 />
+                <div v-if="hasFieldError('title.ar')" class="invalid-feedback">
+                  {{ getFieldError("title.ar") }}
+                </div>
               </div>
+
+              <!-- عنوان الصفحة انجليزي -->
               <div class="col-12 mb-3">
-                <label> عنوان الصفحة انجليزي</label>
+                <label>عنوان الصفحة انجليزي</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
                   class="form-control"
+                  :class="{ 'is-invalid': hasFieldError('title.en') }"
                   v-model="formData.title.en"
+                  @input="clearFieldError('title.en')"
+                  @focus="clearFieldError('title.en')"
+                  placeholder="Enter page title in English"
                 />
-              </div>
-              <div class="col-12 mb-3">
-                <label> محتوي الصفحة عربي</label>
-
-                <ckeditor
-                  :editor="editor"
-                  v-model="formData.content.ar"
-                  :editorConfigs="editorConfigs"
-                ></ckeditor>
-              </div>
-              <div class="col-12 mb-3">
-                <label> محتوي الصفحة انجليزي</label>
-
-                <ckeditor
-                  :editor="editor"
-                  v-model="formData.content.en"
-                  :editorConfigs="editorConfigs"
-                ></ckeditor>
+                <div v-if="hasFieldError('title.en')" class="invalid-feedback">
+                  {{ getFieldError("title.en") }}
+                </div>
               </div>
 
+              <!-- محتوي الصفحة عربي -->
+              <div
+                class="col-12 mb-3"
+                :class="{
+                  'ckeditor-error': hasFieldError('content.ar'),
+                }"
+              >
+                <label>محتوي الصفحة عربي</label>
+                <div :class="{ 'is-invalid': hasFieldError('content.ar') }">
+                  <ckeditor
+                    :editor="editor"
+                    v-model="formData.content.ar"
+                    :editorConfigs="editorConfigs"
+                    @input="clearFieldError('content.ar')"
+                    @focus="clearFieldError('content.ar')"
+                  ></ckeditor>
+                </div>
+                <div
+                  v-if="hasFieldError('content.ar')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("content.ar") }}
+                </div>
+              </div>
+
+              <!-- محتوي الصفحة انجليزي -->
+              <div
+                class="col-12 mb-3"
+                :class="{
+                  'ckeditor-error': hasFieldError('content.en'),
+                }"
+              >
+                <label>محتوي الصفحة انجليزي</label>
+                <div :class="{ 'is-invalid': hasFieldError('content.en') }">
+                  <ckeditor
+                    :editor="editor"
+                    v-model="formData.content.en"
+                    :editorConfigs="editorConfigs"
+                    @input="clearFieldError('content.en')"
+                    @focus="clearFieldError('content.en')"
+                  ></ckeditor>
+                </div>
+                <div
+                  v-if="hasFieldError('content.en')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("content.en") }}
+                </div>
+              </div>
+
+              <!-- تحسينات SEO -->
               <div class="col-12 mb-3">
-                <label class="fs-6">تحسينات seo</label>
+                <label class="fs-6">عنوان تحسينات SEO</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
-                  placeholder="عنوان صفحة تعريفية "
                   class="form-control"
+                  :class="{ 'is-invalid': hasFieldError('seo_title') }"
                   v-model="formData.seo_title"
+                  @input="clearFieldError('seo_title')"
+                  @focus="clearFieldError('seo_title')"
+                  placeholder="عنوان صفحة تعريفية"
                 />
+                <div v-if="hasFieldError('seo_title')" class="invalid-feedback">
+                  {{ getFieldError("seo_title") }}
+                </div>
               </div>
 
               <div class="col-12 mb-3">
+                <label class="fs-6">وصف تحسينات SEO</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
-                  placeholder="وصف صفحة تعريفية "
                   class="form-control"
+                  :class="{ 'is-invalid': hasFieldError('seo_description') }"
                   v-model="formData.seo_description"
+                  @input="clearFieldError('seo_description')"
+                  @focus="clearFieldError('seo_description')"
+                  placeholder="وصف صفحة تعريفية"
                 />
+                <div
+                  v-if="hasFieldError('seo_description')"
+                  class="invalid-feedback"
+                >
+                  {{ getFieldError("seo_description") }}
+                </div>
               </div>
+
               <div class="col-12 mb-3">
+                <label class="fs-6">رابط تحسينات SEO</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
-                  placeholder="رابط صفحة تعريفية "
                   class="form-control"
+                  :class="{ 'is-invalid': hasFieldError('seo_url') }"
                   v-model="formData.seo_url"
+                  @input="clearFieldError('seo_url')"
+                  @focus="clearFieldError('seo_url')"
+                  placeholder="رابط صفحة تعريفية"
                 />
+                <div v-if="hasFieldError('seo_url')" class="invalid-feedback">
+                  {{ getFieldError("seo_url") }}
+                </div>
               </div>
             </div>
+
             <div class="text-center">
-              <button class="fs-15 btn-save mx-1" type="submit">حفظ</button>
+              <button
+                class="fs-15 btn-save mx-1"
+                type="submit"
+                :disabled="isSubmitting"
+              >
+                <span v-if="isSubmitting">جاري الحفظ...</span>
+                <span v-else>حفظ</span>
+              </button>
               <button
                 class="fs-15 btn-cancel mx-1"
-                @click="() => (ShowModel = false)"
+                @click="closeModal"
                 type="button"
+                :disabled="isSubmitting"
               >
                 الغاء
               </button>
@@ -187,17 +259,22 @@ import crudDataService from "../../Services/crudDataService.js";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { reactive } from "vue";
 import { useToast } from "vue-toastification";
+import { FormErrorMixin } from "../../mixins/FormErrorMixin.js"; // تأكد من المسار الصحيح
 
 export default {
+  mixins: [FormErrorMixin],
+
   components: {
     Multiselect,
   },
+
   data() {
     return {
       isDropdownOpen: false,
       ShowModel: false,
       isDropdown: false,
       loading: false,
+      isSubmitting: false,
       pages: [],
       formData: {
         title: {
@@ -213,26 +290,101 @@ export default {
         seo_url: "",
       },
       perminlocal: localStorage.getItem("permissions"),
+      // تحديد الحقول المراد مراقبتها
+      watchedFields: [
+        "formData.title.ar",
+        "formData.title.en",
+        "formData.content.ar",
+        "formData.content.en",
+        "formData.seo_title",
+        "formData.seo_description",
+        "formData.seo_url",
+      ],
     };
   },
+
   setup() {
     const editorConfigs = reactive({});
     return { editor: ClassicEditor, editorConfigs };
   },
+
   methods: {
+    // فتح نافذة الإضافة مع مسح الأخطاء
+    openAddModal() {
+      this.ShowModel = true;
+      this.clearAllErrors();
+      this.resetForm();
+    },
+
+    // إغلاق النافذة مع مسح الأخطاء
+    closeModal() {
+      this.ShowModel = false;
+      this.clearAllErrors();
+      this.resetForm();
+    },
+
+    // إعادة تعيين النموذج
+    resetForm() {
+      this.formData = {
+        title: { ar: "", en: "" },
+        content: { ar: "", en: "" },
+        seo_title: "",
+        seo_description: "",
+        seo_url: "",
+      };
+    },
+
+    // التحقق من صحة البيانات محلياً
+    validateFormData() {
+      const rules = {
+        "title.ar": {
+          label: "عنوان الصفحة عربي",
+          required: true,
+          minLength: 3,
+        },
+        "title.en": {
+          label: "عنوان الصفحة انجليزي",
+          required: true,
+          minLength: 3,
+        },
+        "content.ar": {
+          label: "محتوي الصفحة عربي",
+          required: true,
+          minLength: 10,
+        },
+        "content.en": {
+          label: "محتوي الصفحة انجليزي",
+          required: true,
+          minLength: 10,
+        },
+        seo_url: {
+          label: "رابط SEO",
+          minLength: 3,
+        },
+      };
+
+      return this.validateForm(rules);
+    },
+
     async publish(id) {
-      let res = await crudDataService.create(`pages/${id}/toggle`, "");
       const toast = useToast();
-      if (res.data.success) {
-        toast.success(res.data.message, {
-          position: "top-center",
-          timeout: 5000,
-        });
+      try {
+        let res = await crudDataService.create(`pages/${id}/toggle`, "");
+        if (res.status == 200) {
+          toast.success(res.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      } catch (error) {
+        this.handleApiErrors(error, toast);
       }
     },
+
     toggled() {
       this.isDropdown = !this.isDropdown;
     },
+
     singlepage(id) {
       if (this.perminlocal.includes("pages-show")) {
         this.$router.push({ name: "Singlepage", params: { id } });
@@ -240,56 +392,95 @@ export default {
     },
 
     async getallpages() {
-      this.loading = true; // Start loading
+      this.loading = true;
+      const toast = useToast();
 
       try {
         let res = await crudDataService.getAll("pages");
         this.pages = res.data.data.data;
       } catch (error) {
         console.error("Failed to fetch data:", error);
-        // Handle error
+        toast.error("فشل في تحميل الصفحات", {
+          position: "top-center",
+          timeout: 5000,
+        });
       } finally {
-        this.loading = false; // End loading regardless of success or failure
+        this.loading = false;
       }
     },
+
     async add() {
-      let res = await crudDataService
-        .create("pages", this.formData)
-        .then((response) => {
-          this.getallpages();
-          this.ShowModel = false;
-          (this.formData.title.ar = ""),
-            (this.formData.title.en = ""),
-            (this.formData.content.ar = ""),
-            (this.formData.content.en = ""),
-            (this.formData.seo_title = ""),
-            (this.formData.seo_description = ""),
-            (this.formData.seo_url = "");
+      const toast = useToast();
+
+      // مسح الأخطاء السابقة
+      this.clearAllErrors();
+
+      // التحقق من صحة البيانات محلياً
+      if (!this.validateFormData()) {
+        return;
+      }
+
+      this.isSubmitting = true;
+
+      try {
+        const response = await crudDataService.create("pages", this.formData);
+
+        // تحديث قائمة الصفحات
+        await this.getallpages();
+
+        // إغلاق النافذة وإعادة تعيين النموذج
+        this.closeModal();
+
+        // عرض رسالة نجاح
+        toast.success(response.data.message || "تم إنشاء الصفحة بنجاح", {
+          position: "top-center",
+          timeout: 5000,
         });
+      } catch (error) {
+        // معالجة الأخطاء باستخدام الـ mixin
+        this.handleApiErrors(error, toast);
+      } finally {
+        this.isSubmitting = false;
+      }
     },
+
     del(data, index, name) {
       this.$swal
         .fire({
-          title: ` ؟"${name}" هل تريد حذف صفحة`,
+          title: `هل تريد حذف صفحة "${name}" ؟`,
           showCancelButton: true,
           cancelButtonText: "إلغاء",
           confirmButtonText: "نعم",
         })
         .then((result) => {
-          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.$swal.fire({
-              title: "تم الحذف بنجاح!",
-              icon: "success",
-              confirmButtonText: "تم", // ✅ Custom OK button text
-            });
-            crudDataService.delete("pages", `${data}`).then(() => {
-              this.pages.splice(index, 1);
-            });
+            this.deletePageConfirmed(data, index);
           }
         });
     },
+
+    async deletePageConfirmed(data, index) {
+      const toast = useToast();
+      try {
+        await crudDataService.delete("pages", `${data}`);
+
+        this.pages.splice(index, 1);
+
+        this.$swal.fire({
+          title: "تم الحذف بنجاح!",
+          icon: "success",
+          confirmButtonText: "تم",
+        });
+      } catch (error) {
+        console.error("Error deleting page:", error);
+        toast.error("فشل في حذف الصفحة", {
+          position: "top-center",
+          timeout: 5000,
+        });
+      }
+    },
   },
+
   mounted() {
     this.getallpages();
   },
@@ -301,6 +492,7 @@ export default {
   box-shadow: 0 0 9px 2px #e6edf0bf;
 }
 </style>
+
 <style lang="scss">
 .form-check-input:checked {
   background-color: #fe7eae;
@@ -308,24 +500,27 @@ export default {
   width: 16px;
   height: 16px;
 }
+
 .multiselect-caret {
   margin: 0 var(--ms-px, 0.875rem) 0 var(--ms-px, 0.875rem);
 }
+
 .multiselect-multiple-label,
 .multiselect-placeholder,
 .multiselect-single-label {
   left: auto;
-
   padding-right: 9px;
-
   right: 0;
 }
+
 .definition-isolated-modal {
   .modal-content {
     overflow: unset;
   }
+
   .definition-isolated-body {
     overflow-y: unset;
+
     &--content {
       height: 82vh;
       overflow-y: auto;
@@ -336,10 +531,12 @@ export default {
   &.fade .modal-dialog {
     transform: translate(0, -7%);
   }
+
   .modal-header {
     display: none;
   }
 }
+
 .imgtoadd {
   background: #fff;
   width: 100px;
@@ -350,18 +547,27 @@ export default {
   top: -32px;
   text-align: center;
   z-index: 10000;
+
   img {
     width: 90%;
     height: 90%;
     object-fit: cover;
   }
 }
+
 @media (min-width: 576px) {
   .definition-isolated-modal .modal-dialog {
     margin: 5.75rem auto;
   }
 }
+
 #add-page {
   overflow-y: auto;
+}
+
+// حالة التحميل للأزرار
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>

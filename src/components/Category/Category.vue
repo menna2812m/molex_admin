@@ -221,6 +221,7 @@
                   alt="صورة"
                   style="width: 180px; height: 180px; object-fit: fill"
                   class="m-1"
+                  v-if="imageUrl"
                 />
               </div>
 
