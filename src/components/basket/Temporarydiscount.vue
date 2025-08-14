@@ -559,6 +559,10 @@ export default {
   .modal-body {
     overflow-y: unset;
   }
+  &.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+    transform: translate(0, -15%);
+  }
 
   & .multiselect-placeholder,
   & ::placeholder {

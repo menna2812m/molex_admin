@@ -128,7 +128,13 @@
     </section>
 
     <teleport to="body">
-      <b-modal id="add-page" v-model="ShowModel" hide-footer title="اضافة متجر">
+      <b-modal
+        id="add-page"
+        v-model="ShowModel"
+        hide-footer
+        title="اضافة متجر"
+        modal-class="store-model"
+      >
         <div class="p-0">
           <form @submit.prevent="add" autocomplete="off">
             <div class="row">
@@ -469,6 +475,7 @@
         v-model="ShowModeledit"
         hide-footer
         title="تعديل المتجر"
+        modal-class="store-model"
       >
         <div class="p-0">
           <form @submit.prevent="update">
@@ -1195,6 +1202,10 @@ export default {
   & ::placeholder {
     font-size: 12px;
   }
+}
+.store-model.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translate(0, -15%);
 }
 
 .imgtoadd {
