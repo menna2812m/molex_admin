@@ -134,7 +134,11 @@
           <p v-if="err" class="text-danger">{{ err }}</p>
           <div class="text-center">
             <button class="fs-15 btn-save mx-1">حفظ</button>
-            <button class="fs-15 btn-cancel mx-1" @click="showmodal = false">
+            <button
+              class="fs-15 btn-cancel mx-1"
+              @click="showmodal = false"
+              type="button"
+            >
               الغاء
             </button>
           </div>
@@ -162,7 +166,11 @@
           </div>
           <div class="text-center">
             <button class="fs-15 btn-save mx-1">حفظ</button>
-            <button class="fs-15 btn-cancel mx-1" @click="showmodal = false">
+            <button
+              type="button"
+              class="fs-15 btn-cancel mx-1"
+              @click="showdeliveries = false"
+            >
               الغاء
             </button>
           </div>

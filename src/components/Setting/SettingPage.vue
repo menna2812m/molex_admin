@@ -447,7 +447,6 @@ export default {
 
         // Store original data for cancellation
         this.originalFormData = JSON.parse(JSON.stringify(this.formData));
-        console.log(this.originalFormData);
 
         this.setupWatchers();
       } catch (error) {
