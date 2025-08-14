@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-5 pt-5" v-if="items.length>0">
+  <section class="mt-5 pt-5" v-if="items.length > 0">
     <div
       class="border p-3 mb-3 d-flex justify-content-between align-items-center"
       style="border-radius: 8px"
@@ -8,13 +8,11 @@
     </div>
     <div class="card custom-card border-0 mg-b-20">
       <div class="card-body p-0">
-        <div
-          class="table-responsive border-item rounded border-bottom-0 mb-0"
-        >
-          <table class="table  table-bordered text-nowrap text-md-nowrap mg-b-0">
+        <div class="table-responsive border-item rounded border-bottom-0 mb-0">
+          <table class="table table-bordered text-nowrap text-md-nowrap mg-b-0">
             <tr>
-              <td class="text-muted">الطريقة </td>
-              <td class="text-muted text-center">الحالة </td>
+              <td class="text-muted">الطريقة</td>
+              <td class="text-muted text-center">الحالة</td>
             </tr>
             <tr
               v-for="(item, index) in items"
@@ -25,8 +23,9 @@
                 {{ item.name }}
               </td>
               <td>
-                <label class="custom-switch justify-content-center w-100"
-                v-if="perminlocal.includes('payment_methods-toggle')"
+                <label
+                  class="custom-switch justify-content-center w-100"
+                  v-if="perminlocal.includes('payment_methods-toggle')"
                 >
                   <input
                     type="checkbox"
@@ -45,16 +44,14 @@
       </div>
     </div>
   </section>
-  <section class="position-relative" style="height: 100vh;display: grid;
-    place-items: center;"
+  <section
+    class="position-relative"
+    style="height: 100vh; display: grid; place-items: center"
     v-else
-   >
-
-<section class="cate">
-</section>
- <progress class="pure-material-progress-circular"/> 
-
-   </section>  
+  >
+    <section class="cate"></section>
+    <progress class="pure-material-progress-circular" />
+  </section>
 </template>
 
 <script>
@@ -64,8 +61,7 @@ export default {
   data() {
     return {
       items: [],
-    perminlocal : localStorage.getItem('permissions')
-
+      perminlocal: localStorage.getItem("permissions"),
     };
   },
   methods: {
@@ -79,7 +75,7 @@ export default {
         ""
       );
       const toast = useToast();
-      if (res.data.success) {
+      if (res.status == 200) {
         toast.success(res.data.message, {
           position: "top-center",
           timeout: 5000,
