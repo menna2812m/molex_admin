@@ -79,7 +79,42 @@
                   {{ getFieldError("description.en") }}
                 </div>
               </div>
-
+              <div class="mt-1">
+                <label for=""> اختر القسم الرئيسي </label>
+                <Multiselect
+                  label="name"
+                  :searchable="true"
+                  :options="categoriesOptions"
+                  placeholder="اختر القسم الرئيسي"
+                  v-model="formData.parent_id"
+                  :close-on-select="false"
+                  :disabled="categoriesOptions.length === 0"
+                  class="itteemm"
+                  :class="{
+                    'is-invalid': hasFieldError('parent_id'),
+                  }"
+                  @select="clearFieldError('parent_id')"
+                >
+                  <template v-slot:option="{ option }">
+                    <div
+                      style="
+                        padding: 10px;
+                        width: 100%;
+                        text-align: right;
+                        margin-bottom: 2px;
+                      "
+                    >
+                      {{ option.name }}
+                    </div>
+                  </template>
+                </Multiselect>
+                <div
+                  v-if="hasFieldError('parent_id')"
+                  class="text-danger small mt-1"
+                >
+                  {{ getFieldError("parent_id") }}
+                </div>
+              </div>
               <div class="mt-3">
                 <label>الصوره</label>
                 <div class="form-group">
@@ -149,7 +184,7 @@ export default {
       },
       imageUrl: null,
       isLoading: false,
-
+      categoriesOptions: [],
       // ✅ قائمة الحقول المراقبة للمسح التلقائي للأخطاء
       watchedFields: [
         "formData.name.ar",
@@ -178,6 +213,20 @@ export default {
         this.Selectcategory = res.data.data.data.map((cat) => ({
           value: cat.id,
           name: cat.name.ar,
+        }));
+      } catch (error) {
+        console.error("فشل في جلب قائمة الخيارات:", error);
+      }
+    },
+    async getCategoriesSelectOption() {
+      try {
+        let res = await crudDataService.getAll("categories/dropdown");
+        console.log(res);
+
+        this.categoriesOptions = res.data.data.map((cat) => ({
+          value: cat.id,
+          name: cat.name,
+          parent_id: cat.parent_id,
         }));
       } catch (error) {
         console.error("فشل في جلب قائمة الخيارات:", error);
@@ -254,7 +303,8 @@ export default {
   // watch: { ... } - تم حذفها
 
   mounted() {
-    this.getselectoption();
+    // this.getselectoption();
+    this.getCategoriesSelectOption();
   },
 };
 </script>

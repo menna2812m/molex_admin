@@ -11061,10 +11061,10 @@ body.dark-theme {
   color: var(--dark-color) !important;
 }
 
-.dark-theme .text-muted {
+/* .dark-theme .text-muted {
   color: var(--dark-color) !important;
   opacity: 0.7;
-}
+} */
 
 .dark-theme .landing-top-header .top .nav li a {
   color: var(--dark-color);

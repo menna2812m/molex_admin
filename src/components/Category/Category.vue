@@ -4,6 +4,39 @@
       @customEvent="handleCustomEvent"
       v-if="perminlocal.includes('categories-store')"
     />
+
+    <!-- Toggle Switch for Tree/Flat View -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="d-flex align-items-center">
+        <label class="me-3">عرض الأقسام:</label>
+        <div class="btn-group" role="group">
+          <input
+            type="radio"
+            class="btn-check"
+            name="viewMode"
+            id="flatView"
+            :checked="!isTreeView"
+            @change="toggleView(false)"
+          />
+          <label class="btn btn-outline-primary" for="flatView">
+            <i class="fe fe-list"></i> عرض مسطح
+          </label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="viewMode"
+            id="treeView"
+            :checked="isTreeView"
+            @change="toggleView(true)"
+          />
+          <label class="btn btn-outline-primary" for="treeView">
+            <i class="fe fe-git-branch"></i> عرض شجري
+          </label>
+        </div>
+      </div>
+    </div>
+
     <section
       class="position-relative"
       style="height: 100vh; display: grid; place-items: center"
@@ -12,18 +45,37 @@
       <section class="cate"></section>
       <progress class="pure-material-progress-circular" />
     </section>
+
     <section v-else>
+      <!-- Tree View -->
+      <div
+        v-if="isTreeView && treeData && treeData.length > 0"
+        class="tree-view"
+      >
+        <div class="tree-container">
+          <TreeNode
+            v-for="category in treeData"
+            :key="category.id"
+            :category="category"
+            :perminlocal="perminlocal"
+            @edit="edit"
+            @delete="del"
+            @view="view"
+            @toggle="toggleactive"
+          />
+        </div>
+      </div>
+
+      <!-- Flat Table View -->
       <vue-good-table
-        v-if="rows && rows.length > 0"
+        v-else-if="!isTreeView && rows && rows.length > 0"
         :columns="filteredColumns"
         :rows="rows"
         :search-options="{ enabled: true }"
         :group-options="{ enabled: false }"
         :pagination-options="{
           enabled: true,
-          mode: 'fixed',
-          rowsPerPage: 10,
-          rowsPerPageLabel: 'عدد الصفوف',
+          perPageDropdownEnabled: false,
         }"
         :compactMode="true"
         :rtl="true"
@@ -91,8 +143,18 @@
           لا يوجد اقسام حتي الان
         </div>
       </section>
+
+      <b-pagination
+        v-if="!isTreeView"
+        v-model="page"
+        :total-rows="last"
+        :per-page="1"
+        @click="paginag(page)"
+        class="justify-content-end mt-4"
+      ></b-pagination>
     </section>
 
+    <!-- Modal for editing -->
     <teleport to="body">
       <b-modal
         id="add-page"
@@ -230,7 +292,6 @@
                 :disabled="isLoading"
               >
                 <span v-if="isLoading">جاري الحفظ...</span>
-
                 <span v-if="!isLoading"> تعديل </span>
               </button>
             </form>
@@ -244,24 +305,26 @@
 <script>
 import crudDataService from "../../Services/crudDataService.js";
 import AddCategory from "../Category/AddCategory.vue";
-import { FormErrorMixin } from "../../mixins/FormErrorMixin.js"; // ✅ استيراد المixin
+import { FormErrorMixin } from "../../mixins/FormErrorMixin.js";
 import { useToast } from "vue-toastification";
+import TreeNode from "./TreeNode.vue";
 
 export default {
   components: {
     AddCategory,
+    TreeNode,
   },
-
-  // ✅ استخدام المixin
   mixins: [FormErrorMixin],
-
   data() {
     return {
       textimage: "",
       changeedit: true,
       ShowModelEdit: false,
       imageUrl: null,
-      // ✅ تم حذف fieldErrors من هنا لأنه موجود في المixin
+      page: 1,
+      last: 2,
+      isTreeView: false,
+      treeData: [],
       columns: [
         {
           label: "الإسم",
@@ -296,8 +359,6 @@ export default {
       loading: false,
       perminlocal: localStorage.getItem("permissions"),
       isLoading: false,
-
-      // ✅ تحديد الحقول التي نريد مراقبتها (اختياري)
       watchedFields: [
         "formData.name.ar",
         "formData.name.en",
@@ -306,17 +367,30 @@ export default {
       ],
     };
   },
-
   methods: {
+    toggleView(isTree) {
+      this.isTreeView = isTree;
+      if (isTree && this.treeData.length === 0) {
+        this.getCategoriesTree();
+      } else if (!isTree && this.rows.length === 0) {
+        this.getcategories();
+      }
+    },
+
     async toggleactive(id) {
       let res = await crudDataService.create(`categories/${id}/toggle`, "");
-
       const toast = useToast();
       if (res.data.status) {
         toast.success(res.data.message, {
           position: "top-center",
           timeout: 5000,
         });
+        // Refresh current view
+        if (this.isTreeView) {
+          this.getCategoriesTree();
+        } else {
+          this.getcategories();
+        }
       }
     },
 
@@ -332,6 +406,8 @@ export default {
       this.loading = true;
       try {
         let res = await crudDataService.getAll("categories");
+        this.last = res.data.data.last_page;
+
         if (res.data && res.data.data && res.data.data.data) {
           this.rows = res.data.data.data.map((category) => {
             return { ...category };
@@ -346,10 +422,31 @@ export default {
       }
     },
 
-    onFileSelected(event) {
-      // ✅ استخدام دالة المixin لمسح خطأ الصورة
-      this.clearFieldError("image");
+    async getCategoriesTree() {
+      this.loading = true;
+      try {
+        let res = await crudDataService.getAll("categories/tree");
+        console.log("Tree response:", res);
 
+        if (res.data && res.data.data) {
+          this.treeData = res.data.data;
+        } else {
+          console.error("Invalid tree response structure", res);
+        }
+      } catch (error) {
+        console.error("Failed to fetch tree data:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async paginag(p) {
+      let res = await crudDataService.getAll(`categories?page=${this.page}`);
+      this.rows = res.data.data.data;
+    },
+
+    onFileSelected(event) {
+      this.clearFieldError("image");
       if (event.target) {
         this.changeedit = false;
         this.formData.image = event.target.files[0];
@@ -367,8 +464,6 @@ export default {
     async edit(data) {
       this.id = data.id;
       this.ShowModelEdit = true;
-
-      // ✅ استخدام دالة المixin لمسح جميع الأخطاء
       this.clearAllErrors();
 
       this.formData.name.ar = data.name.ar;
@@ -384,17 +479,14 @@ export default {
     async update() {
       this.isLoading = true;
       const toast = useToast();
-
-      // ✅ استخدام دالة المixin لمسح الأخطاء السابقة
       this.clearAllErrors();
 
-      // ✅ التحقق من صحة النموذج محلياً (اختياري)
       const validationRules = {
         "name.ar": { required: true, label: "الاسم بالعربية" },
         "name.en": { required: true, label: "الاسم بالإنجليزية" },
         "description.ar": { required: true, label: "الوصف بالعربية" },
         "description.en": { required: true, label: "الوصف بالإنجليزية" },
-        image: { maxSize: 2048, label: "الصورة" }, // 2MB
+        image: { maxSize: 2048, label: "الصورة" },
       };
 
       if (!this.validateForm(validationRules)) {
@@ -415,7 +507,13 @@ export default {
 
         this.isLoading = false;
         this.ShowModelEdit = false;
-        this.getcategories();
+
+        // Refresh current view
+        if (this.isTreeView) {
+          this.getCategoriesTree();
+        } else {
+          this.getcategories();
+        }
 
         toast.success(res.data.message, {
           position: "top-center",
@@ -423,16 +521,15 @@ export default {
         });
       } catch (error) {
         this.isLoading = false;
-
-        // ✅ استخدام دالة المixin للتعامل مع أخطاء API
         this.handleApiErrors(error, toast);
       }
     },
 
-    del(data, index, name) {
+    del(data, index, category) {
+      const name = category.name || category.name?.ar || "هذا القسم";
       this.$swal
         .fire({
-          title: ` ؟"${name.ar}" هل تريد حذف قسم`,
+          title: ` ؟"${name}" هل تريد حذف قسم`,
           showCancelButton: true,
           confirmButtonText: "نعم",
           cancelButtonText: "إلغاء",
@@ -447,7 +544,13 @@ export default {
                   icon: "success",
                   confirmButtonText: "تم",
                 });
-                this.myList.splice(index, 1);
+
+                // Refresh current view
+                if (this.isTreeView) {
+                  this.getCategoriesTree();
+                } else {
+                  this.getcategories();
+                }
               })
               .catch((error) => {
                 this.$swal.fire({
@@ -461,8 +564,6 @@ export default {
         });
     },
   },
-
-  // ✅ تم حذف watchers لأنها موجودة في المixin وتعمل تلقائياً
 
   computed: {
     filteredColumns() {
@@ -542,5 +643,11 @@ table.vgt-table td {
 
 .custom-switch-input:checked ~ .custom-switch-indicator {
   background: #fb99bf !important;
+}
+
+.btn-check:checked + .btn {
+  background-color: #fd601f;
+  border-color: #fd601f;
+  color: white !important;
 }
 </style>
