@@ -25,7 +25,7 @@
         class="w-25 ms-auto"
       />
     </div>
-    <section class="" v-if="iscomplete">
+    <section class="" v-if="iscomplete && myList.length > 0">
       <div class="card border-0 mg-b-20 rounded-4 mt-4">
         <div class="card-body p-0 rounded-4">
           <div class="table table-bordered table-responsive rounded-4 mb-0">
@@ -108,7 +108,7 @@
     <section
       class="position-relative"
       style="height: 100vh; display: grid; place-items: center"
-      v-else
+      v-if="iscomplete && myList.length <= 0"
     >
       <div
         style="background: #fd601f; padding: 30px; font-size: 20px"

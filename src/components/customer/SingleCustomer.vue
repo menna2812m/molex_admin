@@ -11,7 +11,6 @@
               <button
                 @click="toggleDropdown"
                 class="twobtn bg-white border"
-                style="border-color: #fd601f !important; color: #fd601f"
                 v-if="perminlocal.includes('users-update')"
               >
                 خيارات العميل <i class="fas fa-caret-down ms-1"></i>
@@ -382,15 +381,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.dropend {
-  background: #fff;
-  position: absolute;
-  width: 150px;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
-  border-radius: 3px;
-  a {
-    cursor: pointer;
-  }
+.twobtn {
+  border-color: rgb(253, 96, 31) !important;
+  color: rgb(253, 96, 31);
+  display: flex;
+  align-items: center;
+  width: 111px;
+  padding: 6px;
 }
 </style>
 <style lang="scss">

@@ -28,11 +28,12 @@
             <table class="table text-nowrap text-md-nowrap mg-b-0">
               <tr class="">
                 <th>
-                  <div class="d-flex">
+                  <div class="d-flex align-items-center gap-2">
                     <input
                       type="checkbox"
                       v-model="selectAll"
                       @change="toggleSelectAll"
+                      class="custom-checkbox"
                     />
                     <h4 class="mb-0 fw-semibold">
                       العملاء
@@ -88,7 +89,32 @@
                 class="list_item py-3 w-100 align-items-center justify-content-between"
               >
                 <td>
-                  <div class="d-flex">
+                  <div class="checkbox-container">
+                    <label>
+                      <input
+                        type="checkbox"
+                        v-model="item.selected"
+                        @change="selectuser(item.id)"
+                        class="custom-checkbox"
+                      />
+                    </label>
+                    <div class="customer-info">
+                      <img
+                        src="../../assets/img/avatar_male.jpg"
+                        :alt="item.name"
+                        class="customer-avatar"
+                      />
+                      <div class="customer-details">
+                        <h5
+                          @click="SingleCustomer(item.id)"
+                          style="cursor: pointer"
+                        >
+                          {{ item.name }}
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="d-flex">
                     <input
                       type="checkbox"
                       v-model="item.selected"
@@ -112,38 +138,50 @@
                         </h5>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </td>
 
                 <td class="text-secondary">
-                  <span class="text-secondary">
-                    <i class="typcn typcn-phone text-black"></i>
+                  <span class="text-secondary contact-info">
+                    <div class="contact-icon">
+                      <i class="fas fa-phone"></i>
+                    </div>
                     <a :href="'tel:' + `${item.phone}`"> {{ item.phone }}</a>
                   </span>
                 </td>
-                <td class="text-secondary">
-                  <span class="text-secondary">
-                    <i class="typcn typcn-location text-black"></i>
-                    {{
-                      item?.city?.name ? item?.city?.name : item?.country?.name
-                    }}
+                <td class="">
+                  <span
+                    v-if="item?.city?.name || item?.country?.name"
+                    class="text-secondary location-tag"
+                  >
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>
+                      {{
+                        item?.city?.name
+                          ? item?.city?.name
+                          : item?.country?.name
+                      }}
+                    </span>
                   </span>
+                  <span v-else> {{ "-" }} </span>
                 </td>
                 <td>
-                  <button
-                    class="btn bg-info me-2"
-                    @click="SingleCustomer(item.id)"
-                    v-if="perminlocal.includes('users-show')"
-                  >
-                    <i class="si si-eye"></i>
-                  </button>
-                  <button
-                    class="btn me-2"
-                    @click="del(item.id, index, item.name)"
-                    v-if="perminlocal.includes('users-destroy')"
-                  >
-                    <i class="fe fe-trash text-danger"></i>
-                  </button>
+                  <div class="mr-2">
+                    <button
+                      class="btn bg-info me-2"
+                      @click="SingleCustomer(item.id)"
+                      v-if="perminlocal.includes('users-show')"
+                    >
+                      <i class="si si-eye"></i>
+                    </button>
+                    <button
+                      class="btn me-2"
+                      @click="del(item.id, index, item.name)"
+                      v-if="perminlocal.includes('users-destroy')"
+                    >
+                      <i class="fe fe-trash text-danger"></i>
+                    </button>
+                  </div>
                 </td>
               </tr>
             </table>
@@ -170,6 +208,7 @@
         class="justify-content-end"
       ></b-pagination>
     </section>
+
     <teleport to="body">
       <b-modal id="add" v-model="ShowModel" hide-footer>
         <div class="imgtoadd">
@@ -545,6 +584,60 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.customer-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-checkbox {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #495057;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contact-info:hover {
+  color: #667eea;
+  transform: translateX(-3px);
+}
+.contact-icon {
+  width: 20px;
+  height: 20px;
+  background: #fd601f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+}
+.location-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  color: #1976d2;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
 .card {
   box-shadow: 0px 3px 3px 0px #e6edf0;
 }

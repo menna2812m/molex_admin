@@ -6,21 +6,22 @@
           <div
             class="card-header pb-2 d-flex align-items-center justify-content-between"
           >
-            <img
-              :src="item.image"
-              alt=""
-              width="100"
-              style="max-height: 100px; object-fit: cover"
-              class="rounded"
-            />
-            <h4 class="mb-0">
-              {{ item.name ? item.name.ar : "" }}
-            </h4>
+            <div class="d-flex gap-2 align-items-center">
+              <img
+                :src="item.image"
+                alt=""
+                width="100"
+                style="max-height: 100px; object-fit: cover"
+                class="rounded"
+              />
+              <h4 class="mb-0">
+                {{ item.name ? item.name.ar : "" }}
+              </h4>
+            </div>
             <div class="pos-relative">
               <button
                 @click="toggleDropdown"
                 class="twobtn bg-white border"
-                style="border-color: #fd601f !important; color: #fd601f"
                 v-if="perminlocal.includes('groups-update')"
               >
                 خيارات الصفحة <i class="fas fa-caret-down ms-1"></i>
@@ -463,6 +464,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.twobtn {
+  border-color: rgb(253, 96, 31) !important;
+  color: rgb(253, 96, 31);
+  display: flex;
+  align-items: center;
+  width: 111px;
+  padding: 6px;
+}
 .text-danger {
   color: #dc3545 !important;
 }
