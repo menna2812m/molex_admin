@@ -5,7 +5,7 @@
       <div class="d-flex justify-content-between flex-wrap">
         <div>
           <h5 class="mb-0 text-muted">#رقم الطلب</h5>
-          <p class="mt-4">{{ list.order_id }}</p>
+          <p class="mt-4">{{ list?.order_id }}</p>
         </div>
         <div>
           <h5 class="mb-0 text-muted">
@@ -13,16 +13,16 @@
             تاريخ الطلب
           </h5>
           <p class="mt-4">
-            {{ list.updated_at.split("T")[0] }}
+            {{ list?.updated_at.split("T")[0] }}
           </p>
         </div>
-        <div v-if="list.expected_delivery_date">
+        <div v-if="list?.expected_delivery_date">
           <h5 class="mb-0 text-muted">
             <i class="fa fa-calendar"></i>
             تاريخ التسليم المتوقع
           </h5>
           <p class="mt-4">
-            {{ list.expected_delivery_date.split(" ")[0] }}
+            {{ list?.expected_delivery_date.split(" ")[0] }}
           </p>
         </div>
         <div>
@@ -35,7 +35,7 @@
             style="border-radius: 25px; cursor: pointer"
             @click="showmodal = true"
           >
-            {{ list.status_translated }}
+            {{ list?.status_translated }}
             <i class="fa fa-angle-left ms-1"></i>
           </p>
         </div>
@@ -45,19 +45,22 @@
     <div class="p-4 d-flex align-items-center justify-content-end">
       <!-- <div>
         <h5 class="mb-0 text-muted">العنوان </h5>
-          <p class="mt-4">{{ list.address.city }}
+          <p class="mt-4">{{ list?.address.city }}
             -
-            {{ list.address.district }}
+            {{ list?.address.district }}
             -
-            {{ list.address.region }}
+            {{ list?.address.region }}
 
           </p>
       </div> -->
-      <div class="mt-0" v-if="list.address.latitude && list.address.longitude">
+      <div
+        class="mt-0"
+        v-if="list?.address.latitude && list?.address.longitude"
+      >
         <a
           class="border text-center p-2 px-4 bg-transparent text-primary"
           style="border-radius: 25px; cursor: pointer"
-          :href="googleMapsUrl(list.address.latitude, list.address.longitude)"
+          :href="googleMapsUrl(list?.address.latitude, list?.address.longitude)"
           target="_blank"
         >
           المكان علي الخريطة
@@ -74,7 +77,7 @@
       <div class="d-flex justify-content-between flex-wrap">
         <div>
           <h5 class="mb-0 text-muted">*طريقة التوصيل*</h5>
-          <p class="mt-4">{{ list.delivery_option.name.ar }}</p>
+          <p class="mt-4">{{ list?.delivery_option?.name.ar }}</p>
         </div>
         <div>
           <h5 class="mb-0 text-muted">
@@ -82,7 +85,7 @@
             طريقة الدفع
           </h5>
           <p class="mt-4">
-            {{ list.transaction.payment_method }}
+            {{ list?.transaction?.payment_method }}
           </p>
         </div>
         <div>
@@ -95,14 +98,14 @@
             style="border-radius: 25px; cursor: pointer"
             @click="showdeliveries = true"
           >
-            {{ list.delivery?.full_name }}
+            {{ list?.delivery?.full_name }}
             <i class="fa fa-angle-left ms-1"></i>
           </p>
         </div>
       </div>
-      <div class="text-danger" v-if="list.delivery">
+      <div class="text-danger" v-if="list?.delivery">
         * اذا كنت تريد الغاء هذا المندوب من هذا الاوردر
-        <button class="btn" @click="removedelivery(list.delivery, list.id)">
+        <button class="btn" @click="removedelivery(list?.delivery, list?.id)">
           اضغط هنا
         </button>
       </div>
@@ -120,20 +123,18 @@
           style="width: 60px; height: 60px; border-radius: 50%"
         />
         <div>
-          <p class="h5 mt-4 d-block">
-            {{ userData.fname }}{{ userData.lname }}
-          </p>
-          <!-- <p>{{ list.address.address }}</p> -->
+          <p class="h5 mt-4 d-block">{{ userData.name }}{{ userData.lname }}</p>
+          <!-- <p>{{ list?.address.address }}</p> -->
           <div class="mt-4">
             <p class="mb-0">
-              {{ list.address.city }}
+              {{ list?.address.city }}
               -
-              {{ list.address.district }}
+              {{ list?.address.district }}
               -
-              {{ list.address.region }}
+              {{ list?.address.region }}
             </p>
             <span class="px-3 text-muted">
-              {{ list.address.address }}
+              {{ list?.address.address }}
             </span>
           </div>
 
@@ -169,7 +170,7 @@
             <th>السعر النهائي</th>
           </tr>
           <tr
-            v-for="(item, index) in list.items"
+            v-for="(item, index) in list?.items"
             :key="index"
             class="list_item py-3 w-100 align-items-center justify-content-between"
           >
@@ -191,13 +192,13 @@
               {{ item.offer_discount }}
             </td>
             <td>
-              {{ list.shipping }}
+              {{ list?.shipping }}
             </td>
             <td>
               {{ item.unit_price }}
             </td>
             <td>
-              {{ list.total }}
+              {{ list?.total }}
             </td>
           </tr>
         </table>
@@ -248,7 +249,10 @@
           </div>
           <div class="text-center">
             <button class="fs-15 btn-save mx-1">حفظ</button>
-            <button class="fs-15 btn-cancel mx-1" @click="showmodal = false">
+            <button
+              class="fs-15 btn-cancel mx-1"
+              @click="showdeliveries = false"
+            >
               الغاء
             </button>
           </div>
@@ -355,8 +359,8 @@ export default {
       this.user();
     },
     async user() {
-      if (this.list.user_id) {
-        let res = await crudDataService.get("users", `${this.list.user_id}`);
+      if (this.list?.user_id) {
+        let res = await crudDataService.get("users", `${this.list?.user_id}`);
         this.userData = res?.data.data;
       }
     },
