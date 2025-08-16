@@ -990,7 +990,7 @@ export default {
     },
 
     async brands() {
-      let res = await crudDataService.getAll("brands");
+      let res = await crudDataService.getAll("brands?limit=1000");
       this.allbrands = res.data.data.data.map((bran) => ({
         value: bran.id,
         name: bran.name,

@@ -426,7 +426,6 @@ export default {
       this.loading = true;
       try {
         let res = await crudDataService.getAll("categories/tree");
-        console.log("Tree response:", res);
 
         if (res.data && res.data.data) {
           this.treeData = res.data.data;

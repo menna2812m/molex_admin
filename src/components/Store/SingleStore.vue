@@ -36,7 +36,15 @@
             </div>
           </div>
           <div>
-            <button @click="ShowModel = true" class="btn-add m-2">
+            <button
+              @click="
+                () => {
+                  ShowModel = true;
+                  resetFormData();
+                }
+              "
+              class="btn-add m-2"
+            >
               <i class="fe fe-plus"></i>
               إضافة منتج جديد
             </button>
@@ -1141,6 +1149,7 @@ export default {
     },
 
     async getbrands() {
+      this.Selectbrand = [];
       try {
         const res = await crudDataService.getAll("brands?limit=1000");
         this.Selectbrand = res.data.data.data.map((ele) => ({
