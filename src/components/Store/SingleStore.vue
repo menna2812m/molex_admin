@@ -1066,15 +1066,24 @@ export default {
         this.rows = res.data.data.products.map((product) => {
           return { ...product };
         });
-        this.Selectcategories = res.data.data.categories.map((ele) => ({
-          value: ele.id,
-          name: ele.name.ar,
-        }));
       } catch (error) {
         this.handleApiErrors(error, this.toast);
       }
     },
+    async getCategoriesSelectOption() {
+      try {
+        let res = await crudDataService.getAll("categories/dropdown");
+        console.log(res);
 
+        this.Selectcategories = res.data.data.map((cat) => ({
+          value: cat.id,
+          name: cat.name,
+          parent_id: cat.parent_id,
+        }));
+      } catch (error) {
+        console.error("فشل في جلب قائمة الخيارات:", error);
+      }
+    },
     getOptionStyle(option) {
       return {
         background: option.options ? "#d6d8dddb" : "",
@@ -1133,7 +1142,7 @@ export default {
 
     async getbrands() {
       try {
-        const res = await crudDataService.getAll("brands");
+        const res = await crudDataService.getAll("brands?limit=1000");
         this.Selectbrand = res.data.data.data.map((ele) => ({
           value: ele.id,
           name: ele.name,
@@ -1319,6 +1328,7 @@ export default {
   mounted() {
     this.getstore();
     this.getbrands();
+    this.getCategoriesSelectOption();
   },
 };
 </script>

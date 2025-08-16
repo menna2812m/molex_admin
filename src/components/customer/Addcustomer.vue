@@ -180,7 +180,7 @@ export default {
     },
     async country() {
       const result = await axios.get(
-        "https://sallah.nader-mo.tech/api/countries"
+        "https://mall.alharazy.com/dashboard/countries"
       );
       this.countries = result.data.data;
       this.SelectOptions = this.countries.map((country) => ({
