@@ -69,6 +69,7 @@
                     class="btn btn-primary me-2"
                     @click="edit(props.row)"
                     v-if="perminlocal.includes('products-update')"
+                    v-b-modal.modal-center
                   >
                     <i class="fe fe-edit-2"></i>
                   </button>
@@ -92,6 +93,7 @@
                 hide-footer
                 class="add"
                 title="إضافة منتج"
+                modal-class="store-model"
               >
                 <div class="row pos-relative" style="z-index: 5555">
                   <div class="col-lg-12">
@@ -503,6 +505,8 @@
                 hide-footer
                 class="edit"
                 title="تعديل منتج "
+                centered
+                modal-class="store-model"
               >
                 <div class="row pos-relative" style="z-index: 5555">
                   <div class="col-lg-12">
@@ -1318,19 +1322,13 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.dropend {
-  background: #fff;
-  position: absolute;
-  width: 150px;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
-  border-radius: 3px;
-  a {
-    cursor: pointer;
-  }
+<style lang="scss">
+.store-model.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translate(0, -15%);
 }
-
+</style>
+<style scoped lang="scss">
 // Loading state for buttons
 .btn:disabled {
   opacity: 0.6;

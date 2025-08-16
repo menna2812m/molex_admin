@@ -869,23 +869,6 @@ export default {
   color: #14112d;
 }
 
-// Error styling
-.is-invalid {
-  border-color: #dc3545 !important;
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
-}
-
-.invalid-feedback {
-  display: block;
-  color: #dc3545;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-}
-
-.text-danger {
-  color: #dc3545 !important;
-}
-
 // Loading state for buttons
 .btn:disabled {
   opacity: 0.6;
