@@ -165,20 +165,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.searchdiv {
-  position: absolute;
-  border: 1px solid #bb86fc;
-  width: 100%;
-  border-radius: 6px;
-  padding: 10px;
-  background: #fff;
-  z-index: 111111111;
-  height: 250px;
-  overflow-y: scroll;
-  top: 100%;
-  border-top: 0;
-}
-
 .search {
   width: 100%;
   position: relative;

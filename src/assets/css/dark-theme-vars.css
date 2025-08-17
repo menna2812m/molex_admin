@@ -130,3 +130,7 @@ body.dark-theme {
   color: var(--dark-theme);
 
 }
+.dark-theme .searchdiv {
+  background:  var(--dark-theme) !important;
+
+}
