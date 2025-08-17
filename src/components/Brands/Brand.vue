@@ -20,7 +20,7 @@
 
     <section v-else>
       <div
-        class="row border rounded mb-2 p-2 d-flex align-items-center justify-content-between"
+        class="row border rounded mb-2 p-2 d-flex align-items-center justify-content-between cursor-pointer"
         v-for="(item, index) in items"
         :key="index"
         v-if="items.length > 0"

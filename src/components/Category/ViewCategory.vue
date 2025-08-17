@@ -7,11 +7,10 @@
             class="card-header pb-2 d-flex align-items-center justify-content-between"
           >
             <h4 class="mb-0">القسم</h4>
-          
           </div>
           <div class="row align-items-center justify-content-center pt-3">
             <div class="col-lg-7">
-              <div class="row" >
+              <div class="row">
                 <div class="col-lg-4 text-center">
                   <img
                     :src="onecategory.image"
@@ -19,91 +18,86 @@
                     class="mx-auto"
                     style="width: 80px; height: 80px; border-radius: 50%"
                   />
-              
                 </div>
                 <div class="col-lg-8 text-center">
                   <div class="d-flex align-items-center">
-                    <h4 class="px-2">
-                      الاسم :
-                    </h4>
-                    {{ onecategory.name?onecategory.name.ar:'' }}
-                    </div>
+                    <h4 class="px-2">الاسم :</h4>
+                    {{ onecategory.name ? onecategory.name.ar : "" }}
+                  </div>
                   <div class="d-flex align-items-center">
-                    <h4 class="px-2">
-                      الوصف :
-                    </h4>
-                    {{ onecategory.description?onecategory.description.ar:'' }}
+                    <h4 class="px-2">الوصف :</h4>
+                    {{
+                      onecategory.description ? onecategory.description.ar : ""
+                    }}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <hr>
-          <div  >
+          <hr />
+          <div>
             <div class="d-flex align-items-end">
-            <img :src="arroww" alt="" width="90">
-            <h4 class="mb-0">الاقسام الفرعية</h4>
-          </div>
-          <div class="row align-items-center justify-content-center pt-3 " v-if="onecategory.sub_categories?onecategory.sub_categories.length!=0:' '">
-            <div class="col-lg-7">
-              <div class="row mb-5"  v-for="sub in onecategory.sub_categories" :key="sub.id" >
-                <div class="col-lg-4 text-center">
-                  <img
-                    :src="sub.image"
-                    alt="img"
-                    class="mx-auto"
-                    style="width: 80px; height: 80px; border-radius: 50%"
-                  />
-              
-                </div>
-                <div class="col-lg-8 text-center">
-                  <div class="d-flex align-items-center">
-                  <h4 class="px-2">الاسم:</h4>
-                    {{ sub.name?sub.name.ar:'' }}</div>
-                  <div class="d-flex align-items-center">
-                    <h4 class="px-2">
-                     الوصف:
-                    </h4>
-                    {{ sub.description?sub.description.ar:'' }}
+              <img :src="arroww" alt="" width="90" />
+              <h4 class="mb-0">الاقسام الفرعية</h4>
+            </div>
+            <div
+              class="row align-items-center justify-content-center pt-3"
+              v-if="sub_categories ? sub_categories.length != 0 : ' '"
+            >
+              <div class="col-lg-7">
+                <div
+                  class="row mb-5"
+                  v-for="sub in sub_categories"
+                  :key="sub.id"
+                >
+                  <div class="col-lg-4 text-center">
+                    <img
+                      :src="sub.image"
+                      alt="img"
+                      class="mx-auto"
+                      style="width: 80px; height: 80px; border-radius: 50%"
+                    />
+                  </div>
+                  <div class="col-lg-8 text-center">
+                    <div class="d-flex align-items-center">
+                      <h4 class="px-2">الاسم:</h4>
+                      {{ sub.name ? sub.name : "" }}
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <h4 class="px-2">الوصف:</h4>
+                      {{ sub.description ? sub.description : "" }}
+                    </div>
                   </div>
                 </div>
-              
               </div>
-            
+            </div>
+            <div v-else>
+              <h4 class="text-center">لا يوجد اقسام فرعية بعد</h4>
             </div>
           </div>
-          <div v-else>
-            <h4 class="text-center">
-              لا يوجد اقسام فرعية بعد
-            </h4>
-          </div>
-          </div>
-         
-         
         </div>
       </div>
     </div>
   </section>
-  <section class="position-relative" style="height: 100vh;display: grid;
-    place-items: center;"
+  <section
+    class="position-relative"
+    style="height: 100vh; display: grid; place-items: center"
     v-else
-   >
-
-<section class="cate">
-</section>
- <progress class="pure-material-progress-circular"/> 
-
-   </section>  
+  >
+    <section class="cate"></section>
+    <progress class="pure-material-progress-circular" />
+  </section>
 </template>
 
 <script>
-import arroww from "../../assets/img/arro.png"
+import arroww from "../../assets/img/arro.png";
 import crudDataService from "../../Services/crudDataService.js";
 export default {
   data() {
     return {
       onecategory: null,
-      arroww
+      arroww,
+      sub_categories: [],
     };
   },
   methods: {
@@ -112,28 +106,30 @@ export default {
         "categories",
         `${this.$route.params.id}`
       );
-      this.onecategory=res.data.data
-      console.log(res.data.data);
+      this.onecategory = res.data.data;
+    },
+    async getCategoryChildren() {
+      this.loading = true;
+      try {
+        let res = await crudDataService.get_request(
+          `categories/${this.$route.params.id}/children`
+        );
+        this.sub_categories = res.data.data;
+        console.log(this.sub_categories);
+      } catch (error) {
+        console.error("Failed to fetch tree data:", error);
+      } finally {
+        this.loading = false;
+      }
     },
   },
   mounted() {
     this.getcategory();
+    this.getCategoryChildren();
   },
 };
 </script>
 
-<style scoped lang="scss">
-.dropend {
-  background: #fff;
-  position: absolute;
-  width: 150px;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
-  border-radius: 3px;
-  a {
-    cursor: pointer;
-  }
-}
-</style>
 <style lang="scss">
 .multiselect-caret {
   margin: 0 var(--ms-px, 0.875rem) 0 var(--ms-px, 0.875rem);

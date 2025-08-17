@@ -334,14 +334,4 @@ export default {
     cursor: pointer;
   }
 }
-.dropend {
-  position: absolute;
-  left: 75%;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
-  border-radius: 3px;
-  background: #fff;
-  a {
-    cursor: pointer;
-  }
-}
 </style>

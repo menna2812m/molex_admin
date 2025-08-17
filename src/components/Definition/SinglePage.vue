@@ -216,18 +216,6 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.dropend {
-  background: #fff;
-  position: absolute;
-  width: 150px;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
-  border-radius: 3px;
-  a {
-    cursor: pointer;
-  }
-}
-</style>
 <style lang="scss">
 .form-check-input:checked {
   background-color: #fe7eae;

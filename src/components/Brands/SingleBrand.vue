@@ -43,58 +43,96 @@
       </div>
     </div>
     <teleport to="body">
-      <b-modal id="add-page" v-model="ShowModel" hide-footer>
+      <b-modal
+        id="add-page"
+        v-model="ShowModel"
+        hide-footer
+        modal-class="brand-isolated-modal"
+      >
         <div class="imgtoadd">
           <img src="../../assets/img/23.png" alt="img2" />
         </div>
         <div class="mt-4 pt-1 pos-relative" style="z-index: 5555">
-          <h6 style="color: #febcd5" class="text-center">تعديل البراند</h6>
+          <h6 style="color: #febcd5" class="text-right mb-3">تعديل البراند</h6>
           <form @submit.prevent="update">
             <div class="row">
+              <!-- Arabic Name Field -->
               <div class="col-md-6 mb-3">
                 <label>الاسم عربي</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
-                  placeholder="اسم البراند "
+                  placeholder="اسم البراند"
                   class="form-control"
+                  :class="{ 'is-invalid': hasFieldError('name.ar') }"
                   v-model="formData.name.ar"
+                  @input="clearFieldError('name.ar')"
                 />
+                <div
+                  v-if="hasFieldError('name.ar')"
+                  class="invalid-feedback d-block"
+                >
+                  {{ getFieldError("name.ar") }}
+                </div>
               </div>
+
+              <!-- English Name Field -->
               <div class="col-md-6 mb-3">
                 <label>الاسم انجليزي</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
                   placeholder="brand"
                   class="form-control"
+                  :class="{ 'is-invalid': hasFieldError('name.en') }"
                   v-model="formData.name.en"
+                  @input="clearFieldError('name.en')"
                 />
+                <div
+                  v-if="hasFieldError('name.en')"
+                  class="invalid-feedback d-block"
+                >
+                  {{ getFieldError("name.en") }}
+                </div>
               </div>
+
+              <!-- Arabic Description Field -->
               <div class="col-12 mb-3">
-                <label> وصف الماركه عربي</label>
+                <label>وصف الماركه عربي</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
-                  placeholder="وصف البراند "
+                  placeholder="وصف البراند"
                   class="form-control"
+                  :class="{ 'is-invalid': hasFieldError('description.ar') }"
                   v-model="formData.description.ar"
+                  @input="clearFieldError('description.ar')"
                 />
+                <div
+                  v-if="hasFieldError('description.ar')"
+                  class="invalid-feedback d-block"
+                >
+                  {{ getFieldError("description.ar") }}
+                </div>
               </div>
+
+              <!-- English Description Field -->
               <div class="col-12 mb-3">
                 <label>وصف الماركه انجليزي</label>
                 <input
                   type="text"
-                  name=""
-                  id=""
                   placeholder="description"
                   class="form-control"
+                  :class="{ 'is-invalid': hasFieldError('description.en') }"
                   v-model="formData.description.en"
+                  @input="clearFieldError('description.en')"
                 />
+                <div
+                  v-if="hasFieldError('description.en')"
+                  class="invalid-feedback d-block"
+                >
+                  {{ getFieldError("description.en") }}
+                </div>
               </div>
+
+              <!-- Image Field -->
               <div class="mt-3 col-12 mb-3">
                 <label>الصوره</label>
                 <div class="pos-relative overflow-hidden">
@@ -103,14 +141,14 @@
                     @change="onFileSelected"
                     accept=".pdf, image/jpeg, image/png"
                     class="form-control"
+                    :class="{ 'is-invalid': hasFieldError('image') }"
                   />
-                  <!-- <p
-                    class="pos-absolute mb-0 bg-white overflow-y-auto w-75"
-                    v-if="changeedit"
-                    style="top: 5px; left: 15px; height: 30px"
-                  >
-                    {{ textimage }}
-                  </p> -->
+                </div>
+                <div
+                  v-if="hasFieldError('image')"
+                  class="invalid-feedback d-block"
+                >
+                  {{ getFieldError("image") }}
                 </div>
                 <img
                   :src="imageUrl"
@@ -122,7 +160,11 @@
             </div>
             <div class="text-center">
               <button class="fs-15 btn-save mx-1" type="submit">تعديل</button>
-              <button class="fs-15 btn-cancel mx-1" @click="ShowModel = false">
+              <button
+                class="fs-15 btn-cancel mx-1"
+                @click="ShowModel = false"
+                type="button"
+              >
                 الغاء
               </button>
             </div>
@@ -140,15 +182,19 @@
     <progress class="pure-material-progress-circular" />
   </section>
 </template>
+
 <script>
 import crudDataService from "../../Services/crudDataService.js";
+import { FormErrorMixin } from "../../mixins/FormErrorMixin.js";
+import { useToast } from "vue-toastification";
 
 export default {
+  mixins: [FormErrorMixin],
+
   data() {
     return {
       textimage: "",
       changeedit: true,
-
       isDropdownOpen: false,
       ShowModel: false,
       isDropdown: false,
@@ -157,24 +203,43 @@ export default {
       formData: {
         name: {
           ar: "",
+          en: "",
         },
         description: {
           ar: "",
+          en: "",
         },
         image: "",
       },
+      // تحديد الحقول التي نريد مراقبتها لمسح الأخطاء تلقائياً
+      watchedFields: [
+        "formData.name.ar",
+        "formData.name.en",
+        "formData.description.ar",
+        "formData.description.en",
+      ],
     };
   },
+
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
+
   methods: {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
+
     onFileSelected(event) {
       console.log(event);
+      // مسح خطأ الصورة عند اختيار ملف جديد
+      this.clearFieldError("image");
+
       if (event.target) {
         this.changeedit = false;
-
         this.formData.image = event.target.files[0];
+
         const reader = new FileReader();
         reader.onload = () => {
           this.imageUrl = reader.result;
@@ -182,61 +247,130 @@ export default {
         reader.readAsDataURL(this.formData.image);
       } else {
         this.changeedit = true;
-
         this.formData.image = event;
       }
     },
+
     edit() {
+      // مسح جميع الأخطاء عند فتح النموذج
+      this.clearAllErrors();
+
       this.ShowModel = true;
       this.formData.name.ar = this.item.name.ar;
       this.formData.name.en = this.item.name.en;
       this.formData.description.ar = this.item.description.ar;
       this.formData.description.en = this.item.description.en;
-      (this.textimage = this.item.image),
-        (this.formData.image = this.onFileSelected(this.item.image));
+      this.textimage = this.item.image;
+      this.formData.image = this.onFileSelected(this.item.image);
       this.imageUrl = this.item.image;
     },
+
     async getPage() {
-      const res = await crudDataService.get(
-        "brands",
-        `${this.$route.params.id}`
-      );
-      this.item = res.data.data;
+      try {
+        const res = await crudDataService.get(
+          "brands",
+          `${this.$route.params.id}`
+        );
+        this.item = res.data.data;
+      } catch (error) {
+        this.handleApiErrors(error, this.toast);
+      }
     },
+
     async update() {
-      let res = await crudDataService.create(
-        `brands/${this.$route.params.id}?_method=put`,
-        this.formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
+      try {
+        // مسح الأخطاء السابقة
+        this.clearAllErrors();
+
+        // التحقق من صحة البيانات محلياً (اختياري)
+        const validationRules = {
+          "name.ar": {
+            required: true,
+            label: "الاسم العربي",
+            minLength: 2,
           },
+          "name.en": {
+            required: true,
+            label: "الاسم الإنجليزي",
+            minLength: 2,
+          },
+          "description.ar": {
+            required: true,
+            label: "الوصف العربي",
+            minLength: 5,
+          },
+          "description.en": {
+            required: true,
+            label: "الوصف الإنجليزي",
+            minLength: 5,
+          },
+          image: {
+            maxSize: 2048, // 2MB in KB
+            label: "الصورة",
+          },
+        };
+
+        if (!this.validateForm(validationRules)) {
+          return; // إيقاف التقديم إذا كانت هناك أخطاء
         }
-      );
-      console.log(res);
-      this.getPage();
-      this.ShowModel = false;
+
+        const res = await crudDataService.create(
+          `brands/${this.$route.params.id}?_method=put`,
+          this.formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        console.log(res);
+
+        // عرض رسالة نجاح
+        this.toast.success("تم تحديث البراند بنجاح", {
+          position: "top-right",
+          timeout: 3000,
+        });
+
+        await this.getPage();
+        this.ShowModel = false;
+      } catch (error) {
+        // معالجة الأخطاء باستخدام المixin
+        this.handleApiErrors(error, this.toast);
+      }
     },
   },
+
   mounted() {
     this.getPage();
   },
 };
 </script>
 
-<style scoped lang="scss">
-.dropend {
-  background: #fff;
-  position: absolute;
-  width: 150px;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
-  border-radius: 3px;
-  a {
-    cursor: pointer;
+<style lang="scss">
+.brand-isolated-modal {
+  .modal-content {
+    overflow: unset;
+  }
+  .brand-isolated-modal-content {
+    height: 75vh;
+    overflow: scroll;
+    padding-bottom: 17px;
+  }
+  .modal-body {
+    overflow-y: unset;
+  }
+  .modal-dialog {
+    transition: transform 0.3s ease-out;
+    transform: translate(0, -15%);
+  }
+
+  & .multiselect-placeholder,
+  & ::placeholder {
+    font-size: 12px;
   }
 }
-</style>
-<style lang="scss">
+
 input::file-selector-button {
   background-image: linear-gradient(to right, #fd601f) !important;
 }
@@ -244,6 +378,7 @@ input::file-selector-button {
 .modal .modal-header {
   display: none;
 }
+
 .imgtoadd {
   background: #fff;
   width: 100px;
@@ -259,11 +394,13 @@ input::file-selector-button {
     object-fit: cover;
   }
 }
+
 @media (min-width: 576px) {
   .modal-dialog {
     margin: 5.75rem auto;
   }
 }
+
 #add-page {
   overflow-y: auto;
 }

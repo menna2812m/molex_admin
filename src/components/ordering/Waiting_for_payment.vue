@@ -266,10 +266,8 @@ export default {
         },
       ],
       selectAll: false,
-      isDropdownOpen:false,
-      isDropendOpen:false
-
-
+      isDropdownOpen: false,
+      isDropendOpen: false,
     };
   },
   methods: {
@@ -292,9 +290,9 @@ export default {
 }
 .icon_color {
   padding: 12px;
-    border-radius: 50%;
-    height: 40px;
-    padding-right: 13px;
+  border-radius: 50%;
+  height: 40px;
+  padding-right: 13px;
   &.icon_color_1 {
     color: #929aff;
     background: #e8e7ff;
@@ -333,16 +331,6 @@ export default {
   border: 1px solid #e8e8f7;
   margin: 2px;
   border-radius: 3px;
-  a {
-    cursor: pointer;
-  }
-}
-.dropend {
-  position: absolute;
-  left: 75%;
-  box-shadow: 0px 3px 3px 0px #e6edf0;
-  border-radius: 3px;
-  background: #fff;
   a {
     cursor: pointer;
   }
