@@ -73,61 +73,104 @@
         v-model="ShowModel"
         hide-footer
         modal-class="roles-model"
+        size="lg"
+        title="  اضافة دور جديد"
       >
-        <div class="mt-4 pos-relative" style="z-index: 5555">
-          <h6 style="color: #febcd5" class="text-center">إضافة دور جديد</h6>
-
-          <form @submit.prevent="add">
-            <div class="row">
-              <div class="col-12 mb-3">
-                <label>الاسم</label>
+        <div class="modal-content-custom">
+          <form @submit.prevent="add" class="role-form">
+            <!-- Role Name Section -->
+            <div class="form-section">
+              <div class="section-header">
+                <i class="fe fe-edit-3"></i>
+                <h6>معلومات الدور</h6>
+              </div>
+              <div class="form-group-custom">
+                <label class="form-label-custom"
+                  >اسم الدور <span class="required">*</span></label
+                >
                 <input
                   type="text"
-                  name=""
-                  id=""
-                  class="form-control"
+                  class="form-control-custom"
                   v-model="formData.name"
+                  placeholder="أدخل اسم الدور..."
+                  required
                 />
               </div>
-              <div class="col-12 mb-3">
-                <input
-                  type="checkbox"
-                  v-model="selectAll"
-                  @change="handleSelectAll"
-                />
-                <label class="ms-1">تحديد الكل</label>
+            </div>
+
+            <!-- Permissions Section -->
+            <div class="form-section">
+              <div class="section-header">
+                <i class="fe fe-shield"></i>
+                <h6>الصلاحيات</h6>
               </div>
-              <div class="col-6" v-for="(item, key) in permissions" :key="key">
-                <div class="pb-3">
-                  <h5>
-                    {{ item.title }}
-                  </h5>
-                  <div
-                    class="mt-1"
-                    v-for="(text, i) in item.permissions"
-                    :key="i"
-                  >
-                    <input
-                      type="checkbox"
-                      name="vehicle1"
-                      :value="text.name"
-                      v-model="formData.permission"
-                    />
-                    <label for="vehicle1" class="mb-0 ms-1">
-                      {{ text.display_name }}</label
-                    ><br />
+
+              <!-- Select All Checkbox -->
+              <div class="select-all-container">
+                <div class="custom-checkbox">
+                  <input
+                    type="checkbox"
+                    id="selectAll"
+                    v-model="selectAll"
+                    @change="handleSelectAll"
+                    class="custom-checkbox-input"
+                  />
+                  <label for="selectAll" class="custom-checkbox-label">
+                    <span class="checkmark"></span>
+                    تحديد جميع الصلاحيات
+                  </label>
+                </div>
+              </div>
+
+              <!-- Permissions Grid -->
+              <div class="permissions-grid">
+                <div
+                  class="permission-group"
+                  v-for="(item, key) in permissions"
+                  :key="key"
+                >
+                  <div class="permission-group-header">
+                    <h6>{{ item.title }}</h6>
+                  </div>
+                  <div class="permission-items">
+                    <div
+                      class="permission-item"
+                      v-for="(text, i) in item.permissions"
+                      :key="i"
+                    >
+                      <div class="custom-checkbox">
+                        <input
+                          type="checkbox"
+                          :id="`perm_${key}_${i}`"
+                          :value="text.name"
+                          v-model="formData.permission"
+                          class="custom-checkbox-input"
+                        />
+                        <label
+                          :for="`perm_${key}_${i}`"
+                          class="custom-checkbox-label"
+                        >
+                          <span class="checkmark"></span>
+                          {{ text.display_name }}
+                        </label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="text-center">
-              <button class="fs-15 btn-save mx-1" type="submit">إضافة</button>
+            <div class="form-actions">
+              <button class="btn-primary-custom" type="submit">
+                <i class="fe fe-plus"></i>
+                إضافة الدور
+              </button>
               <button
-                class="fs-15 btn-cancel mx-1"
+                class="btn-secondary-custom"
                 type="button"
                 @click="closeModal"
               >
-                الغاء
+                <i class="fe fe-x"></i>
+                إلغاء
               </button>
             </div>
           </form>
@@ -311,6 +354,336 @@ export default {
   }
   &.show .modal-dialog {
     transform: none !important;
+  }
+
+  .modal-dialog {
+    max-width: 800px;
+    margin: 1.75rem auto;
+  }
+
+  .modal-content {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+  }
+}
+
+// Modal Header Styles
+.modal-header-custom {
+  background: linear-gradient(135deg, #fd601f 0%, #ff8a50 100%);
+  color: white;
+  padding: 20px 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+
+  .header-icon {
+    background: rgba(255, 255, 255, 0.2);
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: 20px;
+    }
+  }
+
+  .modal-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    flex: 1;
+  }
+
+  .btn-close-custom {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    i {
+      font-size: 16px;
+    }
+  }
+}
+
+.role-form {
+  .form-section {
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f1f3f4;
+
+      i {
+        color: #fd601f;
+        font-size: 18px;
+        background: rgba(253, 96, 31, 0.1);
+        padding: 8px;
+        border-radius: 8px;
+      }
+
+      h6 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+// Form Controls
+.form-group-custom {
+  margin-bottom: 20px;
+}
+
+.form-label-custom {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+
+  .required {
+    color: #e74c3c;
+    margin-left: 3px;
+  }
+}
+
+.form-control-custom {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e8ecef;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #fd601f;
+    box-shadow: 0 0 0 3px rgba(253, 96, 31, 0.1);
+  }
+
+  &::placeholder {
+    color: #95a5a6;
+  }
+}
+
+// Select All Container
+.select-all-container {
+  margin-bottom: 25px;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px dashed #dee2e6;
+}
+
+// Custom Checkbox Styles
+.custom-checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+
+  .custom-checkbox-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+
+    &:checked ~ .custom-checkbox-label .checkmark {
+      background: #fd601f;
+      border-color: #fd601f;
+
+      &:after {
+        display: block;
+      }
+    }
+  }
+
+  .custom-checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    user-select: none;
+
+    .checkmark {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #bdc3c7;
+      border-radius: 4px;
+      margin-left: 10px;
+      position: relative;
+      transition: all 0.3s ease;
+      background: white;
+
+      &:after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 6px;
+        top: 2px;
+        width: 6px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
+
+    &:hover .checkmark {
+      border-color: #fd601f;
+      background: rgba(253, 96, 31, 0.05);
+    }
+  }
+}
+
+// Permissions Grid
+.permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.dark-theme {
+  .permission-group {
+    border: 1px solid #35393d;
+  }
+}
+.permission-group {
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid #e9ecef;
+
+  .permission-group-header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+
+    h6 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fd601f;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .permission-items {
+    .permission-item {
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Action Buttons
+.form-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 2px solid #f1f3f4;
+
+  .btn-primary-custom {
+    background: linear-gradient(135deg, #fd601f 0%, #ff8a50 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+    justify-content: center;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(253, 96, 31, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  .btn-secondary-custom {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+    justify-content: center;
+
+    &:hover {
+      background: #5a6268;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .roles-model .modal-dialog {
+    margin: 0.5rem;
+    max-width: none;
+  }
+
+  .permissions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+
+    .btn-primary-custom,
+    .btn-secondary-custom {
+      width: 100%;
+    }
   }
 }
 </style>
