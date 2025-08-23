@@ -80,11 +80,7 @@
                   show: menuItem.active,
                   'nav-header': menuItem.headTitle,
                 }"
-                :style="
-                  perminlocal.includes(menuItem.name)
-                    ? 'display:block'
-                    : 'display:none'
-                "
+                style="display: block"
               >
                 <div>
                   <!-- head title  -->
@@ -380,6 +376,15 @@ const menu_items = [
     active: true,
     defaultActive: false,
     name: "vendors-index",
+  },
+  {
+    path: `${import.meta.env.BASE_URL}Ads`,
+    title: "الإعلانات",
+    type: "link",
+    icon: "ion-pricetag",
+    active: true,
+    defaultActive: false,
+    name: "announcements-index", // Changed from "Ads-index" to match API
   },
   {
     path: `${import.meta.env.BASE_URL}tags`,

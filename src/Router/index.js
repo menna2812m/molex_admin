@@ -195,6 +195,11 @@ const routes = [
         component: () => import("../components/Slider/Slider.vue"),
       },
       {
+        path: `${import.meta.env.BASE_URL}Ads`,
+        name: "Ads",
+        component: () => import("../components/Ads/Ads.vue"),
+      },
+      {
         path: `${import.meta.env.BASE_URL}setting`,
         name: "Setting",
         component: () => import("../components/Setting/Setting.vue"),
