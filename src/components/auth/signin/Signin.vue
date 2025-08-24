@@ -103,6 +103,8 @@
 import { error } from "jquery";
 import crudDataService from "../../../Services/crudDataService.js";
 import { themeMixin } from "../../../mixins/themeMixin.js";
+import { updateAxiosToken } from "../../../axios.js";
+
 export default {
   mixins: [themeMixin],
 
@@ -125,12 +127,21 @@ export default {
       await crudDataService
         .create("login", this.form)
         .then((response) => {
-          localStorage.setItem("authlocal", response.data.data.token);
+          const token = response.data.data.token;
+
+          // Store authentication data
+          localStorage.setItem("authlocal", token);
+
+          // Update axios token
+          updateAxiosToken(token);
+
+          // Store permissions
           response.data.data.admin.role[0].permissions.forEach((element) => {
             this.permissions.push(element.name);
-            localStorage.setItem("permissions", this.permissions);
           });
+          localStorage.setItem("permissions", this.permissions);
 
+          // Navigate to dashboard
           this.$router.push({ name: "Dashboard" });
 
           setTimeout(() => {

@@ -127,11 +127,25 @@ export default {
       }
     },
     async logout() {
-      let res = await crudDataService.create("logout", ``);
-      localStorage.clear();
-      this.$router.push({
-        name: "SignIn",
-      });
+      try {
+        let res = await crudDataService.create("logout", ``);
+      } catch (error) {
+        // Even if logout API fails, clear local data
+        console.warn("Logout API failed, but clearing local data");
+      } finally {
+        // Always clear authentication data
+        localStorage.removeItem("authlocal");
+        localStorage.removeItem("permissions");
+
+        // Clear axios token
+        import("../../../axios.js").then(({ clearAuth }) => {
+          clearAuth();
+        });
+
+        this.$router.push({
+          name: "SignIn",
+        });
+      }
     },
     async profile() {
       this.$router.push({

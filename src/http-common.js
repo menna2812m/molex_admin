@@ -24,6 +24,19 @@ http.interceptors.response.use(
     }
     if (error && error.response) {
       if (error.response.status == 401) {
+        // Clear all authentication data
+        localStorage.removeItem("authlocal");
+        localStorage.removeItem("permissions");
+
+        // Reset axios defaults
+        axios.defaults.token = null;
+
+        // Show toast message
+        toast.error("Session expired. Please login again.", {
+          position: "top-center",
+        });
+
+        // Navigate to SignIn page
         router.push({
           name: "SignIn",
         });

@@ -5,6 +5,7 @@ import {
 } from "vue-router";
 import MainDashboard from "../Shared/Layouts/MainDashboard.vue";
 import Themepage from "../Shared/Layouts/Themepage.vue";
+
 const routes = [
   {
     path: `${import.meta.env.BASE_URL}`,
@@ -308,14 +309,30 @@ router.beforeEach((to) => {
 
 router.beforeEach((to, from, next) => {
   const loggedInUserData = localStorage.getItem("authlocal");
+
+  // If user is logged in and trying to access SignIn, redirect to dashboard
   if (loggedInUserData && to.name == "SignIn") {
     next("/dashboard");
   } else {
-    if (!localStorage.getItem("authlocal") && to.name !== "SignIn") {
-      next("SignIn"); // Redirect to SignIn if token is not present and the current route is not SignIn
+    // If user is not logged in and trying to access protected routes
+    if (!loggedInUserData && to.name !== "SignIn") {
+      // Clear any remaining authentication data
+      localStorage.removeItem("permissions");
+      next("SignIn");
     } else {
-      next(); // Allow the navigation to proceed
+      next();
     }
   }
 });
+
+// Handle authentication errors globally
+router.onError((error) => {
+  if (error.message.includes("401")) {
+    // Clear authentication data
+    localStorage.removeItem("authlocal");
+    localStorage.removeItem("permissions");
+    router.push({ name: "SignIn" });
+  }
+});
+
 export default router;
