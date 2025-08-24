@@ -8,6 +8,55 @@
       </button>
     </div>
 
+    <!-- Search and Filter Section -->
+    <div class="filter-section mb-4">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="البحث في العنوان..."
+            v-model="filters.search"
+            @input="debouncedSearch"
+          />
+        </div>
+        <div class="col-md-3">
+          <select
+            class="form-control"
+            v-model="filters.status"
+            @change="applyFilters"
+          >
+            <option value="">جميع الحالات</option>
+            <option value="1">نشط</option>
+            <option value="0">غير نشط</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <input
+            type="date"
+            class="form-control"
+            placeholder="من تاريخ"
+            v-model="filters.date_from"
+            @change="applyFilters"
+          />
+        </div>
+        <div class="col-md-2">
+          <input
+            type="date"
+            class="form-control"
+            placeholder="إلى تاريخ"
+            v-model="filters.date_to"
+            @change="applyFilters"
+          />
+        </div>
+        <div class="col-md-1">
+          <button @click="clearFilters" class="btn btn-outline-secondary">
+            <i class="fe fe-x"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Loading state -->
     <div class="loading-container" v-if="loading">
       <section class="cate"></section>
@@ -21,7 +70,7 @@
         <div
           class="col-md-6 col-lg-4 mb-4"
           v-for="(item, index) in myList"
-          :key="index"
+          :key="item.id"
         >
           <div class="ad-card card">
             <div class="ad-image-container">
@@ -50,13 +99,20 @@
                     type="checkbox"
                     class="custom-switch-input"
                     :checked="item.is_active"
-                    @change="toggleactive(item.id)"
+                    @change="toggleactive(item.id, index)"
                   />
                   <span class="custom-switch-indicator"></span>
                   <span class="custom-switch-description">تفعيل</span>
                 </label> -->
 
                 <div class="action-buttons">
+                  <button
+                    class="btn btn-icon"
+                    @click="viewDetails(item.id)"
+                    title="عرض التفاصيل"
+                  >
+                    <i class="fe fe-eye text-primary"></i>
+                  </button>
                   <button
                     class="btn btn-icon"
                     @click="edit(item)"
@@ -77,12 +133,132 @@
           </div>
         </div>
       </div>
-
       <!-- Empty state -->
       <div class="empty-state" v-else>
         <div class="empty-state-message">لا يوجد إعلانات حتي الان</div>
       </div>
+      <!-- Pagination -->
+      <div
+        class="pagination-container"
+        v-if="pagination.total > pagination.per_page"
+      >
+        <nav>
+          <ul class="pagination justify-content-center">
+            <li
+              class="page-item"
+              :class="{ disabled: !pagination.prev_page_url }"
+            >
+              <button
+                class="page-link"
+                @click="changePage(pagination.current_page - 1)"
+                :disabled="!pagination.prev_page_url"
+              >
+                السابق
+              </button>
+            </li>
+
+            <li
+              class="page-item"
+              v-for="page in visiblePages"
+              :key="page"
+              :class="{ active: page === pagination.current_page }"
+            >
+              <button class="page-link" @click="changePage(page)">
+                {{ page }}
+              </button>
+            </li>
+
+            <li
+              class="page-item"
+              :class="{ disabled: !pagination.next_page_url }"
+            >
+              <button
+                class="page-link"
+                @click="changePage(pagination.current_page + 1)"
+                :disabled="!pagination.next_page_url"
+              >
+                التالي
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </section>
+
+    <!-- View Details Modal -->
+    <teleport to="body">
+      <b-modal
+        id="view-details-modal"
+        v-model="ShowDetailsModel"
+        hide-footer
+        centered
+        size="lg"
+      >
+        <template #modal-header>
+          <h5 class="modal-title">تفاصيل الإعلان</h5>
+        </template>
+
+        <div class="modal-body-content" v-if="selectedAd">
+          <div class="announcement-details">
+            <div class="detail-image" v-if="selectedAd.image">
+              <img
+                :src="selectedAd.image"
+                :alt="selectedAd.title"
+                class="img-fluid rounded"
+              />
+            </div>
+
+            <div class="detail-info">
+              <h4>{{ selectedAd.title }}</h4>
+
+              <div class="info-row">
+                <label>الرابط:</label>
+                <span>{{ selectedAd.link || "لا يوجد رابط" }}</span>
+              </div>
+
+              <div class="info-row">
+                <label>تاريخ البداية:</label>
+                <span>{{ formatDate(selectedAd.start_date) }}</span>
+              </div>
+
+              <div class="info-row">
+                <label>تاريخ النهاية:</label>
+                <span>{{ formatDate(selectedAd.end_date) }}</span>
+              </div>
+
+              <div class="info-row">
+                <label>الحالة:</label>
+                <span
+                  class="status-badge"
+                  :class="{ active: selectedAd.is_active }"
+                >
+                  {{ selectedAd.is_active ? "نشط" : "غير نشط" }}
+                </span>
+              </div>
+
+              <div class="info-row">
+                <label>تاريخ الإنشاء:</label>
+                <span>{{ formatDateTime(selectedAd.created_at) }}</span>
+              </div>
+
+              <div class="info-row">
+                <label>آخر تحديث:</label>
+                <span>{{ formatDateTime(selectedAd.updated_at) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <button @click="edit(selectedAd)" class="btn btn-primary">
+              تعديل الإعلان
+            </button>
+            <button @click="ShowDetailsModel = false" class="btn btn-secondary">
+              إغلاق
+            </button>
+          </div>
+        </div>
+      </b-modal>
+    </teleport>
 
     <!-- Add Ad Modal -->
     <teleport to="body">
@@ -254,9 +430,7 @@
         centered
         size="lg"
       >
-        <template #modal-header>
-          <h5 class="modal-title">تعديل الإعلان</h5>
-        </template>
+        <h5 class="modal-title">تعديل الإعلان</h5>
 
         <div class="modal-body-content">
           <form @submit.prevent="update" class="ad-form">
@@ -448,6 +622,24 @@ export default {
       },
       isLoading: false,
       isEditLoading: false,
+      ShowDetailsModel: false,
+      selectedAd: null,
+      filters: {
+        search: "",
+        status: "",
+        date_from: "",
+        date_to: "",
+        limit: 10,
+      },
+      pagination: {
+        current_page: 1,
+        last_page: 1,
+        per_page: 10,
+        total: 0,
+        next_page_url: null,
+        prev_page_url: null,
+      },
+      searchTimeout: null,
       // Watched fields for automatic error clearing
       watchedFields: [
         "formData.title",
@@ -466,6 +658,21 @@ export default {
         this.formData.end_date
       );
     },
+    visiblePages() {
+      const pages = [];
+      const current = this.pagination.current_page;
+      const last = this.pagination.last_page;
+
+      // Show 5 pages max around current page
+      const start = Math.max(1, current - 2);
+      const end = Math.min(last, current + 2);
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+
+      return pages;
+    },
   },
   methods: {
     formatDate(dateString) {
@@ -473,27 +680,124 @@ export default {
       const date = new Date(dateString);
       return date.toLocaleDateString("ar-EG");
     },
-
-    async toggleactive(id) {
-      let res = await crudDataService.create(`announcements/${id}/toggle`, "");
-      const toast = useToast();
-      if (res.data.status) {
-        toast.success(res.data.message, {
+    formatDateTime(dateString) {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      return date.toLocaleString("ar-EG");
+    },
+    handleImageError(event) {
+      event.target.src = "/images/placeholder.png";
+    },
+    async viewDetails(id) {
+      try {
+        const toast = useToast();
+        const res = await crudDataService.getAnnouncement(id);
+        this.selectedAd = res.data.data;
+        this.ShowDetailsModel = true;
+      } catch (error) {
+        const toast = useToast();
+        toast.error("فشل في تحميل تفاصيل الإعلان", {
           position: "top-center",
           timeout: 5000,
         });
-        this.announcements(); // Refresh the list to update the status
       }
     },
+    async toggleactive(id, index) {
+      try {
+        const toast = useToast();
+        let res = await crudDataService.toggleAnnouncementStatus(id);
 
+        if (res.data.status === 200) {
+          // Update the local data
+          this.myList[index].is_active = !this.myList[index].is_active;
+          toast.success(res.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      } catch (error) {
+        const toast = useToast();
+        toast.error("فشل في تغيير حالة الإعلان", {
+          position: "top-center",
+          timeout: 5000,
+        });
+      }
+    },
+    debouncedSearch() {
+      clearTimeout(this.searchTimeout);
+      this.searchTimeout = setTimeout(() => {
+        this.applyFilters();
+      }, 500);
+    },
+    applyFilters() {
+      this.pagination.current_page = 1; // Reset to first page
+      this.announcements();
+    },
+    clearFilters() {
+      this.filters = {
+        search: "",
+        status: "",
+        date_from: "",
+        date_to: "",
+        limit: 10,
+      };
+      this.applyFilters();
+    },
+    changePage(page) {
+      if (page >= 1 && page <= this.pagination.last_page) {
+        this.pagination.current_page = page;
+        this.announcements();
+      }
+    },
+    async announcements() {
+      this.loading = true;
+
+      try {
+        const params = {
+          ...this.filters,
+          page: this.pagination.current_page,
+        };
+
+        // Remove empty filters
+        Object.keys(params).forEach((key) => {
+          if (
+            params[key] === "" ||
+            params[key] === null ||
+            params[key] === undefined
+          ) {
+            delete params[key];
+          }
+        });
+
+        let res = await crudDataService.getAnnouncements(params);
+        this.myList = res.data.data.data;
+
+        // Update pagination info
+        this.pagination = {
+          current_page: res.data.data.current_page,
+          last_page: res.data.data.last_page,
+          per_page: res.data.data.per_page,
+          total: res.data.data.total,
+          next_page_url: res.data.data.next_page_url,
+          prev_page_url: res.data.data.prev_page_url,
+        };
+      } catch (error) {
+        console.error("Failed to fetch announcements:", error);
+        const toast = useToast();
+        toast.error("فشل في تحميل الإعلانات", {
+          position: "top-center",
+          timeout: 5000,
+        });
+      } finally {
+        this.loading = false;
+      }
+    },
     triggerFileInput() {
       this.$refs.fileInput.click();
     },
-
     triggerEditFileInput() {
       this.$refs.editFileInput.click();
     },
-
     onFileSelected(event) {
       this.formData.image = event.target.files[0];
       const reader = new FileReader();
@@ -502,7 +806,6 @@ export default {
       };
       reader.readAsDataURL(this.formData.image);
     },
-
     editFileSelected(event) {
       console.log(event);
       if (event.target) {
@@ -520,7 +823,6 @@ export default {
         this.EditData.image = event;
       }
     },
-
     async edit(data) {
       this.clearAllErrors(); // Clear any previous errors
       this.id = data.id;
@@ -536,21 +838,15 @@ export default {
       this.EditData.image = this.editFileSelected(data.image);
       this.imageedit = data.image;
     },
-
     async update() {
       const toast = useToast();
       this.clearAllErrors(); // Clear previous errors
       this.isEditLoading = true;
 
       try {
-        let res = await crudDataService.create(
-          `announcements/${this.id}?_method=put`,
-          this.EditData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
+        let res = await crudDataService.updateAnnouncement(
+          this.id,
+          this.EditData
         );
         this.isEditLoading = false;
         this.ShowEditModel = false;
@@ -564,26 +860,13 @@ export default {
         this.handleApiErrors(error, toast);
       }
     },
-
-    async announcements() {
-      this.loading = true;
-
-      try {
-        let res = await crudDataService.getAll("announcements");
-        this.myList = res.data.data.data;
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      } finally {
-        this.loading = false;
-      }
-    },
-
     async add() {
       const toast = useToast();
-      this.clearAllErrors(); // Clear previous errors
+      this.clearAllErrors();
       this.isLoading = true;
 
       if (!this.isFormValid) {
+        this.isLoading = false;
         toast.error("يرجى ملء جميع الحقول المطلوبة", {
           position: "top-center",
           timeout: 5000,
@@ -592,11 +875,7 @@ export default {
       }
 
       try {
-        let res = await crudDataService.create(`announcements`, this.formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        let res = await crudDataService.createAnnouncement(this.formData);
         this.isLoading = false;
         this.announcements();
         this.ShowModel = false;
@@ -611,25 +890,26 @@ export default {
         this.handleApiErrors(error, toast);
       }
     },
-
-    del(data, index, name) {
+    del(id, index, name) {
       this.$swal
         .fire({
-          title: `؟"${name}" هل تريد حذف الإعلان `,
+          title: `هل تريد حذف الإعلان "${name}"؟`,
           showCancelButton: true,
           confirmButtonText: "نعم",
           cancelButtonText: "إلغاء",
         })
-        .then((result) => {
+        .then(async (result) => {
           if (result.isConfirmed) {
-            this.$swal.fire("تم الحذف بنجاح!", "", "success");
-            crudDataService.delete("announcements", `${data}`).then(() => {
+            try {
+              await crudDataService.deleteAnnouncement(id);
               this.myList.splice(index, 1);
-            });
+              this.$swal.fire("تم الحذف بنجاح!", "", "success");
+            } catch (error) {
+              this.$swal.fire("خطأ!", "فشل في حذف الإعلان", "error");
+            }
           }
         });
     },
-
     resetForm() {
       this.formData.title = "";
       this.formData.link = "";
@@ -640,7 +920,6 @@ export default {
       this.imgurl = "";
       this.clearAllErrors(); // Clear errors when resetting form
     },
-
     openAddModal() {
       this.clearAllErrors(); // Clear any previous errors
       this.ShowModel = true;
@@ -900,6 +1179,60 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.filter-section {
+  background: var(--dark-theme);
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(230, 98, 57, 0.2);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.pagination-container {
+  margin-top: 2rem;
+}
+
+.announcement-details {
+  .detail-image {
+    text-align: center;
+    margin-bottom: 1.5rem;
+
+    img {
+      max-height: 300px;
+      object-fit: cover;
+    }
+  }
+
+  .info-row {
+    display: flex;
+    margin-bottom: 1rem;
+
+    label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #a2b6ca;
+    }
+  }
+
+  .status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    background-color: #dc3545;
+    color: white;
+
+    &.active {
+      background-color: #28a745;
+    }
+  }
+}
+
+.detail-actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 </style>
 

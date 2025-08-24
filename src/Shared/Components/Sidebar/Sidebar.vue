@@ -381,7 +381,7 @@ const menu_items = [
     path: `${import.meta.env.BASE_URL}Ads`,
     title: "الإعلانات",
     type: "link",
-    icon: "ion-pricetag",
+    icon: "fe fe-volume-2", // Changed from "ion-pricetag" to a megaphone/announcement icon
     active: true,
     defaultActive: false,
     name: "announcements-index", // Changed from "Ads-index" to match API
