@@ -960,3 +960,61 @@ textarea.form-control.parsley-error {
 .cursor-pointer {
   cursor: pointer;
 }
+
+// ✅ Modal with fixed footer global styles
+.modal-fixed-footer {
+  .modal-dialog {
+    height: auto !important;
+    max-height: 90vh !important;
+    margin: 1rem auto !important;
+  }
+
+  .modal-content {
+    height: auto !important;
+    max-height: calc(90vh - 2rem) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .modal-body {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    overflow-x: visible !important;
+    max-height: calc(90vh - 200px) !important;
+  }
+
+  // ✅ Ensure dropdowns work with fixed footer
+  .multiselect {
+    position: relative;
+    z-index: 1;
+  }
+
+  .multiselect-dropdown {
+    z-index: 99999 !important;
+    position: fixed !important;
+  }
+}
+
+// ✅ Responsive adjustments
+@media (max-width: 576px) {
+  .modal-fixed-footer {
+    .modal-dialog {
+      margin: 0.5rem !important;
+      max-height: 95vh !important;
+    }
+
+    .modal-content {
+      max-height: calc(95vh - 1rem) !important;
+    }
+
+    .modal-body {
+      max-height: calc(95vh - 180px) !important;
+      padding: 15px !important;
+    }
+  }
+
+  .modal-fixed-actions {
+    padding: 10px 15px !important;
+    margin: 0 -15px -15px -15px !important;
+  }
+}

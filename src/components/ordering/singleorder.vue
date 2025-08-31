@@ -206,57 +206,93 @@
     </div>
   </div>
   <teleport to="body">
-    <b-modal id="add-body" v-model="showmodal" hide-footer title="تغير الحالة ">
-      <div class="pos-relative" style="z-index: 5555">
-        <form @submit.prevent="change()">
-          <div class="m-2">
-            <Multiselect
-              label="name"
-              :searchable="true"
-              :options="status_type"
-              placeholder="الحالة"
-              v-model="status"
-            />
-          </div>
-          <p v-if="err" class="text-danger">{{ err }}</p>
+    <b-modal
+      id="status-modal"
+      v-model="showmodal"
+      hide-footer
+      title="تغير الحالة"
+      modal-class="modal-dropdown-fix modal-fixed-footer"
+      dialog-class="modal-dialog-dropdown"
+      size="md"
+    >
+      <div class="modal-content-wrapper">
+        <div class="modal-body-content">
+          <form @submit.prevent="change()" class="modal-form">
+            <div class="m-2">
+              <Multiselect
+                label="name"
+                :searchable="true"
+                :options="status_type"
+                placeholder="الحالة"
+                v-model="status"
+                :appendToBody="true"
+                :closeOnSelect="true"
+              />
+            </div>
+            <p v-if="err" class="text-danger">{{ err }}</p>
+          </form>
+        </div>
+        <div class="modal-fixed-actions">
           <div class="text-center">
-            <button class="fs-15 btn-save mx-1">حفظ</button>
-            <button class="fs-15 btn-cancel mx-1" @click="showmodal = false">
+            <button type="button" @click="change()" class="fs-15 btn-save mx-1">
+              حفظ
+            </button>
+            <button
+              type="button"
+              class="fs-15 btn-cancel mx-1"
+              @click="showmodal = false"
+            >
               الغاء
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </b-modal>
   </teleport>
   <teleport to="body">
     <b-modal
-      id="add-body"
+      id="delivery-modal"
       v-model="showdeliveries"
       hide-footer
-      title="اضافة مندوب  "
+      title="اضافة مندوب"
+      modal-class="modal-dropdown-fix modal-fixed-footer"
+      dialog-class="modal-dialog-dropdown"
+      size="md"
     >
-      <div class="pos-relative" style="z-index: 5555">
-        <form @submit.prevent="adddelivery(delivery_id)">
-          <div class="m-2">
-            <Multiselect
-              label="name"
-              :searchable="true"
-              :options="deliveries"
-              placeholder="المندوب"
-              v-model="delivery_id"
-            />
-          </div>
+      <div class="modal-content-wrapper">
+        <div class="modal-body-content">
+          <form @submit.prevent="adddelivery(delivery_id)" class="modal-form">
+            <div class="m-2">
+              <Multiselect
+                label="name"
+                :searchable="true"
+                :options="deliveries"
+                placeholder="المندوب"
+                v-model="delivery_id"
+                :appendToBody="true"
+                :closeOnSelect="true"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-fixed-actions">
           <div class="text-center">
-            <button class="fs-15 btn-save mx-1">حفظ</button>
             <button
+              type="button"
+              @click="adddelivery(delivery_id)"
+              class="fs-15 btn-save mx-1"
+            >
+              حفظ
+            </button>
+            <button
+              type="button"
               class="fs-15 btn-cancel mx-1"
               @click="showdeliveries = false"
             >
               الغاء
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </b-modal>
   </teleport>
@@ -381,5 +417,71 @@ export default {
   color: #fd601f;
   border: 1px solid #fd601f;
   margin-left: 5px;
+}
+
+// ✅ Modal with fixed footer structure
+.modal-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 300px;
+}
+
+.modal-body-content {
+  flex: 1;
+  overflow: visible;
+  padding-bottom: 20px;
+  min-height: 200px;
+}
+
+.modal-form {
+  overflow: visible;
+}
+
+// ✅ Fixed action buttons at bottom
+.modal-fixed-actions {
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid #676a6d;
+  padding: 15px 20px;
+  margin: 0 -20px -25px -20px;
+  z-index: 10;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+// ✅ Global styles for modal with fixed footer
+:deep(.modal-fixed-footer) {
+  .modal-dialog {
+    height: auto;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-content {
+    height: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .modal-body {
+    flex: 1;
+    overflow: visible;
+    padding: 25px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-header {
+    flex-shrink: 0;
+  }
+}
+
+// ✅ Multiselect dropdown z-index
+:deep(.multiselect-dropdown) {
+  z-index: 999999 !important;
+  position: absolute !important;
 }
 </style>

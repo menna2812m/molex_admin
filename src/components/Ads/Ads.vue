@@ -268,6 +268,7 @@
         hide-footer
         centered
         size="lg"
+        modal-class="ads-model"
       >
         <h5 class="modal-title">إضافة إعلان جديد</h5>
 
@@ -429,6 +430,7 @@
         hide-footer
         centered
         size="lg"
+        modal-class="ads-model"
       >
         <h5 class="modal-title">تعديل الإعلان</h5>
 
@@ -1239,7 +1241,7 @@ export default {
 
 <style lang="scss">
 // Modal positioning and overflow fixes
-.modal {
+.ads-model {
   overflow: auto;
 
   .modal-dialog {
@@ -1300,7 +1302,7 @@ export default {
 }
 
 // Ensure proper z-index layering
-.modal {
+.ads-model {
   z-index: 1055;
 }
 </style>
