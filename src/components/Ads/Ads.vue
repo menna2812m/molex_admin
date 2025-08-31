@@ -770,16 +770,17 @@ export default {
         });
 
         let res = await crudDataService.getAnnouncements(params);
-        this.myList = res.data.data.data;
+
+        this.myList = res.data.data;
 
         // Update pagination info
         this.pagination = {
-          current_page: res.data.data.current_page,
-          last_page: res.data.data.last_page,
-          per_page: res.data.data.per_page,
-          total: res.data.data.total,
-          next_page_url: res.data.data.next_page_url,
-          prev_page_url: res.data.data.prev_page_url,
+          current_page: res.data.current_page,
+          last_page: res.data.last_page,
+          per_page: res.data.per_page,
+          total: res.data.total,
+          next_page_url: res.data.next_page_url,
+          prev_page_url: res.data.prev_page_url,
         };
       } catch (error) {
         console.error("Failed to fetch announcements:", error);
