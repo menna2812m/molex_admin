@@ -219,28 +219,44 @@
         <div class="modal-body-content">
           <form @submit.prevent="change()" class="modal-form">
             <div class="m-2">
+              <label class="form-label mb-2">حالة الطلب</label>
               <Multiselect
                 label="name"
                 :searchable="true"
                 :options="status_type"
-                placeholder="الحالة"
+                placeholder="اختر الحالة"
                 v-model="status"
                 :appendToBody="true"
                 :closeOnSelect="true"
+                :class="{ 'is-invalid': hasFieldError('status') }"
+                @select="clearFieldError('status')"
               />
+              <div v-if="hasFieldError('status')" class="invalid-feedback">
+                {{ getFieldError("status") }}
+              </div>
             </div>
-            <p v-if="err" class="text-danger">{{ err }}</p>
           </form>
         </div>
         <div class="modal-fixed-actions">
           <div class="text-center">
-            <button type="button" @click="change()" class="fs-15 btn-save mx-1">
+            <button
+              type="button"
+              @click="change()"
+              class="fs-15 btn-save mx-1"
+              :disabled="formLoading"
+            >
+              <span
+                v-if="formLoading"
+                class="spinner-border spinner-border-sm me-2"
+                role="status"
+              ></span>
               حفظ
             </button>
             <button
               type="button"
               class="fs-15 btn-cancel mx-1"
-              @click="showmodal = false"
+              @click="closeStatusModal"
+              :disabled="formLoading"
             >
               الغاء
             </button>
@@ -263,6 +279,7 @@
         <div class="modal-body-content">
           <form @submit.prevent="adddelivery(delivery_id)" class="modal-form">
             <div class="m-2">
+              <label class="form-label mb-2">اختر المندوب</label>
               <Multiselect
                 label="name"
                 :searchable="true"
@@ -271,7 +288,12 @@
                 v-model="delivery_id"
                 :appendToBody="true"
                 :closeOnSelect="true"
+                :class="{ 'is-invalid': hasFieldError('delivery_id') }"
+                @select="clearFieldError('delivery_id')"
               />
+              <div v-if="hasFieldError('delivery_id')" class="invalid-feedback">
+                {{ getFieldError("delivery_id") }}
+              </div>
             </div>
           </form>
         </div>
@@ -281,13 +303,20 @@
               type="button"
               @click="adddelivery(delivery_id)"
               class="fs-15 btn-save mx-1"
+              :disabled="formLoading"
             >
+              <span
+                v-if="formLoading"
+                class="spinner-border spinner-border-sm me-2"
+                role="status"
+              ></span>
               حفظ
             </button>
             <button
               type="button"
               class="fs-15 btn-cancel mx-1"
-              @click="showdeliveries = false"
+              @click="closeDeliveryModal"
+              :disabled="formLoading"
             >
               الغاء
             </button>
@@ -300,7 +329,10 @@
 <script>
 import Multiselect from "@vueform/multiselect";
 import crudDataService from "../../Services/crudDataService";
+import { FormErrorMixin } from "../../mixins/FormErrorMixin.js";
+
 export default {
+  mixins: [FormErrorMixin],
   components: {
     Multiselect,
   },
@@ -316,12 +348,12 @@ export default {
       deliveries: [],
       showdeliveries: false,
       delivery_id: null,
+      formLoading: false,
       list: "",
       userData: "",
       showmodal: false,
       status: "",
-
-      err: "",
+      watchedFields: ["status", "delivery_id"],
     };
   },
   methods: {
@@ -365,28 +397,101 @@ export default {
     },
 
     async adddelivery(id) {
-      let res = await crudDataService
-        .create(`deliveries/${id}/orders`, {
+      if (!id) {
+        this.setFieldErrors({ delivery_id: ["يرجى اختيار مندوب"] });
+        return;
+      }
+
+      try {
+        this.formLoading = true;
+        this.clearAllErrors();
+
+        const res = await crudDataService.create(`deliveries/${id}/orders`, {
           order_id: this.$route.params.id,
-        })
-        .then((result) => {
-          this.showdeliveries = false;
-          this.order();
-          this.$swal.fire(result.data.message, "", "success");
         });
+
+        this.closeDeliveryModal();
+        await this.order();
+        this.$swal.fire({
+          title: "تم إضافة المندوب بنجاح!",
+          text: res.data.message,
+          icon: "success",
+          confirmButtonText: "تم",
+        });
+      } catch (error) {
+        console.error("Error adding delivery:", error);
+
+        if (error.response && error.response.status === 422) {
+          this.setFieldErrors(error.response.data.errors || {});
+        } else {
+          this.$swal.fire({
+            title: "خطأ!",
+            text:
+              error.response?.data?.message || "حدث خطأ أثناء إضافة المندوب",
+            icon: "error",
+            confirmButtonText: "تم",
+          });
+        }
+      } finally {
+        this.formLoading = false;
+      }
     },
+
     async change() {
-      let res = await crudDataService
-        .create(`orders/${this.$route.params.id}/status`, {
-          status: this.status,
-        })
-        .then(() => {
-          this.showmodal = false;
-          this.order();
-        })
-        .catch((error) => {
-          this.err = error.data.message;
+      if (!this.status) {
+        this.setFieldErrors({ status: ["يرجى اختيار حالة الطلب"] });
+        return;
+      }
+
+      try {
+        this.formLoading = true;
+        this.clearAllErrors();
+
+        const res = await crudDataService.create(
+          `orders/${this.$route.params.id}/status`,
+          {
+            status: this.status,
+          }
+        );
+
+        this.closeStatusModal();
+        await this.order();
+        this.$swal.fire({
+          title: "تم تحديث حالة الطلب بنجاح!",
+          icon: "success",
+          confirmButtonText: "تم",
         });
+      } catch (error) {
+        console.error("Error updating status:", error);
+
+        if (error.response && error.response.status === 422) {
+          this.setFieldErrors(error.response.data.errors || {});
+        } else {
+          this.$swal.fire({
+            title: "خطأ!",
+            text:
+              error.response?.data?.message || "حدث خطأ أثناء تحديث حالة الطلب",
+            icon: "error",
+            confirmButtonText: "تم",
+          });
+        }
+      } finally {
+        this.formLoading = false;
+      }
+    },
+
+    closeStatusModal() {
+      this.showmodal = false;
+      this.clearAllErrors();
+      this.formLoading = false;
+      this.status = "";
+    },
+
+    closeDeliveryModal() {
+      this.showdeliveries = false;
+      this.clearAllErrors();
+      this.formLoading = false;
+      this.delivery_id = null;
     },
     async order() {
       let res = await crudDataService.get("orders", `${this.$route.params.id}`);
