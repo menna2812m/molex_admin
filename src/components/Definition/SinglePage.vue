@@ -198,7 +198,7 @@ export default {
         "pages",
         `${this.$route.params.id}`
       );
-      this.item = res.data.data;
+      this.item = res?.data?.data;
     },
     async updated() {
       let res = await crudDataService.create(

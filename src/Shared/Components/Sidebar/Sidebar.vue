@@ -507,6 +507,37 @@ const menu_items = [
     name: "sliders-index",
   },
   {
+    title: "الإدارة الجغرافية",
+    type: "sub",
+    icon: "fa fa-map-marker",
+    active: false,
+    defaultActive: false,
+    name: "geographic-index",
+    children: [
+      {
+        path: `${import.meta.env.BASE_URL}regions`,
+        title: "المناطق",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+      {
+        path: `${import.meta.env.BASE_URL}cities`,
+        title: "المدن",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+      {
+        path: `${import.meta.env.BASE_URL}districts`,
+        title: "الأحياء",
+        type: "link",
+        active: false,
+        defaultActive: false,
+      },
+    ],
+  },
+  {
     headTitle: "الإعدادات",
   },
 

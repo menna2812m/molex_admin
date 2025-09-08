@@ -272,6 +272,21 @@ const routes = [
         component: () =>
           import("../components/withdrawal-requests/withdrawal-requests.vue"),
       },
+      {
+        path: `${import.meta.env.BASE_URL}districts`,
+        name: "districts",
+        component: () => import("../components/Districts/Districts.vue"),
+      },
+      {
+        path: `${import.meta.env.BASE_URL}regions`,
+        name: "regions",
+        component: () => import("../components/Regions/Regions.vue"),
+      },
+      {
+        path: `${import.meta.env.BASE_URL}cities`,
+        name: "cities",
+        component: () => import("../components/Cities/Cities.vue"),
+      },
     ],
   },
 
