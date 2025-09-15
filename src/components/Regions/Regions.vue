@@ -295,7 +295,7 @@ export default {
       error: null,
       page: 1,
       last: 1,
-      selectedCountryId: 2,
+      selectedCountryId: 1,
       showModal: false,
       showViewModal: false,
       editingRegion: null,
