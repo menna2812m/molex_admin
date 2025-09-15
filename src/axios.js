@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const authlocal = localStorage.getItem("authlocal");
-console.log(authlocal);
 var domain = "https://backend.molexapp.com/dashboard";
 axios.defaults.baseURL = domain;
 

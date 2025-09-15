@@ -16,8 +16,6 @@ export class ThemeManager {
     const isDark = localStorage.getItem("Spruhadark") === "true";
     const isLight = localStorage.getItem("SpruhaLighttheme") === "true";
 
-    console.log("Theme Manager Init:", { isDark, isLight });
-
     if (isDark) {
       this.applyDarkTheme();
     } else if (isLight) {
