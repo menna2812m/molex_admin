@@ -59,7 +59,7 @@
       </div>
       <div class="d-flex align-items-center">
         <ThemeToggle class="me-3" />
-        <div class="avatar-select d-flex gap-1">
+        <div class="avatar-select d-flex gap-1" ref="dropdown">
           <i
             data-v-fe05682f=""
             class="mdi mdi-account-plus icon_color icon_color_2"
@@ -103,7 +103,24 @@ export default {
   },
   name: "Header",
 
+  mounted() {
+    // Add click outside listener when component is mounted
+    document.addEventListener("click", this.handleClickOutside);
+  },
+
+  beforeUnmount() {
+    // Remove listener when component is destroyed to prevent memory leaks
+    document.removeEventListener("click", this.handleClickOutside);
+  },
+
   methods: {
+    handleClickOutside(event) {
+      // Check if the click was outside the dropdown
+      if (this.$refs.dropdown && !this.$refs.dropdown.contains(event.target)) {
+        this.isDropdownOpen = false;
+      }
+    },
+
     detail(id) {
       this.$router.push({ name: "SingleOrder", params: { id } });
       this.show = false;
@@ -111,6 +128,7 @@ export default {
         window.location.reload();
       }, 1000);
     },
+
     async performSearch() {
       // Logic to perform the search
       console.log("Searching for:", this.searchQuery);
@@ -126,6 +144,7 @@ export default {
         this.show = false;
       }
     },
+
     async logout() {
       try {
         let res = await crudDataService.create("logout", ``);
@@ -147,14 +166,17 @@ export default {
         });
       }
     },
+
     async profile() {
       this.$router.push({
         name: "Profile",
       });
     },
+
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
+
     HeaderToggleButton() {
       let body = document.body;
       let innerWidth = window.innerWidth;
@@ -178,6 +200,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
 .search {
   width: 100%;
@@ -209,6 +232,7 @@ export default {
   cursor: pointer;
   font-size: 20px;
 }
+
 .icon_color {
   padding: 12px;
   border-radius: 50%;
@@ -220,6 +244,7 @@ export default {
     background: #e7faff;
   }
 }
+
 .avatar-select select {
   border: none;
 }
