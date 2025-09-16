@@ -305,9 +305,14 @@ const routes = [
 
   //.....Errorpage.....
   {
-    path: "/:pathMatch(.*)*",
+    path: "/404",
     name: "404page",
     component: () => import("../components/custompages/error404/Error404.vue"),
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    redirect: "/404",
   },
 ];
 

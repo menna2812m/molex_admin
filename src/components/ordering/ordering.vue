@@ -108,7 +108,7 @@
     <section
       class="position-relative"
       style="height: 100vh; display: grid; place-items: center"
-      v-if="iscomplete && myList.length <= 0"
+      v-if="myList.length <= 0 && !loading"
     >
       <div
         style="background: #fd601f; padding: 30px; font-size: 20px"

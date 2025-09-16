@@ -399,6 +399,7 @@ import Multiselect from "@vueform/multiselect";
 import crudDataService from "../../Services/crudDataService.js";
 import offerimage from "../../assets/img/offer.png";
 import { error } from "jquery";
+import { ApiErrorHandler, handleApiError } from "../../utils/errorHandler.js";
 export default {
   components: {
     Multiselect,
@@ -460,6 +461,7 @@ export default {
       perminlocal: localStorage.getItem("permissions"),
       conflictsdata: [],
       allpro: [],
+      hasError: false,
     };
   },
   methods: {
@@ -479,12 +481,18 @@ export default {
       reader.readAsDataURL(this.formData.image);
     },
     async toggleactive(id) {
-      let res = await crudDataService.create(`offers/${id}/toggle`, "");
-      const toast = useToast();
-      if (res.data.success) {
-        toast.success(res.data.message, {
-          position: "top-center",
-          timeout: 5000,
+      try {
+        let res = await crudDataService.create(`offers/${id}/toggle`, "");
+        const toast = useToast();
+        if (res.data.success) {
+          toast.success(res.data.message, {
+            position: "top-center",
+            timeout: 5000,
+          });
+        }
+      } catch (error) {
+        handleApiError(error, null, {
+          customMessage: "فشل في تحديث الحالة",
         });
       }
     },
@@ -582,6 +590,15 @@ export default {
               })
               .catch((error) => {
                 console.log(error);
+
+                // Check if error is 404
+                if (error.response && error.response.status === 404) {
+                  this.$router.push({ name: "404page" });
+                  return;
+                }
+
+                this.allpro = [];
+                this.allitempro = [];
               });
           } else if (e === "categories") {
             this.allitempro = [];
@@ -603,6 +620,15 @@ export default {
               })
               .catch((error) => {
                 console.log(error);
+
+                // Check if error is 404
+                if (error.response && error.response.status === 404) {
+                  this.$router.push({ name: "404page" });
+                  return;
+                }
+
+                this.allpro = [];
+                this.allitempro = [];
               });
           }
         }
@@ -618,6 +644,14 @@ export default {
             })
             .catch((error) => {
               console.log(error);
+
+              // Check if error is 404
+              if (error.response && error.response.status === 404) {
+                this.$router.push({ name: "404page" });
+                return;
+              }
+
+              this.allitempro = [];
             });
         } else if (e === "categories") {
           let res = await crudDataService
@@ -630,6 +664,14 @@ export default {
             })
             .catch((error) => {
               console.log(error);
+
+              // Check if error is 404
+              if (error.response && error.response.status === 404) {
+                this.$router.push({ name: "404page" });
+                return;
+              }
+
+              this.allitempro = [];
             });
         }
       }
@@ -658,12 +700,13 @@ export default {
     },
     async offers() {
       this.loading = true; // Start loading
+      this.hasError = false; // Reset error state
       try {
         let res = await crudDataService.getAll("offers");
         this.myList = res.data.data.data;
       } catch (error) {
-        console.error("Failed to fetch data:", error);
-        // Handle error
+        this.myList = handleApiError(error, []);
+        this.hasError = true;
       } finally {
         this.loading = false; // End loading regardless of success or failure
       }

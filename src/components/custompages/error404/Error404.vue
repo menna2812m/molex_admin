@@ -9,11 +9,11 @@
           <div class="col-lg-12">
             <h1>Oops.The Page you are looking for doesn't exit..</h1>
             <h6 class="tx-15 mt-3 mb-4 text-white-50">
-              You may have mistyped the address or the page may have moved. Try searching
-              below.
+              You may have mistyped the address or the page may have moved. Try
+              searching below.
             </h6>
             <router-link
-              :to="`${url}admin`"
+              :to="`${url}dashboard`"
               class="btn ripple btn-success text-center"
             >
               Back to Home
@@ -27,7 +27,6 @@
 
 <script>
 export default {
- 
   data() {
     return {
       url: import.meta.env.BASE_URL,
