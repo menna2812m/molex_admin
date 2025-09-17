@@ -2,13 +2,13 @@
   <section
     class="position-relative"
     style="height: 80vh; display: grid; place-items: center"
-    v-if="loading"
+    v-if="loading && !myList?.length"
   >
     <section class="cate"></section>
     <progress class="pure-material-progress-circular" />
   </section>
   <section class="mt-5 pt-5" v-else>
-    <section v-if="myList.length > 0">
+    <section v-if="myList?.length > 0">
       <div v-for="(item, index) in myList" :key="index">
         <div class="d-flex justify-content-between align-items-start pt-3 pb-2">
           <div class="d-flex align-items-start">
@@ -131,7 +131,7 @@ export default {
     //   this.myList = res.data.data.data;
     // },
     async toggleactive(id) {
-      let res = await crudDataService.create(`reviews/${id}/toggle`, "");
+      let res = await crudDataService.create(`faqs/${id}/toggle`, "");
       const toast = useToast();
       if (res.data.success) {
         toast.success(res.data.message, {
@@ -144,10 +144,12 @@ export default {
       this.loading = true; // Start loading
 
       try {
-        let res = await crudDataService.getAll(`reviews?page=${this.page}`);
+        let res = await crudDataService.getAll(`faqs?page=${this.page}`);
+        this.loading = false;
         this.myList = res.data.data.data;
         this.last = res.data.data.last_page;
       } catch (error) {
+        this.loading = false;
         console.error("Failed to fetch data:", error);
         // Handle error
       } finally {
@@ -170,7 +172,7 @@ export default {
               icon: "success",
               confirmButtonText: "تم", // ✅ Custom OK button text
             });
-            crudDataService.delete("reviews", `${data}`).then((response) => {
+            crudDataService.delete("faqs", `${data}`).then((response) => {
               console.log(response);
               this.myList.splice(index, 1);
               this.getAllData();
