@@ -497,9 +497,7 @@ export default {
 
     async allcities() {
       try {
-        const res = await axios.get(
-          "https://mall-express.code7x.com/api/cities"
-        );
+        const res = await axios.get("https://backend.molexapp.com/api/cities");
         this.cities = res.data.data.map((city) => ({
           value: city.id,
           name: city.name,
