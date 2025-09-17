@@ -54,7 +54,12 @@
 
     <!-- Edit Group Modal -->
     <teleport to="body">
-      <b-modal id="add-page" v-model="ShowModel" hide-footer>
+      <b-modal
+        id="add-page"
+        v-model="ShowModel"
+        hide-footer
+        modal-class="customer-model"
+      >
         <div class="mt-4 pt-1 pos-relative" style="z-index: 5555">
           <h6 style="color: #febcd5" class="text-center">تعديل المجموعة</h6>
           <form @submit.prevent="update">
@@ -495,7 +500,7 @@ input::file-selector-button {
   background-image: linear-gradient(to right, #fd601f, #fd601f) !important;
 }
 
-.modal .modal-header {
+.customer-model .modal-header {
   display: none;
 }
 
@@ -516,7 +521,7 @@ input::file-selector-button {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
+  .customer-model .modal-dialog {
     margin: 5.75rem auto;
   }
 }

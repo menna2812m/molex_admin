@@ -6,7 +6,7 @@
     </button>
 
     <teleport to="body">
-      <b-modal id="add" v-model="ShowModel">
+      <b-modal id="add" v-model="ShowModel" modal-class="customer-model">
         <div class="imgtoadd">
           <img src="../../assets/img/1.png" alt="img2" />
         </div>

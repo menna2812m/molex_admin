@@ -1385,8 +1385,10 @@ export default {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
-    margin: 8.75rem auto;
+  .store-model {
+    .modal-dialog {
+      margin: 8.75rem auto;
+    }
   }
 }
 </style>

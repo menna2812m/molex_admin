@@ -49,6 +49,7 @@
         v-model="ShowModel"
         hide-footer
         class="overflow-auto"
+        modal-class="customer-model"
       >
         <div class="mt-2 pos-relative" style="z-index: 5555">
           <form @submit.prevent="add">

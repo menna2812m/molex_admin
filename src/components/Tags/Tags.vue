@@ -69,7 +69,13 @@
     </section>
 
     <teleport to="body">
-      <b-modal id="add-page" v-model="ShowModel" hide-footer title="اضافة وسم">
+      <b-modal
+        id="add-page"
+        v-model="ShowModel"
+        hide-footer
+        title="اضافة وسم"
+        modal-class="tags-model"
+      >
         <div class="p-0">
           <form @submit.prevent="add">
             <div class="row">
@@ -241,7 +247,7 @@ export default {
 }
 </style>
 <style lang="scss">
-.modal {
+.tags-model {
   & .multiselect-placeholder,
   & ::placeholder {
     font-size: 12px;
@@ -263,7 +269,7 @@ export default {
   }
 }
 @media (min-width: 576px) {
-  .modal-dialog {
+  .tags-model .modal-dialog {
     margin: 8.75rem auto;
   }
 }

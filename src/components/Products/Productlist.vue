@@ -109,7 +109,12 @@
       </section>
     </div>
     <teleport to="body">
-      <b-modal id="add" v-model="ShowModel" hide-footer>
+      <b-modal
+        id="add"
+        v-model="ShowModel"
+        hide-footer
+        modal-class="products-model"
+      >
         <div class="imgtoadd">
           <img src="../../assets/img/delet.png" alt="img2" />
         </div>
@@ -1195,10 +1200,10 @@ export default {
 }
 </style>
 <style lang="scss">
-.modal.show.edit .modal-header {
+.products-model.show.edit .modal-header {
   display: inline-flex;
 }
-.modal.show.edit .modal-dialog {
+.products-model.show.edit .modal-dialog {
   max-width: 800px;
 }
 
@@ -1226,7 +1231,7 @@ export default {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
+  .products-model .modal-dialog {
     margin: 8.75rem auto;
   }
 }

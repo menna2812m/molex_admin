@@ -603,7 +603,7 @@ export default {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
+  .reminder-isolated-modal .modal-dialog {
     max-width: 620px;
     margin: 8.75rem auto;
   }

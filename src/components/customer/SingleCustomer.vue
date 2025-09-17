@@ -81,7 +81,12 @@
       </div>
     </div>
     <teleport to="body">
-      <b-modal id="add-page" v-model="ShowModel" hide-footer>
+      <b-modal
+        id="add-page"
+        v-model="ShowModel"
+        hide-footer
+        modal-class="customer-model"
+      >
         <div class="imgtoadd">
           <img src="../../assets/img/1.png" alt="img2" />
         </div>
@@ -403,7 +408,7 @@ export default {
 
   right: 0;
 }
-.modal .modal-header {
+.customer-model .modal-header {
   display: none;
 }
 .imgtoadd {
@@ -422,7 +427,7 @@ export default {
   }
 }
 @media (min-width: 576px) {
-  .modal-dialog {
+  .customer-model .modal-dialog {
     margin: 8.75rem auto;
   }
 }

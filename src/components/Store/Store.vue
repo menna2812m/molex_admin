@@ -1197,7 +1197,7 @@ export default {
 </style>
 
 <style lang="scss">
-.modal {
+.store-model {
   & .multiselect-placeholder,
   & ::placeholder {
     font-size: 12px;
@@ -1225,8 +1225,10 @@ export default {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
-    margin: 8.75rem auto;
+  .store-model {
+    .modal-dialog {
+      margin: 8.75rem auto;
+    }
   }
 }
 

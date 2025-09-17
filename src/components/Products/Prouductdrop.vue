@@ -11,6 +11,7 @@
         hide-footer
         class="add"
         title="إضافة منتج   "
+        modal-class="products-model"
       >
         <div class="row pos-relative" style="z-index: 5555">
           <div class="col-lg-12">
@@ -380,10 +381,10 @@ export default {
 .itteemm .multiselect-option {
   padding: 0 !important;
 }
-.modal.show.add .modal-header {
+.products-model.show.add .modal-header {
   display: inline-flex;
 }
-.modal.show.add .modal-dialog {
+.products-model.show.add .modal-dialog {
   max-width: 800px;
 }
 </style>

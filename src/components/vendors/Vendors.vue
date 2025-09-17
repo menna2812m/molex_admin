@@ -107,7 +107,13 @@
 
     <!-- Add Vendor Modal -->
     <teleport to="body">
-      <b-modal id="add-page" v-model="ShowModel" hide-footer title="اضافة بائع">
+      <b-modal
+        id="add-page"
+        v-model="ShowModel"
+        hide-footer
+        title="اضافة بائع"
+        modal-class="vendor-model"
+      >
         <div class="p-0">
           <form @submit.prevent="add" autocomplete="off">
             <div class="row">
@@ -888,13 +894,16 @@ i[class*="mdi-eye"] {
 </style>
 
 <style lang="scss">
-.modal {
+.vendor-model {
   & .multiselect-placeholder,
   & ::placeholder {
     font-size: 12px;
   }
 }
-
+.vendor-model.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translate(0, -15%);
+}
 .imgtoadd {
   background: #fff;
   width: 100px;
@@ -912,7 +921,7 @@ i[class*="mdi-eye"] {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
+  .vendor-model .modal-dialog {
     margin: 8.75rem auto;
   }
 }
