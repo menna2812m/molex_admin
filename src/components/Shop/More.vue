@@ -11,7 +11,7 @@
           <p class="text-muted">
             (
             <span class="text-black">115</span>
-            ر.س)
+            دينار عراقي)
           </p>
           <p class="text-muted">أضف جميع فروعك وأظهرها لعملائك</p>
           <button class="btn-add twobtn">أضف لمتجرك</button>
@@ -25,7 +25,9 @@
             <img src="../../assets/img/svgexport-10.png" alt="" />
           </div>
           <h6 class="pt-2" style="color: #fe7eae">زياده عدد المستخدمين</h6>
-          <p class="text-muted">( <span class="text-black">250</span> ر.س)</p>
+          <p class="text-muted">
+            ( <span class="text-black">250</span> دينار عراقي)
+          </p>
           <p class="text-muted">أضف طاقم عملك لإدارة متجرك بشكل متكامل</p>
           <button class="btn-add twobtn">أضف لمتجرك</button>
         </div>

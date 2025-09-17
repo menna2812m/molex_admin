@@ -26,7 +26,7 @@
                     <h4 class="fw-semibold pb-1 mb-0">كشك بلس</h4>
                     <p class="fw-semibold mb-0">
                       <span style="color: #fe7eae" class="fs-5">99</span>
-                      ر.س / شهريا
+                      دينار عراقي / شهريا
                     </p>
                   </div>
                   <div class="pt-3">
@@ -116,7 +116,7 @@
                     <h4 class="fw-semibold pb-1 mb-0">كشك بلس</h4>
                     <p class="fw-semibold mb-0">
                       <span style="color: #fe7eae" class="fs-5">99</span>
-                      ر.س / شهريا
+                      دينار عراقي / شهريا
                     </p>
                   </div>
                   <div class="pt-3">

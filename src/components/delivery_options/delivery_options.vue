@@ -201,7 +201,7 @@
                     min="0"
                     step="0.01"
                   />
-                  <span class="input-group-text">ر.س</span>
+                  <span class="input-group-text">دينار عراقي</span>
                 </div>
                 <div
                   v-if="hasFieldError('price')"
@@ -330,7 +330,7 @@
                       min="0"
                       step="0.01"
                     />
-                    <span class="input-group-text">ر.س</span>
+                    <span class="input-group-text">دينار عراقي</span>
                   </div>
                   <div
                     v-if="hasFieldError('price')"

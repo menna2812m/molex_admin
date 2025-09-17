@@ -11,7 +11,7 @@
           <p class="text-muted">
             (
             <span class="text-black">115</span>
-            ر.س)
+            دينار عراقي)
           </p>
           <p class="text-muted">تواصل أوسع و وصول أسرع بتكاليف أقل</p>
           <button class="btn-add twobtn">أضف لمتجرك</button>
@@ -28,7 +28,7 @@
           <p class="text-muted">
             (
             <span class="text-black">250</span>
-            ر.س)
+            دينار عراقي)
           </p>
           <p class="text-muted">تواصل أوسع و وصول أسرع بتكاليف أقل</p>
 
@@ -46,7 +46,7 @@
           <p class="text-muted">
             (
             <span class="text-black">300</span>
-            ر.س)
+            دينار عراقي)
           </p>
           <p class="text-muted">تواصل أوسع و وصول أسرع بتكاليف أقل</p>
           <button class="btn-add twobtn">أضف لمتجرك</button>

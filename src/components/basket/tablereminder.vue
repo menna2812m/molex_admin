@@ -49,7 +49,7 @@
                 <td>
                   <span v-if="item.discount_value">
                     {{ item.discount_value }}
-                    {{ item.discount_type === "percent" ? "%" : "ر.س" }}
+                    {{ item.discount_type === "percent" ? "%" : "دينار عراقي" }}
                   </span>
                   <span v-else class="text-muted">-</span>
                 </td>
@@ -204,7 +204,7 @@
                     class="position-absolute fw-semibold"
                     style="top: 25%; left: 9%"
                   >
-                    ر.س
+                    دينار عراقي
                   </p>
                 </div>
                 <div

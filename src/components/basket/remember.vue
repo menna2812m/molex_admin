@@ -83,7 +83,7 @@
                     class="position-absolute fw-semibold"
                     style="top: 25%; left: 9%"
                   >
-                    ر.س
+                    دينار عراقي
                   </p>
                 </div>
                 <div
