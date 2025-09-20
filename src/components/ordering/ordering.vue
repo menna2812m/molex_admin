@@ -119,21 +119,35 @@
     </section>
   </section>
   <teleport to="body">
-    <b-modal id="add-body" v-model="showmodal" hide-footer title="تغير الحالة ">
-      <div class="pos-relative" style="z-index: 5555">
-        <form @submit.prevent="statchange()">
-          <div class="m-2">
-            <Multiselect
-              label="name"
-              :searchable="true"
-              :options="status_type"
-              placeholder="الحالة"
-              v-model="status"
-            />
-          </div>
-          <p v-if="err" class="text-danger">{{ err }}</p>
+    <b-modal
+      id="add-body"
+      v-model="showmodal"
+      hide-footer
+      title="تغير الحالة "
+      modal-class="modal-dropdown-fix modal-fixed-footer"
+      dialog-class="modal-dialog-dropdown"
+      size="md"
+    >
+      <div class="modal-content-wrapper">
+        <div class="modal-body-content">
+          <form @submit.prevent="statchange()" class="modal-form">
+            <div class="m-2">
+              <Multiselect
+                label="name"
+                :searchable="true"
+                :options="status_type"
+                placeholder="الحالة"
+                v-model="status"
+              />
+            </div>
+            <p v-if="err" class="text-danger">{{ err }}</p>
+          </form>
+        </div>
+        <div class="modal-fixed-actions">
           <div class="text-center">
-            <button class="fs-15 btn-save mx-1">حفظ</button>
+            <button class="fs-15 btn-save mx-1" @click="statchange()">
+              حفظ
+            </button>
             <button
               class="fs-15 btn-cancel mx-1"
               @click="showmodal = false"
@@ -142,7 +156,7 @@
               الغاء
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </b-modal>
   </teleport>
@@ -152,20 +166,32 @@
       v-model="showdeliveries"
       hide-footer
       title="اضافة مندوب  "
+      modal-class="modal-dropdown-fix modal-fixed-footer"
+      dialog-class="modal-dialog-dropdown"
+      size="md"
     >
-      <div class="pos-relative" style="z-index: 5555">
-        <form @submit.prevent="adddelivery(delivery_id)">
-          <div class="m-2">
-            <Multiselect
-              label="name"
-              :searchable="true"
-              :options="deliveries"
-              placeholder="المندوب"
-              v-model="delivery_id"
-            />
-          </div>
+      <div class="modal-content-wrapper">
+        <div class="modal-body-content">
+          <form @submit.prevent="adddelivery(delivery_id)" class="modal-form">
+            <div class="m-2">
+              <Multiselect
+                label="name"
+                :searchable="true"
+                :options="deliveries"
+                placeholder="المندوب"
+                v-model="delivery_id"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-fixed-actions">
           <div class="text-center">
-            <button class="fs-15 btn-save mx-1">حفظ</button>
+            <button
+              class="fs-15 btn-save mx-1"
+              @click="adddelivery(delivery_id)"
+            >
+              حفظ
+            </button>
             <button
               type="button"
               class="fs-15 btn-cancel mx-1"
@@ -174,7 +200,7 @@
               الغاء
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </b-modal>
   </teleport>
@@ -193,18 +219,24 @@ export default {
       userimg,
       type: [
         { value: "", name: "الكل " },
-        { value: "pending", name: "قيد المراجعة" },
-        { value: "processing", name: "قيد التنفيذ" },
-        { value: "completed", name: "مكتمل" },
         { value: "waitingForPayment", name: "انتظار الدفع " },
-        { value: "cancelled", name: "إلغاء " },
+        { value: "pending", name: "قيد المراجعة" },
+        { value: "assigned", name: "مخصص" },
+        { value: "processing", name: "قيد المعالجة" },
+        { value: "withDelivery", name: "مع التوصيل" },
+        { value: "completed", name: "مكتمل" },
+        { value: "cancelled", name: "ملغى" },
+        { value: "hasProblem", name: "يوجد مشكلة" },
       ],
       status_type: [
-        { value: "pending", name: "قيد المراجعة" },
-        { value: "processing", name: "قيد التنفيذ" },
-        { value: "completed", name: "مكتمل" },
         { value: "waitingForPayment", name: "انتظار الدفع " },
-        { value: "cancelled", name: "إلغاء " },
+        { value: "pending", name: "قيد المراجعة" },
+        { value: "assigned", name: "مخصص" },
+        { value: "processing", name: "قيد المعالجة" },
+        { value: "withDelivery", name: "مع التوصيل" },
+        { value: "completed", name: "مكتمل" },
+        { value: "cancelled", name: "ملغى" },
+        { value: "hasProblem", name: "يوجد مشكلة" },
       ],
       myList: [],
       showmodal: false,
@@ -316,7 +348,7 @@ export default {
 
 <style scoped lang="scss">
 .pending {
-  color: #7e87f7;
+  color: #fd601f;
 }
 .icon-table {
   padding: 12px 13px 0 12px;
@@ -339,15 +371,69 @@ export default {
   border: 1px solid #e8e8f7;
 }
 
-.dropitem {
-  background: #fff;
-  position: absolute;
-  left: 5px;
-  border: 1px solid #e8e8f7;
-  margin: 2px;
-  border-radius: 3px;
-  a {
-    cursor: pointer;
+// ✅ Modal with fixed footer structure
+.modal-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 300px;
+}
+
+.modal-body-content {
+  flex: 1;
+  overflow: visible;
+  padding-bottom: 20px;
+  min-height: 200px;
+}
+
+.modal-form {
+  overflow: visible;
+}
+
+// ✅ Fixed action buttons at bottom
+.modal-fixed-actions {
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid #676a6d;
+  padding: 15px 20px;
+  margin: 0 -20px -25px -20px;
+  z-index: 10;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+// ✅ Global styles for modal with fixed footer
+:deep(.modal-fixed-footer) {
+  .modal-dialog {
+    height: auto;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
   }
+
+  .modal-content {
+    height: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .modal-body {
+    flex: 1;
+    overflow: visible;
+    padding: 25px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-header {
+    flex-shrink: 0;
+  }
+}
+
+// ✅ Multiselect dropdown z-index
+:deep(.multiselect-dropdown) {
+  z-index: 999999 !important;
+  position: absolute !important;
 }
 </style>

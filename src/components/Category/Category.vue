@@ -461,6 +461,8 @@ export default {
     },
 
     async edit(data) {
+      console.log(data, "lll");
+
       this.id = data.id;
       this.ShowModelEdit = true;
       this.clearAllErrors();
