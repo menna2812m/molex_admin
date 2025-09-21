@@ -461,16 +461,14 @@ export default {
     },
 
     async edit(data) {
-      console.log(data, "lll");
-
       this.id = data.id;
       this.ShowModelEdit = true;
       this.clearAllErrors();
 
-      this.formData.name.ar = data.name.ar;
-      this.formData.name.en = data.name.en;
-      this.formData.description.ar = data.description.ar;
-      this.formData.description.en = data.description.en;
+      this.formData.name.ar = data.name.ar || data.name_ar;
+      this.formData.name.en = data.name.en || data.name_en;
+      this.formData.description.ar = data.description.ar || data.description_ar;
+      this.formData.description.en = data.description.en || data.description_en;
       this.formData.image = data.image;
       (this.textimage = data.image),
         (this.formData.image = this.onFileSelected(data.image));
