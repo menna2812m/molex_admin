@@ -11,7 +11,7 @@
         <div class="pos-relative">
           <button
             @click="toggleDropdown"
-            class="twobtn bg-white border"
+            class="bg-white border p-2"
             style="border-color: #fd601f !important; color: #fd601f"
             v-if="perminlocal.includes('pages-update')"
           >
@@ -180,7 +180,20 @@
 
                       <div class="mb-2">
                         <label class="form-label small">عربي</label>
+                        <textarea
+                          v-if="form.type === 'textarea'"
+                          class="form-control"
+                          :class="{
+                            'is-invalid': hasFieldError(`${key}.value.ar`),
+                          }"
+                          v-model="form.value.ar"
+                          @input="clearFieldError(`${key}.value.ar`)"
+                          @focus="clearFieldError(`${key}.value.ar`)"
+                          :placeholder="getPlaceholder(form.type, 'ar')"
+                          rows="4"
+                        ></textarea>
                         <input
+                          v-else
                           :type="getInputType(form.type)"
                           class="form-control"
                           :class="{
@@ -201,7 +214,20 @@
 
                       <div class="mb-2">
                         <label class="form-label small">انجليزي</label>
+                        <textarea
+                          v-if="form.type === 'textarea'"
+                          class="form-control"
+                          :class="{
+                            'is-invalid': hasFieldError(`${key}.value.en`),
+                          }"
+                          v-model="form.value.en"
+                          @input="clearFieldError(`${key}.value.en`)"
+                          @focus="clearFieldError(`${key}.value.en`)"
+                          :placeholder="getPlaceholder(form.type, 'en')"
+                          rows="4"
+                        ></textarea>
                         <input
+                          v-else
                           :type="getInputType(form.type)"
                           class="form-control"
                           :class="{
@@ -225,7 +251,18 @@
                       <label class="form-label">
                         {{ form.name }} <span class="text-danger">*</span>
                       </label>
+                      <textarea
+                        v-if="form.type === 'textarea'"
+                        class="form-control"
+                        :class="{ 'is-invalid': hasFieldError(`${key}.value`) }"
+                        v-model="form.value"
+                        @input="clearFieldError(`${key}.value`)"
+                        @focus="clearFieldError(`${key}.value`)"
+                        :placeholder="getPlaceholder(form.type)"
+                        rows="4"
+                      ></textarea>
                       <input
+                        v-else
                         :type="getInputType(form.type)"
                         class="form-control"
                         :class="{ 'is-invalid': hasFieldError(`${key}.value`) }"
@@ -319,6 +356,7 @@ export default {
       const typeMap = {
         banner: "text",
         text: "text",
+        textarea: "textarea", // Will be handled separately in template
         email: "email",
         number: "number",
         url: "url",
@@ -434,13 +472,33 @@ export default {
         this.imagePreview = {};
 
         this.items.forEach((ele) => {
+          let processedValue;
+
+          // Handle value based on translation flag and actual data structure
+          if (ele.translated == 1) {
+            // Should be translated - create object structure
+            if (typeof ele.value === "object" && ele.value !== null) {
+              processedValue = {
+                ar: ele.value.ar || "",
+                en: ele.value.en || "",
+              };
+            } else {
+              processedValue = { ar: ele.value || "", en: "" };
+            }
+          } else {
+            // Should NOT be translated - use simple value
+            if (typeof ele.value === "object" && ele.value !== null) {
+              // If API sends object but should be simple, extract the value
+              processedValue = ele.value.ar || ele.value.en || ele.value || "";
+            } else {
+              processedValue = ele.value || "";
+            }
+          }
+
           this.formData[ele.key] = {
             name: ele.display_name,
             image: ele.image,
-            value:
-              ele.translated == 1
-                ? { ar: ele.value.ar, en: ele.value.en }
-                : ele.value,
+            value: processedValue,
             type: ele.type,
           };
         });
