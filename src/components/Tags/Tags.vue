@@ -17,7 +17,7 @@
       <progress class="pure-material-progress-circular" />
     </section>
     <section v-else>
-      <div class="card custom-card border-0 mg-b-20" v-if="myList.length > 0">
+      <div class="card custom-card border-0 mg-b-20" v-if="myList?.length > 0">
         <div class="card-body p-0">
           <div
             class="table-responsive border-0 rounded border-bottom-0 px-4 mb-0"
@@ -31,7 +31,7 @@
                 :key="index"
                 class="list_item py-3 w-100 align-items-center justify-content-between"
               >
-                <td class="py-4">{{ item.name }}</td>
+                <td class="py-4">{{ item?.name }}</td>
 
                 <td>
                   <button
@@ -57,7 +57,7 @@
       <section
         class="position-relative"
         style="height: 100vh; display: grid; place-items: center"
-        v-else
+        v-if="myList?.length == 0"
       >
         <div
           style="background: #fd601f; padding: 30px; font-size: 20px"
@@ -155,7 +155,6 @@ export default {
   methods: {
     async edit(data) {
       this.ShowModeledit = true;
-      console.log(data);
       this.id = data.id;
 
       this.formDataupdate.name = data.name;
@@ -173,7 +172,7 @@ export default {
 
       try {
         let res = await crudDataService.getAll("tags");
-        this.myList = res.data.data;
+        this.myList = res.data.data?.data;
       } catch (error) {
         console.error("Failed to fetch data:", error);
         // Handle error
