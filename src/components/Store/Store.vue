@@ -634,6 +634,7 @@
                   group-values="options"
                   group-label="name"
                   @change="addbrands($event)"
+                  v-model="formDataupdate.brands_ids"
                   :class="{ 'is-invalid': hasFieldError('brands_ids') }"
                 />
                 <div
@@ -653,6 +654,7 @@
                   :close-on-select="false"
                   group-values="options"
                   group-label="name"
+                  v-model="formDataupdate.categories_ids"
                   @change="addcategories($event)"
                   :class="{ 'is-invalid': hasFieldError('categories_ids') }"
                 />
@@ -818,9 +820,12 @@ export default {
     async edit(data) {
       this.ShowModeledit = true;
       this.id = data.id;
-
       // ✅ Clear all previous errors when opening edit modal
       this.clearAllErrors();
+
+      // ✅ Reset arrays first to prevent duplicates
+      this.formDataupdate.categories_ids = [];
+      this.formDataupdate.brands_ids = [];
 
       this.formDataupdate.name = data.name;
       this.formDataupdate.store_phone = data.phone;
@@ -828,14 +833,32 @@ export default {
       this.formDataupdate.region_id = data.region_id;
       this.formDataupdate.city_id = data.city_id;
       this.formDataupdate.district_id = data.district_id;
-      data.categories?.forEach((element) => {
-        this.formDataupdate.categories_ids.push(element.id);
-      });
-      data.brands?.forEach((element) => {
-        this.formDataupdate.brands_ids.push(element.id);
-      });
+
+      // ✅ Use map instead of forEach + push for cleaner code
+      this.formDataupdate.categories_ids =
+        data.categories?.map((element) => element.id) || [];
+      this.formDataupdate.brands_ids =
+        data.brands?.map((element) => element.id) || [];
+
       this.imageUrl = data.image;
       this.videoUrl = data.video;
+
+      // ✅ Load related data for dropdowns
+      this.changecountry(); // This will load regions
+
+      // Wait a bit for regions to load, then load cities
+      setTimeout(() => {
+        if (this.formDataupdate.region_id) {
+          this.changecities(this.formDataupdate.region_id, this.regions);
+        }
+      }, 100);
+
+      // Wait a bit more for cities to load, then load districts
+      setTimeout(() => {
+        if (this.formDataupdate.city_id) {
+          this.district(this.formDataupdate.city_id, this.cities);
+        }
+      }, 200);
     },
 
     async update() {
@@ -993,7 +1016,7 @@ export default {
       let res = await crudDataService.getAll("brands?limit=1000");
       this.allbrands = res.data.data.data.map((bran) => ({
         value: bran.id,
-        name: bran.name,
+        name: bran.name.ar,
       }));
     },
 
@@ -1001,7 +1024,7 @@ export default {
       let res = await crudDataService.getAll("categories");
       this.allcategory = res.data.data.data.map((cat) => ({
         value: cat.id,
-        name: cat.name,
+        name: cat.name.ar,
       }));
     },
 

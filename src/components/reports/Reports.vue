@@ -113,7 +113,7 @@
           </div>
         </div>
 
-        <div class="card custom-card border mg-b-20">
+        <!-- <div class="card custom-card border mg-b-20">
           <div class="card-header pb-3">
             <h4 class="card-title mb-0">أفضل مجموع</h4>
           </div>
@@ -176,8 +176,8 @@
             />
             <p>لا توجد بيانات كافية</p>
           </div>
-        </div>
-        <div class="card custom-card border mg-b-20">
+        </div> -->
+        <!-- <div class="card custom-card border mg-b-20">
           <div class="card-header pb-3">
             <h4 class="card-title mb-0">تذكير السلات</h4>
           </div>
@@ -243,7 +243,7 @@
             />
             <p>لا توجد بيانات كافية</p>
           </div>
-        </div>
+        </div> -->
       </section>
       <section v-if="sells">
         <div class="d-flex justify-content-end align-items-center mb-3">

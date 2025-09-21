@@ -68,13 +68,13 @@
                       <input
                         type="file"
                         class="form-control"
-                        :class="{ 'is-invalid': hasFieldError(`${key}.image`) }"
+                        :class="{ 'is-invalid': shouldShowImageError(key) }"
                         @change="onFileSelected($event, key)"
                         @focus="clearFieldError(`${key}.image`)"
                         accept="image/jpeg, image/jpg, image/png, image/gif, image/webp"
                       />
                       <div
-                        v-if="hasFieldError(`${key}.image`)"
+                        v-if="shouldShowImageError(key)"
                         class="invalid-feedback"
                       >
                         {{ getFieldError(`${key}.image`) }}
@@ -351,6 +351,20 @@ export default {
       return typeof value === "string";
     },
 
+    shouldShowImageError(key) {
+      // Only show image errors if there's no existing image URL
+      const form = this.formData[key];
+      if (!form || form.type !== "image") return false;
+
+      // If there's an existing image (string URL), don't show required errors
+      if (typeof form.image === "string" && form.image) {
+        return false;
+      }
+
+      // Only show errors for new file uploads or when truly missing
+      return this.hasFieldError(`${key}.image`);
+    },
+
     getInputType(type) {
       // Map custom types to HTML input types
       const typeMap = {
@@ -541,6 +555,15 @@ export default {
       this.clearAllErrors();
       // Reset to original data
       this.formData = JSON.parse(JSON.stringify(this.originalFormData));
+
+      // Clear any image-related errors specifically
+      Object.keys(this.formData).forEach((key) => {
+        const form = this.formData[key];
+        if (form.type === "image") {
+          this.clearFieldError(`${key}.image`);
+          this.clearFieldError(key);
+        }
+      });
     },
 
     cancelEdit() {
@@ -558,13 +581,14 @@ export default {
         const form = this.formData[key];
 
         if (form.type === "image") {
-          // Only validate if it's a new file upload
+          // Only validate if it's a new file upload AND there's no existing image
           if (form.image && typeof form.image !== "string") {
             rules[`${key}.image`] = {
               label: form.name,
               maxSize: 2048, // 2MB
             };
           }
+          // Don't add required validation for images that already exist as URLs
         } else if (typeof form.value === "object") {
           rules[`${key}.value.ar`] = {
             label: `${form.name} (عربي)`,

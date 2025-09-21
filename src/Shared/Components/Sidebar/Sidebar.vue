@@ -386,15 +386,15 @@ const menu_items = [
     defaultActive: false,
     name: "announcements-index", // Changed from "Ads-index" to match API
   },
-  {
-    path: `${import.meta.env.BASE_URL}tags`,
-    title: "الوسوم",
-    type: "link",
-    icon: "ion-pricetag",
-    active: true,
-    defaultActive: false,
-    name: "tags-index",
-  },
+  // {
+  //   path: `${import.meta.env.BASE_URL}tags`,
+  //   title: "الوسوم",
+  //   type: "link",
+  //   icon: "ion-pricetag",
+  //   active: true,
+  //   defaultActive: false,
+  //   name: "tags-index",
+  // },
   {
     path: `${import.meta.env.BASE_URL}brands`,
     title: "الماركات",
