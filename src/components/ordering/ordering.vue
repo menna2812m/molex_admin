@@ -132,26 +132,39 @@
         <div class="modal-body-content">
           <form @submit.prevent="statchange()" class="modal-form">
             <div class="m-2">
+              <label class="form-label">الحالة *</label>
               <Multiselect
                 label="name"
                 :searchable="true"
                 :options="status_type"
-                placeholder="الحالة"
-                v-model="status"
+                placeholder="اختر الحالة"
+                v-model="statusFormData.status"
+                :class="{ 'is-invalid': hasFieldError('status') }"
+                @change="clearFieldError('status')"
               />
+              <div
+                v-if="hasFieldError('status')"
+                class="invalid-feedback d-block"
+              >
+                {{ getFieldError("status") }}
+              </div>
             </div>
-            <p v-if="err" class="text-danger">{{ err }}</p>
           </form>
         </div>
         <div class="modal-fixed-actions">
           <div class="text-center">
-            <button class="fs-15 btn-save mx-1" @click="statchange()">
-              حفظ
+            <button
+              class="fs-15 btn-save mx-1"
+              @click="statchange()"
+              :disabled="statusLoading"
+            >
+              {{ statusLoading ? "جاري الحفظ..." : "حفظ" }}
             </button>
             <button
               class="fs-15 btn-cancel mx-1"
               @click="showmodal = false"
               type="button"
+              :disabled="statusLoading"
             >
               الغاء
             </button>
@@ -172,15 +185,24 @@
     >
       <div class="modal-content-wrapper">
         <div class="modal-body-content">
-          <form @submit.prevent="adddelivery(delivery_id)" class="modal-form">
+          <form @submit.prevent="adddelivery()" class="modal-form">
             <div class="m-2">
+              <label class="form-label">المندوب *</label>
               <Multiselect
                 label="name"
                 :searchable="true"
                 :options="deliveries"
-                placeholder="المندوب"
-                v-model="delivery_id"
+                placeholder="اختر المندوب"
+                v-model="deliveryFormData.delivery_id"
+                :class="{ 'is-invalid': hasFieldError('delivery_id') }"
+                @change="clearFieldError('delivery_id')"
               />
+              <div
+                v-if="hasFieldError('delivery_id')"
+                class="invalid-feedback d-block"
+              >
+                {{ getFieldError("delivery_id") }}
+              </div>
             </div>
           </form>
         </div>
@@ -188,14 +210,16 @@
           <div class="text-center">
             <button
               class="fs-15 btn-save mx-1"
-              @click="adddelivery(delivery_id)"
+              @click="adddelivery()"
+              :disabled="deliveryLoading"
             >
-              حفظ
+              {{ deliveryLoading ? "جاري الحفظ..." : "حفظ" }}
             </button>
             <button
               type="button"
               class="fs-15 btn-cancel mx-1"
               @click="showdeliveries = false"
+              :disabled="deliveryLoading"
             >
               الغاء
             </button>
@@ -210,10 +234,15 @@
 import Multiselect from "@vueform/multiselect";
 import crudDataService from "../../Services/crudDataService";
 import userimg from "../../assets/img/user.png";
+import { FormErrorMixin } from "../../mixins/FormErrorMixin.js";
+import { handleApiError, ApiErrorHandler } from "../../utils/errorHandler.js";
+import { useToast } from "vue-toastification";
+
 export default {
   components: {
     Multiselect,
   },
+  mixins: [FormErrorMixin],
   data() {
     return {
       userimg,
@@ -248,6 +277,19 @@ export default {
       id: null,
       deliveries: [],
       showdeliveries: false,
+      // Form data for status change
+      statusFormData: {
+        status: null,
+      },
+      // Form data for delivery assignment
+      deliveryFormData: {
+        delivery_id: null,
+      },
+      // Loading states for buttons
+      statusLoading: false,
+      deliveryLoading: false,
+      // Watched fields for automatic error clearing
+      watchedFields: ["statusFormData.status", "deliveryFormData.delivery_id"],
     };
   },
   methods: {
@@ -259,28 +301,28 @@ export default {
           name: delivery.full_name,
         }));
       } catch (error) {
-        console.error("Failed to fetch data:", error);
-      } finally {
-        this.loading = false; // End loading regardless of success or failure
+        this.deliveries = handleApiError(error, []);
       }
     },
     async handleTypeChange(e) {
       console.log(e);
-      let res = await crudDataService
-        .getAll(`orders?filter[status]=${e}`)
-        .then((res) => {
-          this.myList = res.data.data.data;
-          this.last = res.data.data.last_page;
-          if (this.myList.length > 0) {
-            this.iscomplete = true;
-          } else {
-            this.iscomplete = false;
-          }
-        });
+      try {
+        let res = await crudDataService.getAll(`orders?filter[status]=${e}`);
+        this.myList = res.data.data.data;
+        this.last = res.data.data.last_page;
+        this.iscomplete = this.myList.length > 0;
+      } catch (error) {
+        this.myList = handleApiError(error, []);
+        this.iscomplete = false;
+      }
     },
     async paginag(p) {
-      let res = await crudDataService.getAll(`orders?page=${this.page}`);
-      this.myList = res.data.data.data;
+      try {
+        let res = await crudDataService.getAll(`orders?page=${this.page}`);
+        this.myList = res.data.data.data;
+      } catch (error) {
+        this.myList = handleApiError(error, []);
+      }
     },
     gotopage(id) {
       if (this.perminlocal.includes("orders-show")) {
@@ -290,47 +332,91 @@ export default {
     async change(id) {
       this.showmodal = true;
       this.id = id;
+      this.clearAllErrors(); // Clear any previous errors
+      this.statusFormData.status = null; // Reset form
     },
     async deliver(id) {
       this.showdeliveries = true;
       this.id = id;
+      this.clearAllErrors(); // Clear any previous errors
+      this.deliveryFormData.delivery_id = null; // Reset form
     },
     async statchange() {
-      let res = await crudDataService
-        .create(`orders/${this.id}/status`, {
-          status: this.status,
-        })
-        .then(() => {
-          this.showmodal = false;
-          this.allorders();
-        })
-        .catch((error) => {
-          this.err = error.data.message;
+      // Validate form - need to check the actual form data structure
+      if (!this.statusFormData.status) {
+        this.setFieldErrors({
+          status: ["الحالة مطلوبة"],
         });
+        return;
+      }
+
+      this.statusLoading = true;
+      const toast = useToast();
+
+      try {
+        let res = await crudDataService.create(`orders/${this.id}/status`, {
+          status: this.statusFormData.status,
+        });
+
+        this.showmodal = false;
+        this.allorders();
+
+        toast.success("تم تحديث حالة الطلب بنجاح", {
+          position: "top-center",
+          timeout: 5000,
+        });
+      } catch (error) {
+        this.handleApiErrors(error, toast);
+      } finally {
+        this.statusLoading = false;
+      }
     },
-    async adddelivery(id) {
-      let res = await crudDataService
-        .create(`deliveries/${id}/orders`, {
-          order_id: this.id,
-        })
-        .then((result) => {
-          this.showdeliveries = false;
-          this.order();
-          this.$swal.fire(result.data.message, "", "success");
+    async adddelivery() {
+      // Validate form - need to check the actual form data structure
+      if (!this.deliveryFormData.delivery_id) {
+        this.setFieldErrors({
+          delivery_id: ["المندوب مطلوب"],
         });
+        return;
+      }
+
+      this.deliveryLoading = true;
+      const toast = useToast();
+
+      try {
+        let res = await crudDataService.create(
+          `deliveries/${this.deliveryFormData.delivery_id}/orders`,
+          {
+            order_id: this.id,
+          }
+        );
+
+        this.showdeliveries = false;
+        this.allorders();
+
+        toast.success(res.data.message || "تم تعيين المندوب بنجاح", {
+          position: "top-center",
+          timeout: 5000,
+        });
+      } catch (error) {
+        this.handleApiErrors(error, toast);
+      } finally {
+        this.deliveryLoading = false;
+      }
     },
     async allorders() {
       this.loading = true;
-      let res = await crudDataService.getAll("orders").then((res) => {
+      try {
+        let res = await crudDataService.getAll("orders");
         this.myList = res.data.data.data;
         this.last = res.data.data.last_page;
+        this.iscomplete = this.myList.length > 0;
+      } catch (error) {
+        this.myList = handleApiError(error, []);
+        this.iscomplete = false;
+      } finally {
         this.loading = false;
-        if (this.myList.length > 0) {
-          this.iscomplete = true;
-        } else {
-          this.iscomplete = false;
-        }
-      });
+      }
     },
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
@@ -435,5 +521,40 @@ export default {
 :deep(.multiselect-dropdown) {
   z-index: 999999 !important;
   position: absolute !important;
+}
+
+// ✅ Error styling for multiselect
+:deep(.multiselect.is-invalid) {
+  border-color: #dc3545;
+}
+
+:deep(.multiselect.is-invalid .multiselect-wrapper) {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #dc3545;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+}
+
+// ✅ Loading button styles
+.btn-save:disabled,
+.btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
 }
 </style>
