@@ -24,6 +24,7 @@
         v-for="(item, index) in items"
         :key="index"
         v-if="items.length > 0"
+        @click="singlebrand(item.id)"
       >
         <div class="col-md-4">
           <img

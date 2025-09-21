@@ -20,7 +20,7 @@
             <div class="pos-relative">
               <button
                 @click="toggleDropdown"
-                class="twobtn bg-white border"
+                class="twobtn options-btn bg-white border"
                 style="border-color: #fd601f !important; color: #fd601f"
               >
                 خيارات الصفحة <i class="fas fa-caret-down ms-1"></i>
@@ -52,7 +52,10 @@
         <div class="imgtoadd">
           <img src="../../assets/img/23.png" alt="img2" />
         </div>
-        <div class="mt-4 pt-1 pos-relative" style="z-index: 5555">
+        <div
+          class="mt-4 pt-1 pos-relative brand-isolated-modal-content"
+          style="z-index: 5555"
+        >
           <h6 style="color: #febcd5" class="text-right mb-3">تعديل البراند</h6>
           <form @submit.prevent="update">
             <div class="row">
@@ -287,22 +290,18 @@ export default {
           "name.ar": {
             required: true,
             label: "الاسم العربي",
-            minLength: 2,
           },
           "name.en": {
             required: true,
             label: "الاسم الإنجليزي",
-            minLength: 2,
           },
           "description.ar": {
             required: true,
             label: "الوصف العربي",
-            minLength: 5,
           },
           "description.en": {
             required: true,
             label: "الوصف الإنجليزي",
-            minLength: 5,
           },
           image: {
             maxSize: 2048, // 2MB in KB
@@ -349,20 +348,21 @@ export default {
 
 <style lang="scss">
 .brand-isolated-modal {
-  .modal-content {
+  &.fade .modal-content {
     overflow: unset;
   }
   .brand-isolated-modal-content {
     height: 75vh;
-    overflow: scroll;
     padding-bottom: 17px;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
   .modal-body {
     overflow-y: unset;
   }
-  .modal-dialog {
+  &.fade .modal-dialog {
     transition: transform 0.3s ease-out;
-    transform: translate(0, -15%);
+    transform: translate(0, -5%);
   }
 
   & .multiselect-placeholder,
@@ -375,7 +375,7 @@ input::file-selector-button {
   background-image: linear-gradient(to right, #fd601f) !important;
 }
 
-.modal .modal-header {
+.brand-isolated-modal .modal-header {
   display: none;
 }
 
@@ -388,6 +388,7 @@ input::file-selector-button {
   border-radius: 50%;
   top: -50px;
   text-align: center;
+  z-index: 9999;
   img {
     width: 90%;
     height: 90%;
@@ -396,9 +397,17 @@ input::file-selector-button {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
+  .brand-isolated-modal .modal-dialog {
     margin: 5.75rem auto;
   }
+}
+.options-btn {
+  display: flex;
+  width: 115px;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 5px;
 }
 
 #add-page {
