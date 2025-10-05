@@ -223,7 +223,7 @@ export default {
       error: null,
       page: 1,
       last: 1,
-      selectedCountryId: 2,
+      selectedCountryId: 1,
       selectedRegionId: "",
       selectedCityId: "",
       showModal: false,

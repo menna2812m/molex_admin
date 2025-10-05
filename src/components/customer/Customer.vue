@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Groupcustomer />
+    <!-- <Groupcustomer /> -->
     <div class="mt-0 pt-5">
       <button
         class="fs-15 btn-add mb-4"
@@ -29,12 +29,12 @@
               <tr class="">
                 <th>
                   <div class="d-flex align-items-center gap-2">
-                    <input
+                    <!-- <input
                       type="checkbox"
                       v-model="selectAll"
                       @change="toggleSelectAll"
                       class="custom-checkbox"
-                    />
+                    /> -->
                     <h4 class="mb-0 fw-semibold">
                       العملاء
                       <span style="color: #fb99bf" class="fw-normal">
@@ -46,9 +46,9 @@
                 <th></th>
                 <th>
                   <div class="text-end ms-auto pos-relative">
-                    <button @click="toggleDropdown" class="twobtn btn-add">
+                    <!-- <button @click="toggleDropdown" class="twobtn btn-add">
                       تحرير سريع <i class="fas fa-caret-down ms-1"></i>
-                    </button>
+                    </button> -->
                     <div v-if="isDropdownOpen" class="pos-relative">
                       <div class="tx-13 text-start dropitem">
                         <a
@@ -90,14 +90,14 @@
               >
                 <td>
                   <div class="checkbox-container">
-                    <label>
+                    <!-- <label>
                       <input
                         type="checkbox"
                         v-model="item.selected"
                         @change="selectuser(item.id)"
                         class="custom-checkbox"
                       />
-                    </label>
+                    </label> -->
                     <div class="customer-info">
                       <img
                         src="../../assets/img/avatar_male.jpg"
