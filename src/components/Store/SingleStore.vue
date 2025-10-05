@@ -510,7 +510,11 @@
 
                       <button
                         class="btn btn-primary m-auto d-block"
-                        :disabled="isSubmitting"
+                        :disabled="
+                          isSubmitting ||
+                          (formData.price &&
+                            formData.discounted_price >= formData.price)
+                        "
                       >
                         <span v-if="isSubmitting">جاري الإضافة...</span>
                         <span v-else>إضافة</span>
@@ -951,7 +955,10 @@
                     <button
                       class="btn btn-primary m-auto d-block mt-3"
                       @click="update"
-                      :disabled="isSubmitting"
+                      :disabled="
+                        isSubmitting ||
+                        formEdit.discounted_price >= formEdit.price
+                      "
                     >
                       <span v-if="isSubmitting">جاري التعديل...</span>
                       <span v-else>تعديل</span>
@@ -1376,6 +1383,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.form-control.is-invalid {
+  padding-right: 11px !important;
+}
 .store-model.fade .modal-dialog {
   transition: transform 0.3s ease-out;
   transform: translate(0, -15%);
