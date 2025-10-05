@@ -189,14 +189,47 @@
             <div class="m-2">
               <label class="form-label">المندوب *</label>
               <Multiselect
-                label="name"
                 :searchable="true"
                 :options="deliveries"
                 placeholder="اختر المندوب"
-                v-model="deliveryFormData.delivery_id"
-                :class="{ 'is-invalid': hasFieldError('delivery_id') }"
-                @change="clearFieldError('delivery_id')"
-              />
+                v-model="yourModelValue"
+              >
+                <template v-slot:option="{ option }">
+                  <div
+                    class="d-flex justify-content-between align-items-center w-100"
+                  >
+                    <span>{{ option.name }} ({{ option.city }})</span>
+                    <span
+                      class="badge"
+                      :class="{
+                        'bg-success': option.status === 'available',
+
+                        'bg-secondary': !['available'].includes(option.status),
+                      }"
+                    >
+                      {{ option.status }}
+                    </span>
+                  </div>
+                </template>
+
+                <template v-slot:singlelabel="{ value }">
+                  <div
+                    class="d-flex justify-content-between align-items-start w-80"
+                  >
+                    <span>{{ value.name }} ({{ value.city }})</span>
+                    <span
+                      class="badge"
+                      :class="{
+                        'bg-success': value.status === 'available',
+
+                        'bg-secondary': !['available'].includes(value.status),
+                      }"
+                    >
+                      {{ value.status }}
+                    </span>
+                  </div>
+                </template>
+              </Multiselect>
               <div
                 v-if="hasFieldError('delivery_id')"
                 class="invalid-feedback d-block"
@@ -293,12 +326,23 @@ export default {
     };
   },
   methods: {
+    getStatusInArabic(status) {
+      const statusMap = {
+        available: "متاح",
+        unavailable: "غير متاح",
+      };
+      return statusMap[status] || status;
+    },
     async alldeliveries() {
       try {
         let res = await crudDataService.getAll("deliveries");
         this.deliveries = res.data.data.data.map((delivery) => ({
           value: delivery.id,
           name: delivery.full_name,
+          city: delivery.city.name,
+          status: this.getStatusInArabic(delivery.status),
+          // Create a display label for search purposes
+          label: `${delivery.full_name} (${delivery.city.name}) ${delivery.status}`,
         }));
       } catch (error) {
         this.deliveries = handleApiError(error, []);
@@ -556,5 +600,8 @@ export default {
 .spinner-border-sm {
   width: 1rem;
   height: 1rem;
+}
+.w-80 {
+  width: 80% !important;
 }
 </style>
