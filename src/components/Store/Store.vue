@@ -818,49 +818,67 @@ export default {
     },
 
     async edit(data) {
+      this.clearAllErrors(); // Clear previous errors when opening modal
+      this.isEditMode = true;
       this.ShowModeledit = true;
       this.id = data.id;
-      // ✅ Clear all previous errors when opening edit modal
-      this.clearAllErrors();
+      console.log(data.region_id, "edit");
 
-      // ✅ Reset arrays first to prevent duplicates
-      this.formDataupdate.categories_ids = [];
-      this.formDataupdate.brands_ids = [];
+      // Populate form data
+      this.formDataupdate.name = data.name || "";
+      this.formDataupdate.store_phone = data.phone || "";
+      this.formDataupdate.country_id = data.country_id || 1;
 
-      this.formDataupdate.name = data.name;
-      this.formDataupdate.store_phone = data.phone;
-      this.formDataupdate.country_id = 1;
-      this.formDataupdate.region_id = data.region_id;
-      this.formDataupdate.city_id = data.city_id;
-      this.formDataupdate.district_id = data.district_id;
+      this.imageUrl = data.image || "";
+      this.videoUrl = data.video || "";
 
-      // ✅ Use map instead of forEach + push for cleaner code
-      this.formDataupdate.categories_ids =
-        data.categories?.map((element) => element.id) || [];
-      this.formDataupdate.brands_ids =
-        data.brands?.map((element) => element.id) || [];
+      // Load dependent data first, then set the values
+      if (this.formDataupdate.country_id) {
+        await this.changecountry();
 
-      this.imageUrl = data.image;
-      this.videoUrl = data.video;
-
-      // ✅ Load related data for dropdowns
-      this.changecountry(); // This will load regions
-
-      // Wait a bit for regions to load, then load cities
-      setTimeout(() => {
-        if (this.formDataupdate.region_id) {
-          this.changecities(this.formDataupdate.region_id, this.regions);
+        // Set region_id after regions are loaded
+        if (data.region_id) {
+          this.formDataupdate.region_id = data.region_id;
+          await this.changecities(data.region_id, this.regions);
         }
-      }, 100);
+      }
 
-      // Wait a bit more for cities to load, then load districts
-      setTimeout(() => {
-        if (this.formDataupdate.city_id) {
-          this.district(this.formDataupdate.city_id, this.cities);
-        }
-      }, 200);
+      if (data.city_id) {
+        this.formDataupdate.city_id = data.city_id;
+        await this.district(data.city_id, this.cities);
+      }
+
+      if (data.district_id) {
+        this.formDataupdate.district_id = data.district_id;
+      }
     },
 
+    changecountry() {
+      this.clearFieldError("country_id");
+
+      const selectedCountry = this.countries.find(
+        (country) => country.id === this.formDataupdate.country_id
+      );
+
+      if (selectedCountry && selectedCountry.regions) {
+        this.regions = selectedCountry.regions.map((reg) => ({
+          value: reg.id,
+          name: reg.name,
+          cities: reg.cities,
+        }));
+      } else {
+        this.regions = [];
+      }
+
+      // Only reset dependent fields if not in edit mode with existing data
+      if (!this.isEditMode) {
+        this.formDataupdate.region_id = "";
+        this.formDataupdate.city_id = "";
+        this.formDataupdate.district_id = "";
+        this.cities = [];
+        this.districta = [];
+      }
+    },
     async update() {
       const toast = useToast();
       this.isLoadingUpdate = true; // ✅ Start loading
