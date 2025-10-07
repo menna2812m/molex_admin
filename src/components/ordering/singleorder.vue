@@ -284,7 +284,7 @@
                 :searchable="true"
                 :options="deliveries"
                 placeholder="اختر المندوب"
-                v-model="yourModelValue"
+                v-model="delivery_id"
               >
                 <template v-slot:option="{ option }">
                   <div
@@ -306,7 +306,7 @@
 
                 <template v-slot:singlelabel="{ value }">
                   <div
-                    class="d-flex justify-content-between align-items-start w-80"
+                    class="d-flex justify-content-between align-items-start w-80 z-index-33"
                   >
                     <span>{{ value.name }} ({{ value.city }})</span>
                     <span
@@ -541,7 +541,6 @@ export default {
     async order() {
       let res = await crudDataService.get("orders", `${this.$route.params.id}`);
       this.list = res.data.data;
-      console.log(this.list);
       this.user();
     },
     async user() {
