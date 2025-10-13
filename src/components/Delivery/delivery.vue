@@ -51,7 +51,7 @@
                   {{ item.phone }}
                 </td>
                 <td>
-                  {{ getStatusText(item.status) }}
+                  {{ getStatusText(item.is_active) }}
                 </td>
 
                 <td>
@@ -464,8 +464,8 @@ export default {
     // Helper methods for status display
     getStatusText(status) {
       const statusMap = {
-        available: "متاح",
-        unavailable: "غير متاح",
+        1: "متاح",
+        0: "غير متاح",
       };
       return statusMap[status] || status;
     },

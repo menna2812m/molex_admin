@@ -294,12 +294,12 @@
                     <span
                       class="badge"
                       :class="{
-                        'bg-success': option.status === 'available',
+                        'bg-success': option.is_active == 1,
 
-                        'bg-secondary': !['available'].includes(option.status),
+                        'bg-secondary': ![1].includes(option.is_active),
                       }"
                     >
-                      {{ option.status }}
+                      {{ option.is_active == 1 ? "متاح" : "غير متاح" }}
                     </span>
                   </div>
                 </template>
@@ -312,12 +312,12 @@
                     <span
                       class="badge"
                       :class="{
-                        'bg-success': value.status === 'available',
+                        'bg-success': value.is_active == 1,
 
-                        'bg-secondary': !['available'].includes(value.status),
+                        'bg-secondary': ![1].includes(value.is_active),
                       }"
                     >
-                      {{ value.status }}
+                      {{ value.is_active == 1 ? "متاح" : "غير متاح" }}
                     </span>
                   </div>
                 </template>
@@ -406,6 +406,7 @@ export default {
           name: delivery.full_name,
           city: delivery.city.name,
           status: this.getStatusInArabic(delivery.status),
+          is_active: delivery.is_active,
           // Create a display label for search purposes
           label: `${delivery.full_name} (${delivery.city.name}) ${delivery.status}`,
         }));
@@ -466,17 +467,18 @@ export default {
       } catch (error) {
         console.error("Error adding delivery:", error);
 
-        if (error.response && error.response.status === 422) {
-          this.setFieldErrors(error.response.data.errors || {});
-        } else {
-          this.$swal.fire({
-            title: "خطأ!",
-            text:
-              error.response?.data?.message || "حدث خطأ أثناء إضافة المندوب",
-            icon: "error",
-            confirmButtonText: "تم",
-          });
-        }
+        // if (error.data && error.data.status === 422) {
+        //   this.setFieldErrors(error.data.errors || {});
+        // } else {
+        //   console.log(error, "erroro");
+
+        this.$swal.fire({
+          title: "خطأ!",
+          text: error?.data?.message || "حدث خطأ أثناء إضافة المندوب",
+          icon: "error",
+          confirmButtonText: "تم",
+        });
+        // }
       } finally {
         this.formLoading = false;
       }
