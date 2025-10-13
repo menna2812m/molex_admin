@@ -266,7 +266,7 @@ export default {
     async getRegions() {
       if (this.selectedCountryId) {
         const regionsApi = useRegionsApi();
-        await regionsApi.fetchRegions(1, 100, this.selectedCountryId);
+        await regionsApi.fetchRegions(1, 999, this.selectedCountryId);
         this.regions = regionsApi.regions.value;
       }
     },
@@ -274,7 +274,7 @@ export default {
     async getCities() {
       if (this.selectedRegionId) {
         const citiesApi = useCitiesApi();
-        await citiesApi.fetchCities(1, 100, this.selectedRegionId);
+        await citiesApi.fetchCities(1, 999, this.selectedRegionId);
         this.cities = citiesApi.cities.value;
       }
     },
