@@ -125,7 +125,7 @@
                 {{ getFieldError("name.en") }}
               </div>
             </div>
-            <div class="col-md-12 mb-3">
+            <!-- <div class="col-md-12 mb-3">
               <label class="form-label"
                 >المنطقة <span class="text-red">*</span></label
               >
@@ -151,14 +151,13 @@
               <div v-if="hasFieldError('region_id')" class="invalid-feedback">
                 {{ getFieldError("region_id") }}
               </div>
-            </div>
+            </div> -->
             <div class="col-md-12 mb-3">
               <label class="form-label"
                 >المدينة <span class="text-red">*</span></label
               >
               <select
                 v-model="formData.city_id"
-                :disabled="!formData.region_id"
                 class="form-control"
                 :class="{ 'is-invalid': hasFieldError('city_id') }"
                 required
@@ -235,7 +234,7 @@ export default {
           ar: "",
           en: "",
         },
-        region_id: "",
+        // region_id: "",
         city_id: "",
       },
       watchedFields: [
@@ -272,11 +271,9 @@ export default {
     },
 
     async getCities() {
-      if (this.selectedRegionId) {
-        const citiesApi = useCitiesApi();
-        await citiesApi.fetchCities(1, 999, this.selectedRegionId);
-        this.cities = citiesApi.cities.value;
-      }
+      const citiesApi = useCitiesApi();
+      await citiesApi.fetchCities(1, 999);
+      this.cities = citiesApi.cities.value;
     },
 
     async paginag(p) {
@@ -325,7 +322,7 @@ export default {
           ar: "",
           en: "",
         },
-        region_id: "",
+        // region_id: "",
         city_id: "",
       };
       this.showModal = true;
@@ -333,7 +330,6 @@ export default {
 
     handleEdit(district) {
       this.editingDistrict = district;
-      console.log(district);
 
       this.clearAllErrors(); // Clear previous errors
       this.formData = {
@@ -341,14 +337,14 @@ export default {
           ar: district.name_ar || "",
           en: district.name_en || "",
         },
-        region_id: district.region_id?.toString() || "",
+        // region_id: district.region_id?.toString() || "",
         city_id: district.city_id?.toString() || "",
       };
       this.showModal = true;
       // Load cities for the selected region
-      if (district.region_id) {
-        this.onFormRegionChange();
-      }
+      // if (district.region_id) {
+      //   this.onFormRegionChange();
+      // }
     },
 
     async handleView(id) {
@@ -398,7 +394,7 @@ export default {
             ar: this.formData.name.ar,
             en: this.formData.name.en,
           },
-          region_id: parseInt(this.formData.region_id),
+          // region_id: parseInt(this.formData.region_id),
           city_id: parseInt(this.formData.city_id),
         };
 
@@ -465,7 +461,7 @@ export default {
   async mounted() {
     await this.getAllData();
     await this.getCountries();
-    await this.getRegions();
+    await this.getCities();
   },
 };
 </script>
